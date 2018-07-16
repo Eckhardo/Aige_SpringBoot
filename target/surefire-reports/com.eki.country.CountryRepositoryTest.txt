@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.eki.country.CountryRepositoryTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.673 s - in com.eki.country.CountryRepositoryTest
