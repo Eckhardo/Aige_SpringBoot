@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import com.eki.country.CountryRepository;
 import com.eki.geoscope.GeoScopeRepository;
+import com.eki.geoscope.TestRepository;
 import com.eki.model.Country;
 import com.eki.model.GeoScope;
 import com.google.common.collect.Lists;
@@ -26,11 +27,24 @@ import com.google.common.collect.Lists;
 public class GeoScopeService {
 	private static final Logger logger = LoggerFactory.getLogger(GeoScopeService.class);
 
-	@Autowired
 	private CountryRepository countryRepository;
-	@Autowired
-	private GeoScopeRepository geoScopeRepository;
 
+	private GeoScopeRepository geoScopeRepository;
+	private TestRepository testRepository;
+
+
+	@Autowired
+	public void setCountryRepository(CountryRepository countryRepository) {
+		this.countryRepository = countryRepository;
+	}
+	@Autowired
+	public void setGeoScopeRepository(GeoScopeRepository geoScopeRepository) {
+		this.geoScopeRepository = geoScopeRepository;
+	}
+@Autowired
+	public void setTestRepository(TestRepository testRepository) {
+		this.testRepository = testRepository;
+	}
 	public GeoScope save(GeoScope geoScope) {
 		return geoScopeRepository.save(geoScope);
 	}
@@ -110,13 +124,7 @@ public class GeoScopeService {
 	}
 	// ---------------------- country----------------------------
 
-	/**
-	 * 
-	 * @return
-	 */
-	public Collection<Country> findAllCountries() {
-		return countryRepository.findAll();
-	}
+
 
 	/**
 	 * 
@@ -125,6 +133,10 @@ public class GeoScopeService {
 	 */
 	public Collection<Country> searchCountries(String searchTerm) {
 		return countryRepository.findByCodeLike(searchTerm);
+	}
+
+	public Country findCountry(String countryCode) {
+		return countryRepository.findByCode(countryCode);
 	}
 
 }

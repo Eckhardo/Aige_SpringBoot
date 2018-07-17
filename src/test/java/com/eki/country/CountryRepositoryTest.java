@@ -40,10 +40,10 @@ public class CountryRepositoryTest {
 	    entityManager.flush();
 	 
 	    // when
-	    Optional<Country> found = countryRepository.findByCode(absurdistan.getCode());
+	    Country found = countryRepository.findByCode(absurdistan.getCode());
 	 
 	    // then
-	    assertThat(found.get().getName())
+	    assertThat(found.getName())
 	      .isEqualTo(absurdistan.getName());
 	}
 	

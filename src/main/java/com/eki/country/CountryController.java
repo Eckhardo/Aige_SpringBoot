@@ -26,9 +26,12 @@ private GeoScopeService geoScopeService;
 	  public Collection<Country> searchByCode(@RequestParam(value = "country_code", required = true) String countryCode) {
 	      return geoScopeService.searchCountries(countryCode);
 	  }
+
 	  
-	  @GetMapping("/country/all")
-	  public Collection<Country> list() {
-	      return geoScopeService.findAllCountries();
+
+	  @GetMapping("/country/find")
+	  public Country findByCode(@RequestParam(value = "country_code", required = true) String countryCode) {
+	      return geoScopeService.findCountry(countryCode);
 	  }
+	
 }
