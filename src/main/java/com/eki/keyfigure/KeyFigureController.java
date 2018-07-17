@@ -1,6 +1,5 @@
 package com.eki.keyfigure;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eki.model.KeyFigure;
 import com.eki.model.RESTDateParam;
-import com.eki.model.SearchCriteria;
 import com.eki.service.KeyFigureService;
-import com.google.common.base.Strings;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -46,33 +43,19 @@ public class KeyFigureController {
 
 		System.out.println("com.eki.globe.KeyFigureResource.filterKeyFigures()");
 
-		System.out.println("is precarriage " + isPreCarriage);
-
-		System.out.println("im schedule " + includeIs);
-		System.out.println("im tariff " + includeIt);
-		System.out.println("inland location " + inlandLocation);
-		System.out.println("inland type " + inlandGeoScopeType);
-		System.out.println("country code " + countryCode);
-		System.out.println("preferred port " + portLocation);
-		System.out.println("inclue all pref  ports " + includeAllPrefPorts);
-
-		System.out.println("start date " + startDate);
-		System.out.println("20 " + eq20);
-		System.out.println("40 " + eq40);
-		System.out.println("HC " + eqHC);
-		System.out.println("tp mode " + transportMode);
 		if (includeAllPrefPorts) {
-			portLocation=null;
+			portLocation = null;
 		}
 		String country = countryCode;
 		if (country.isEmpty()) {
 			country = inlandLocation.substring(0, 2);
 		}
-		if(transportMode.equals("ALL")) {
+		if (transportMode.equals("ALL")) {
 			transportMode = null;
 		}
 
-	List<KeyFigure> result = kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode, portLocation, transportMode, eq20, eq40);
+		List<KeyFigure> result = kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode,
+				portLocation, transportMode, eq20, eq40);
 		logger.debug("# of kfs found: {}", result.size());
 
 		return result;

@@ -1,8 +1,11 @@
 package com.eki.service;
 
+import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -11,6 +14,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -65,6 +69,7 @@ public class GeoScopeServiceTest {
 		List<GeoScope> result = geoScopeService.searchGeoScopes("DEHAM", "L", "DE");
 		assertThat(result.size(), is(1));
 		assertThat(result.get(0), is(geoScopes.get(0)));
+		verify(geoScopeRepository, times(1)).findAll();
 	}
 
 	@Test
@@ -86,6 +91,8 @@ public class GeoScopeServiceTest {
 		List<String> codes = result.stream().map((gs) -> gs.getLocationCode()).collect(Collectors.toList());
 
 		assertThat(codes, hasItems("DEHAM", "DEDUS", "DEDUI"));
+		verify(geoScopeRepository, times(1)).findAll(Mockito.any(Example.class));
+		
 
 	}
 	@Test

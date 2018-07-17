@@ -26,22 +26,17 @@ public class KeyFigureService {
 
 	public List<KeyFigure> searchKeyFigures(String inlandLocation, String geoScopeType, String countryCode, String preferredPort, String tpMode, boolean is20, boolean is40) {
 		List<String> preferredPorts = null;
-		logger.warn("pref port : {}", preferredPort);
 		if(! Optional.ofNullable(preferredPort).isPresent()) {
-			logger.warn("Optional.ofNullable(preferredPort).isPresent() : {}", ! Optional.ofNullable(preferredPort).isPresent());
 			List<GeoScope> preferredGeoScopes = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
-			logger.warn("preferredGeoScopes.size : {}", preferredGeoScopes.size());
-
+	
 			preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScopes);
-			logger.warn("preferredPorts.size : {}", preferredPorts.size());
 
 		}
 		else {
 			preferredPorts = Arrays.asList(preferredPort);
 		}
-		logger.warn("start kfs query");      
 		List<KeyFigure> result = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType, preferredPorts, is20, is40, tpMode);
-logger.warn("# kfs: {}", result.size());
+logger.debug("# kfs: {}", result.size());
 		return  result;
 	}
 }

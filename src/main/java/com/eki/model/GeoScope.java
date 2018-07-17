@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.NaturalId;
-
 @Entity
 @Table(name = "geoscope")
 public class GeoScope  implements Serializable{

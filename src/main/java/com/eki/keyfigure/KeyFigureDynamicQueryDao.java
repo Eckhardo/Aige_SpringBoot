@@ -3,10 +3,8 @@ package com.eki.keyfigure;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Parameter;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -26,7 +24,6 @@ import org.springframework.util.StringUtils;
 import com.eki.model.GeoScope;
 import com.eki.model.KeyFigure;
 import com.eki.model.SearchCriteria;
-import com.eki.service.KeyFigureService;
 
 @Repository
 @Transactional
@@ -84,15 +81,8 @@ public class KeyFigureDynamicQueryDao {
 
 	public List<KeyFigure> searchKeyFigures(String inlandLocation, String countryCode, String geoScopeType,
 			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode) {
-		logger.warn("params:");
-		logger.warn("inlandLocation: {}", inlandLocation);
-		logger.warn("country: {}", countryCode);
-		logger.warn("type: {}", geoScopeType);
-		logger.warn("tpMode: {}", tpMode);
 		preferredPorts.stream().forEach((myPojo) -> {logger.warn(myPojo.toString());});
-		logger.warn("eq20: {}", eq20);
-		logger.warn("eq40: {}", eq40);
-
+	
 		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		final CriteriaQuery<KeyFigure> cq = builder.createQuery(KeyFigure.class);
 		final Root<KeyFigure> root = cq.from(KeyFigure.class);

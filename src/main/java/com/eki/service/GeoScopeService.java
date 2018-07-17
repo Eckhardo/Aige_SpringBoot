@@ -5,23 +5,19 @@ import static java.util.stream.Collectors.toList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collector;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.eki.country.CountryRepository;
 import com.eki.geoscope.GeoScopeRepository;
-import com.eki.geoscope.TestRepository;
 import com.eki.model.Country;
 import com.eki.model.GeoScope;
-import com.google.common.collect.Lists;
 
 @Service
 public class GeoScopeService {
@@ -30,7 +26,6 @@ public class GeoScopeService {
 	private CountryRepository countryRepository;
 
 	private GeoScopeRepository geoScopeRepository;
-	private TestRepository testRepository;
 
 
 	@Autowired
@@ -41,10 +36,7 @@ public class GeoScopeService {
 	public void setGeoScopeRepository(GeoScopeRepository geoScopeRepository) {
 		this.geoScopeRepository = geoScopeRepository;
 	}
-@Autowired
-	public void setTestRepository(TestRepository testRepository) {
-		this.testRepository = testRepository;
-	}
+
 	public GeoScope save(GeoScope geoScope) {
 		return geoScopeRepository.save(geoScope);
 	}
@@ -91,9 +83,7 @@ public class GeoScopeService {
 	 * @return
 	 */
 	public List<GeoScope> findPreferredGeoScopes(final String locationCode, final String countryCode) {
-
-		logger.warn("code: {}, type: {}, country:{}", locationCode, countryCode);
-
+		
 		GeoScope geoScopeExample = new GeoScope();
 		geoScopeExample.setGeoScopeType("L");
 		String country = countryCode;

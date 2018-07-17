@@ -23,12 +23,7 @@ public class GeoScopeController {
 			@RequestParam(value = "geo_scope_type", required = true) String geoScopeType,
 			@RequestParam(value = "country_code", required = false) String countryCode) {
 
-		System.out.println("com.eki.globe.GeoScopesResource.searchGeoScope()");
-		System.out.println("location search " + locationCode);
-		System.out.println("geo scope type " + geoScopeType);
-		System.out.println("country code " + countryCode);
-
-	return geoScopeService.searchGeoScopes(locationCode, geoScopeType, countryCode);
+		return geoScopeService.searchGeoScopes(locationCode, geoScopeType, countryCode);
 
 	}
 
@@ -38,10 +33,6 @@ public class GeoScopeController {
 			@RequestParam(value = "geo_scope_type", required = true) String geoScopeType,
 			@RequestParam(value = "country_code", required = false) String countryCode) {
 
-		System.out.println("com.eki.globe.GeoScopesResource.searchPreferredPort()");
-		System.out.println("location search " + locationCode);
-		System.out.println("geo scope type " + geoScopeType);
-		System.out.println("country code " + countryCode);
 
 		return geoScopeService.findPreferredGeoScopes(locationCode,  countryCode);
 	}
