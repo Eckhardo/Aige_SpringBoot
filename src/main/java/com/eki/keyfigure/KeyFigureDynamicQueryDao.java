@@ -17,6 +17,10 @@ import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -79,8 +83,8 @@ public class KeyFigureDynamicQueryDao {
 
 	}
 
-	public List<KeyFigure> searchKeyFigures(String inlandLocation, String countryCode, String geoScopeType,
-			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode) {
+	public Page<KeyFigure> searchKeyFigures(String inlandLocation, String countryCode, String geoScopeType,
+			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode, PageRequest pageRequest) {
 		preferredPorts.stream().forEach((myPojo) -> {logger.warn(myPojo.toString());});
 	
 		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -115,9 +119,24 @@ public class KeyFigureDynamicQueryDao {
 		Predicate preds = builder.and(predicates.toArray(new Predicate[predicates.size()]));
 		cq.where(preds);
 
-		TypedQuery<KeyFigure> tq = entityManager.createQuery(cq);
+		TypedQuery<KeyFigure> query = entityManager.createQuery(cq);
+		  // Here you have to count the total size of the result
+	    int totalRows = query.getResultList().size();
+	    logger.warn("# of kfs: {}", totalRows);
+	    
 
-		return tq.getResultList();
+	    // Paging you don't want to access all entities of a given query but rather only a page of them      
+	    // (e.g. page 1 by a page size of 10). Right now this is addressed with two integers that limit 
+	    // the query appropriately. (http://spring.io/blog/2011/02/10/getting-started-with-spring-data-jpa)
+	    query.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize());
+	    query.setMaxResults(pageRequest.getPageSize());
+
+	    PageImpl<KeyFigure> page = new PageImpl<KeyFigure>(query.getResultList(), pageRequest, totalRows);
+
+	    logger.warn("# of kfs in page: {}", page.getContent().size());
+		 
+	    return page;
+		
 
 	}
 }

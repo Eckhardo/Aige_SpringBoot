@@ -4,11 +4,9 @@ C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\geoscope\GeoScopeRepo
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\geoscope\GeoScopeController.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\model\Customer.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\ResourceNotFoundException.java
-C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\geoscope\TestRepository.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\keyfigure\KeyFigureDynamicQueryDao.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\model\AuditModel.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\country\CountryRepository.java
-C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\DemoController.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\keyfigure\KeyFigureController.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\keyfigure\KeyFigureRepository.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\service\GeoScopeService.java
@@ -16,6 +14,5 @@ C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\country\CountryContro
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\service\KeyFigureService.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\model\KeyFigure.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\MysqlBootApplication.java
-C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\CustomerRepository.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\model\Country.java
 C:\Dev\sts-workspace\Aige_SpringBoot\src\main\java\com\eki\model\RESTDateParam.java

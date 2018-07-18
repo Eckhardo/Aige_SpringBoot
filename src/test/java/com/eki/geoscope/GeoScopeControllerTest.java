@@ -26,7 +26,7 @@ public class GeoScopeControllerTest {
 	@Test
 	public void whenSearchGeoScopesLikeDED_thenReturnLocations() {
 		GeoScope[] body = this.restTemplate
-				.getForObject("/geoscope/filter/?location_code=DED&geo_scope_type=L&country_code=DE", GeoScope[].class);
+				.getForObject("/geoscope/filter?location_code=DED&geo_scope_type=L&country_code=DE", GeoScope[].class);
 		assertThat(body.length, is(3));
 
 		for (int i = 0; i < body.length; i++) {
@@ -36,7 +36,7 @@ public class GeoScopeControllerTest {
 
 	@Test
 	public void whenSearchGeoScopesLikeDUS_thenReturnCitys() {
-		GeoScope[] body = this.restTemplate.getForObject("/geoscope/filter/?location_code=DUS&geo_scope_type=T",
+		GeoScope[] body = this.restTemplate.getForObject("/geoscope/filter?location_code=DUS&geo_scope_type=T",
 				GeoScope[].class);
 		assertThat(body.length, is(1));
 
@@ -48,7 +48,7 @@ public class GeoScopeControllerTest {
 	@Test
 	public void whenSearchPreferredPorts_thenReturnPorts() {
 		GeoScope[] body = this.restTemplate.getForObject(
-				"/preferredPort/filter/?location_code=DUS&geo_scope_type=T&country_code=DE", GeoScope[].class);
+				"/preferredPort/filter?location_code=DUS&geo_scope_type=T&country_code=DE", GeoScope[].class);
 		assertThat(body.length, is(equalTo(4)));
 
 		for (int i = 0; i < body.length; i++) {

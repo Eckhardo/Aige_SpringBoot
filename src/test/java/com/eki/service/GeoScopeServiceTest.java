@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -25,6 +26,7 @@ import com.eki.model.GeoScope;
 
 public class GeoScopeServiceTest {
 
+	@InjectMocks
 	private GeoScopeService geoScopeService;
 
 	@Mock
@@ -35,7 +37,6 @@ public class GeoScopeServiceTest {
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		geoScopeService = new GeoScopeService();
 		geoScopeService.setGeoScopeRepository(geoScopeRepository);
 
 		GeoScope deham = new GeoScope();

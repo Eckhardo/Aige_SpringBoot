@@ -4,10 +4,8 @@ com\eki\geoscope\GeoScopeRepository.class
 com\eki\country\CountryController.class
 com\eki\country\CountryRepository.class
 com\eki\model\AuditModel.class
-com\eki\DemoController.class
 com\eki\model\GeoScope.class
 com\eki\ResourceNotFoundException.class
-com\eki\CustomerRepository.class
 com\eki\model\Customer.class
 com\eki\geoscope\GeoScopeController.class
 com\eki\MysqlBootApplication$1.class

@@ -44,7 +44,8 @@ public class GeoScopeRepositoryTest {
 
 		GeoScope gs = new GeoScope();
 		gs.setLocationCode("DEH");
-		ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnorePaths("id", "port", "countryCode", "geoScopeType")
+		ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+				.withIgnorePaths("id", "port", "countryCode", "geoScopeType")
 				.withMatcher("locationCode", matcher -> matcher.startsWith());
 		Example<GeoScope> example = Example.of(gs, exampleMatcher);
 		// when
@@ -57,18 +58,19 @@ public class GeoScopeRepositoryTest {
 		assertTrue(found.stream().anyMatch(p1));
 		assertFalse(found.stream().allMatch(p1));
 	}
-	
+
 	@Test
 	public void whenFindByExampleWithMatcherForLocation_thenReturnGeoScopeCollection() {
 		// given
 
 		GeoScope gs = new GeoScope();
 		gs.setGeoScopeType("L");
-		ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnorePaths("id","port", "countryCode", "locationCode")
+		ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+				.withIgnorePaths("id", "port", "countryCode", "locationCode")
 				.withMatcher("geoScopeType", matcher -> matcher.exact());
 		Example<GeoScope> example = Example.of(gs, exampleMatcher);
 		// when
-List<GeoScope> found= repository.findAll(example);
+		List<GeoScope> found = repository.findAll(example);
 
 		// then
 		assertThat(found.isEmpty(), is(false));
@@ -76,14 +78,15 @@ List<GeoScope> found= repository.findAll(example);
 		Predicate<GeoScope> p1 = g -> g.getGeoScopeType().equals("L");
 		assertTrue(found.stream().allMatch(p1));
 	}
-	
+
 	@Test
 	public void whenFindByExampleWithMatcherAndSorting_thenReturnGeoScopeCollection() {
 		// given
 
 		GeoScope gs = new GeoScope();
 		gs.setLocationCode("DE");
-		ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnorePaths("id", "port", "countryCode", "geoScopeType")
+		ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+				.withIgnorePaths("id", "port", "countryCode", "geoScopeType")
 				.withMatcher("locationCode", matcher -> matcher.startsWith());
 		Example<GeoScope> example = Example.of(gs, exampleMatcher);
 		Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "locationCode"));
@@ -97,47 +100,71 @@ List<GeoScope> found= repository.findAll(example);
 		Predicate<GeoScope> p1 = g -> g.getLocationCode().equals("DEHAM");
 		assertTrue(found.stream().anyMatch(p1));
 		assertFalse(found.stream().allMatch(p1));
-		
-			
+
 	}
-	
+
 	@Test
 	public void whenFindByExampleWithMatcherAndPaging_thenReturnGeoScopeCollection() {
 		// given
 
 		GeoScope gs = new GeoScope();
 		gs.setLocationCode("DE");
-		ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnorePaths("id","port", "countryCode", "geoScopeType")
+		ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+				.withIgnorePaths("id", "port", "countryCode", "geoScopeType")
 				.withMatcher("locationCode", matcher -> matcher.startsWith());
 		Example<GeoScope> example = Example.of(gs, exampleMatcher);
-		Pageable pageable = PageRequest.of(0, 5);
+		Pageable pageable = PageRequest.of(0, 1);
 		// when
-		Page<GeoScope> page =null;
+		Page<GeoScope> page = null;
 		// then
-	    while (true) {
-	    	page = repository.findAll(example, pageable);  
-	          int number = page.getNumber();
-	          int numberOfElements = page.getNumberOfElements();
-	          int size = page.getSize();
-	          long totalElements = page.getTotalElements();
-	          int totalPages = page.getTotalPages();
-	          System.out.printf("page info - page number %s, numberOfElements: %s, size: %s, "
-	                          + "totalElements: %s, totalPages: %s%n",
-	                  number, numberOfElements, size, totalElements, totalPages);
-	          List<GeoScope> geoscopeList = page.getContent();
-	          geoscopeList.forEach(System.out::println);
-	          if (!page.hasNext()) {
-	              break;
-	          }
-	          else {
-	        	  System.out.println("has next");
-	          }
-	          pageable = page.nextPageable();
-	      }
-			
-			
+		while (true) {
+			page = repository.findAll(example, pageable);
+			int number = page.getNumber();
+			int numberOfElements = page.getNumberOfElements();
+			int size = page.getSize();
+			long totalElements = page.getTotalElements();
+			int totalPages = page.getTotalPages();
+			System.out.printf(
+					"page info - page number %s, numberOfElements: %s, size: %s, "
+							+ "totalElements: %s, totalPages: %s%n",
+					number, numberOfElements, size, totalElements, totalPages);
+			List<GeoScope> geoscopeList = page.getContent();
+			geoscopeList.forEach(System.out::println);
+			if (!page.hasNext()) {
+				break;
+			} else {
+				System.out.println("has next");
+			}
+			pageable = page.nextPageable();
+		}
+
 	}
 
+	@Test
+	public void whenFindByExampleWithMatcherAndPaging2_thenReturnGeoScopeCollection() {
+		// given
+
+		GeoScope gs = new GeoScope();
+		gs.setLocationCode("DE");
+		ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+				.withIgnorePaths("id", "port", "countryCode", "geoScopeType")
+				.withMatcher("locationCode", matcher -> matcher.startsWith());
+		Example<GeoScope> example = Example.of(gs, exampleMatcher);
+		Pageable pageable = PageRequest.of(0, 1);
+		// when
+		Page<GeoScope> page = repository.findAll(example, pageable);
+		int number = page.getNumber();
+		int numberOfElements = page.getNumberOfElements();
+		int size = page.getSize();
+		long totalElements = page.getTotalElements();
+		int totalPages = page.getTotalPages();
+		System.out.printf(
+				"page info - page number %s, numberOfElements: %s, size: %s, " + "totalElements: %s, totalPages: %s%n",
+				number, numberOfElements, size, totalElements, totalPages);
+		List<GeoScope> geoscopeList = page.getContent();
+		geoscopeList.forEach(System.out::println);
+
+	}
 
 	@Test
 	public void whenFindByGeoScopeCode_thenReturnGeoScopeCollection() {

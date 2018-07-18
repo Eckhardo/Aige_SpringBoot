@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +16,7 @@ import com.eki.model.KeyFigure;
 import com.eki.model.RESTDateParam;
 import com.eki.service.KeyFigureService;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowedHeaders="*")
 @RestController
 public class KeyFigureController {
 
@@ -24,7 +26,7 @@ public class KeyFigureController {
 	private KeyFigureService kfService;
 
 	@GetMapping({ "/keyfigure/filter" })
-	public List<KeyFigure> searchGeoScope(
+	public Page<KeyFigure> searchGeoScope(
 			@RequestParam(value = "includeImTariff", defaultValue = "false") boolean includeIt,
 			@RequestParam(value = "includeImSchedule", defaultValue = "false") boolean includeIs,
 			@RequestParam(value = "isPreCarriage", defaultValue = "true") boolean isPreCarriage,
@@ -39,8 +41,9 @@ public class KeyFigureController {
 			@RequestParam(value = "weight20") String weight20, @RequestParam(value = "weight40") String weight40,
 			@RequestParam(value = "weightBasedOnly", defaultValue = "false") boolean weightBasedOnly,
 			@RequestParam(value = "startDate") RESTDateParam startDate,
-			@RequestParam(value = "endDate") RESTDateParam endDate) {
-
+			@RequestParam(value = "endDate") RESTDateParam endDate,
+			@RequestParam(value = "page", defaultValue="0") int page) {
+            
 		System.out.println("com.eki.globe.KeyFigureResource.filterKeyFigures()");
 
 		if (includeAllPrefPorts) {
@@ -54,11 +57,18 @@ public class KeyFigureController {
 			transportMode = null;
 		}
 
-		List<KeyFigure> result = kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode,
-				portLocation, transportMode, eq20, eq40);
-		logger.debug("# of kfs found: {}", result.size());
-
-		return result;
+		Page<KeyFigure> pageables = kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode,
+				portLocation, transportMode, eq20, eq40, PageRequest.of(page, 5));
+		logger.debug("# of kfs found: {}", pageables.getContent().size());
+	      int number = pageables.getNumber();
+          int numberOfElements = pageables.getNumberOfElements();
+          int size = pageables.getSize();
+          long totalElements = pageables.getTotalElements();
+          int totalPages = pageables.getTotalPages();
+          System.out.printf("page info - page number %s, numberOfElements: %s, size: %s, "
+                          + "totalElements: %s, totalPages: %s%n",
+                  number, numberOfElements, size, totalElements, totalPages);
+		return pageables;
 	}
 
 }

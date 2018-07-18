@@ -13,7 +13,7 @@ import com.eki.model.Country;
 import com.eki.service.GeoScopeService;
 
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowedHeaders="*")
 @RestController
 @EnableJpaAuditing
 public class CountryController {
