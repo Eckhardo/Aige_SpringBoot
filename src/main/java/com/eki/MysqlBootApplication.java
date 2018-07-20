@@ -16,8 +16,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.eki.geoscope.GeoScopeRepository;
+import com.eki.keyfigure.KeyFigureDynamicQueryDao;
+import com.eki.keyfigure.KeyFigureRepository;
 import com.eki.model.GeoScope;
 import com.eki.model.KeyFigure;
+import com.eki.service.GeoScopeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -36,6 +39,10 @@ public class MysqlBootApplication implements CommandLineRunner {
 	private GeoScopeRepository geoScopeDao;
 
 
+	@Autowired
+	private GeoScopeService geoScopeService;
+	@Autowired
+	private KeyFigureRepository kfDao;
 
 
 	public static void main(String[] args) {
@@ -53,7 +60,7 @@ public class MysqlBootApplication implements CommandLineRunner {
 
 		
 		try {
-			List<GeoScope> geoScopes = mapper.readValue(inputStream, typeRef);
+		//	List<GeoScope> geoScopes = mapper.readValue(inputStream, typeRef);
 		//	geoScopeDao.deleteAll();
 		//	geoScopeDao.flush();
 
@@ -64,7 +71,7 @@ public class MysqlBootApplication implements CommandLineRunner {
 		}
 		
 			
-	//	Iterable<KeyFigure> kfs = this.getData();
+		Iterable<KeyFigure> kfs = this.getData();
 	//	kfDao.deleteAll();
 	//	kfDao.saveAll(kfs);
 

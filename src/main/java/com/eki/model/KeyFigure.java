@@ -171,4 +171,90 @@ public class KeyFigure implements Serializable {
 				.append(", rate=").append(rate).append(", currency=").append(currency).append("]");
 		return builder.toString();
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((currency == null) ? 0 : currency.hashCode());
+		result = prime * result + ((defaultEquipmentSize == null) ? 0 : defaultEquipmentSize.hashCode());
+		result = prime * result + ((equipmentGroup == null) ? 0 : equipmentGroup.hashCode());
+		result = prime * result + ((equipmentSize == null) ? 0 : equipmentSize.hashCode());
+		result = prime * result + ((from == null) ? 0 : from.hashCode());
+		result = prime * result + hsWeightClass;
+		result = prime * result + (int) (imRouteKey ^ (imRouteKey >>> 32));
+		result = prime * result + (isPreferred ? 1231 : 1237);
+		result = prime * result + ((rate == null) ? 0 : rate.hashCode());
+		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+		result = prime * result + ((to == null) ? 0 : to.hashCode());
+		result = prime * result + ((transportMode == null) ? 0 : transportMode.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KeyFigure other = (KeyFigure) obj;
+		if (currency == null) {
+			if (other.currency != null)
+				return false;
+		} else if (!currency.equals(other.currency))
+			return false;
+		if (defaultEquipmentSize == null) {
+			if (other.defaultEquipmentSize != null)
+				return false;
+		} else if (!defaultEquipmentSize.equals(other.defaultEquipmentSize))
+			return false;
+		if (equipmentGroup == null) {
+			if (other.equipmentGroup != null)
+				return false;
+		} else if (!equipmentGroup.equals(other.equipmentGroup))
+			return false;
+		if (equipmentSize == null) {
+			if (other.equipmentSize != null)
+				return false;
+		} else if (!equipmentSize.equals(other.equipmentSize))
+			return false;
+		if (from == null) {
+			if (other.from != null)
+				return false;
+		} else if (!from.equals(other.from))
+			return false;
+		if (hsWeightClass != other.hsWeightClass)
+			return false;
+		if (imRouteKey != other.imRouteKey)
+			return false;
+		if (isPreferred != other.isPreferred)
+			return false;
+		if (rate == null) {
+			if (other.rate != null)
+				return false;
+		} else if (!rate.equals(other.rate))
+			return false;
+		if (startDate == null) {
+			if (other.startDate != null)
+				return false;
+		} else if (!startDate.equals(other.startDate))
+			return false;
+		if (to == null) {
+			if (other.to != null)
+				return false;
+		} else if (!to.equals(other.to))
+			return false;
+		if (transportMode == null) {
+			if (other.transportMode != null)
+				return false;
+		} else if (!transportMode.equals(other.transportMode))
+			return false;
+		return true;
+	}
+
+
+	
+	
 }

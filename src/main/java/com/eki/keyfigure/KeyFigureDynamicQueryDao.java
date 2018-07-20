@@ -82,8 +82,48 @@ public class KeyFigureDynamicQueryDao {
 		return result;
 
 	}
+	public List<KeyFigure> searchKeyFigures(String inlandLocation, String countryCode, String geoScopeType,
+			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode) {
+	
+		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		final CriteriaQuery<KeyFigure> cq = builder.createQuery(KeyFigure.class);
+		final Root<KeyFigure> root = cq.from(KeyFigure.class);
+		Join<KeyFigure, GeoScope> from = root.join("from", JoinType.LEFT);
+		Join<KeyFigure, GeoScope> to = root.join("to", JoinType.LEFT);
+		cq.select(root);
+		List<Predicate> predicates = new ArrayList<>();
+		String country = countryCode;
+		if (StringUtils.isEmpty(countryCode)) {
+			country = inlandLocation.substring(0, 2);
+		}
 
-	public Page<KeyFigure> searchKeyFigures(String inlandLocation, String countryCode, String geoScopeType,
+		predicates.add(builder.and(builder.equal(from.get("countryCode"), country),
+				builder.equal(from.get("geoScopeType"), geoScopeType),
+				builder.equal(from.get("locationCode"), inlandLocation), 
+				to.get("locationCode").in(preferredPorts)));
+		if (eq20 && eq40) {
+			predicates.add(root.get("equipmentSize").in("20", "40"));
+		}
+		else if (eq20) {
+			predicates.add(builder.and(builder.equal(root.get("equipmentSize"), "20")));
+		}
+		else if (eq40) {
+			predicates.add(builder.and(builder.equal(root.get("equipmentSize"), "40")));
+		}
+		 if (Optional.ofNullable(tpMode).isPresent()) {
+			predicates.add(builder.and(builder.equal(root.get("transportMode"), tpMode)));
+
+		}
+		Predicate preds = builder.and(predicates.toArray(new Predicate[predicates.size()]));
+		cq.where(preds);
+
+		TypedQuery<KeyFigure> tq = entityManager.createQuery(cq);
+
+		return tq.getResultList();
+
+	}
+
+	public Page<KeyFigure> searchPageableKeyFigures(String inlandLocation, String countryCode, String geoScopeType,
 			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode, PageRequest pageRequest) {
 		preferredPorts.stream().forEach((myPojo) -> {logger.warn(myPojo.toString());});
 	

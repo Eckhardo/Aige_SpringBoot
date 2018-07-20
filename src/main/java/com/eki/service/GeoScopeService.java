@@ -70,6 +70,11 @@ public class GeoScopeService {
 
 	}
 
+	
+	public Collection<GeoScope> findPorts(String searchTerm) {
+	
+		return geoScopeRepository.findPortsLike(searchTerm);
+	}
 	public List<String> mapGeoScopesToPorts(List<GeoScope> preferredGeoScopes) {
 		return preferredGeoScopes.stream().map((GeoScope gs) -> gs.getLocationCode()).collect(toList());
 	}
@@ -87,8 +92,12 @@ public class GeoScopeService {
 		GeoScope geoScopeExample = new GeoScope();
 		geoScopeExample.setGeoScopeType("L");
 		String country = countryCode;
-		if (country.isEmpty()) {
+		if (country.isEmpty() && locationCode.length() == 5) {
 			country = locationCode.substring(0, 2);
+		}
+		else if(country.isEmpty() && locationCode.length() != 5) {
+			GeoScope nonLocation =geoScopeRepository.findByLocationCode(locationCode);
+			country =nonLocation.getCountryCode();
 		}
 		geoScopeExample.setPort(true);
 		ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnorePaths("id", "countryCode", "locationCode")
@@ -128,5 +137,6 @@ public class GeoScopeService {
 	public Country findCountry(String countryCode) {
 		return countryRepository.findByCode(countryCode);
 	}
+
 
 }

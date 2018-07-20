@@ -1,5 +1,6 @@
 package com.eki.geoscope;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,15 @@ public class GeoScopeController {
 
 
 		return geoScopeService.findPreferredGeoScopes(locationCode,  countryCode);
+	}
+	
+	
+	@GetMapping({ "/ports/filter" })
+	public Collection<GeoScope> searchPorts(@RequestParam(value = "location_code", required = true) String locationCode) {
+
+
+		return geoScopeService.findPorts(locationCode);
+	
 	}
 
 }

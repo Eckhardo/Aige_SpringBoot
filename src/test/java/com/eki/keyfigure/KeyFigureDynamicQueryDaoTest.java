@@ -50,7 +50,7 @@ public class KeyFigureDynamicQueryDaoTest {
 		List<String> preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScopes);
 		assertThat(preferredPorts.size(), is(4));
 
-		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
+		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
 				preferredPorts,true,true,null,PageRequest.of(0, 5));
 		logPageDetails(page);
 
@@ -62,7 +62,7 @@ public class KeyFigureDynamicQueryDaoTest {
 		
 		while(page.hasNext()) {
 			Pageable nextPage=page.nextPageable();
-			 page = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
+			 page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
 					preferredPorts,true,true,null,PageRequest.of(nextPage.getPageNumber(), 5));
 				logPageDetails(page);
 				assertTrue(page.getContent().stream().allMatch(p1));
@@ -80,7 +80,7 @@ public class KeyFigureDynamicQueryDaoTest {
 	public void givenOnePreferredPort_whenSearchingForKeyFigures() {
 		// given
 	
-		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
+		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
 				Arrays.asList(portLocation),true,true,null, PageRequest.of(0, 5));
 		logPageDetails(page);
 
@@ -98,7 +98,7 @@ public class KeyFigureDynamicQueryDaoTest {
 	public void givenTransportModeAndEquipmentInfo_whenSearchingForKeyFigures() {
 		// given
 	
-		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
+		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
 				Arrays.asList(portLocation),true,true,tpMode,PageRequest.of(0, 5));
 		logPageDetails(page);
 
@@ -117,7 +117,7 @@ public class KeyFigureDynamicQueryDaoTest {
 	public void givenTransportModeAnd20Feet_whenSearchingForKeyFigures() {
 		// given
 	
-		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
+		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
 				Arrays.asList(portLocation),true,false,tpMode,PageRequest.of(0, 5));
 		logPageDetails(page);
 

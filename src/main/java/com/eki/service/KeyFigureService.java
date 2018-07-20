@@ -37,7 +37,7 @@ public class KeyFigureService {
 		} else {
 			preferredPorts = Arrays.asList(preferredPort);
 		}
-		Page<KeyFigure> result = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
+		Page<KeyFigure> result = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
 				preferredPorts, is20, is40, tpMode,pageRequest);
 		logger.debug("# kfs: {}", result.getSize());
 		return result;

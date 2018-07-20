@@ -55,4 +55,14 @@ public class GeoScopeControllerTest {
 			assertThat(body[i].isPort(), is(true));
 		}
 	}
+	@Test
+	public void whenSearchPorts_thenReturnPorts() {
+		GeoScope[] body = this.restTemplate.getForObject(
+				"/ports/filter?location_code=ARB", GeoScope[].class);
+		assertThat(body.length, is(equalTo(1)));
+
+		for (int i = 0; i < body.length; i++) {
+			assertThat(body[i].isPort(), is(true));
+		}
+	}
 }
