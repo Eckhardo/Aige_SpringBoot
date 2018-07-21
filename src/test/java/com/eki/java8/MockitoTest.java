@@ -3,7 +3,6 @@ package com.eki.java8;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -16,12 +15,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
-import org.springframework.dao.TypeMismatchDataAccessException;
 import org.springframework.data.domain.Example;
 
 import com.eki.geoscope.GeoScopeRepository;

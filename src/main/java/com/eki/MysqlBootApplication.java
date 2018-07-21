@@ -16,7 +16,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.eki.geoscope.GeoScopeRepository;
-import com.eki.keyfigure.KeyFigureDynamicQueryDao;
 import com.eki.keyfigure.KeyFigureRepository;
 import com.eki.model.GeoScope;
 import com.eki.model.KeyFigure;

@@ -26,7 +26,7 @@ public class KeyFigureController {
 	private KeyFigureService kfService;
 
 	@GetMapping({ "/keyfigure/filter" })
-	public Page<KeyFigure> searchGeoScope(
+	public List<KeyFigure> searchGeoScope(
 			@RequestParam(value = "includeImTariff", defaultValue = "false") boolean includeIt,
 			@RequestParam(value = "includeImSchedule", defaultValue = "false") boolean includeIs,
 			@RequestParam(value = "isPreCarriage", defaultValue = "true") boolean isPreCarriage,
@@ -42,7 +42,7 @@ public class KeyFigureController {
 			@RequestParam(value = "weightBasedOnly", defaultValue = "false") boolean weightBasedOnly,
 			@RequestParam(value = "startDate") RESTDateParam startDate,
 			@RequestParam(value = "endDate") RESTDateParam endDate,
-			@RequestParam(value = "page", defaultValue="0") int page) {
+			@RequestParam(value = "page", required=false, defaultValue="0") int page) {
             
 		System.out.println("com.eki.globe.KeyFigureResource.filterKeyFigures()");
 
@@ -57,18 +57,9 @@ public class KeyFigureController {
 			transportMode = null;
 		}
 
-		Page<KeyFigure> pageables = kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode,
+		return  kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode,
 				portLocation, transportMode, eq20, eq40, PageRequest.of(page, 5));
-		logger.debug("# of kfs found: {}", pageables.getContent().size());
-	      int number = pageables.getNumber();
-          int numberOfElements = pageables.getNumberOfElements();
-          int size = pageables.getSize();
-          long totalElements = pageables.getTotalElements();
-          int totalPages = pageables.getTotalPages();
-          System.out.printf("page info - page number %s, numberOfElements: %s, size: %s, "
-                          + "totalElements: %s, totalPages: %s%n",
-                  number, numberOfElements, size, totalElements, totalPages);
-		return pageables;
+	
 	}
 
 }

@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +27,20 @@ import com.eki.model.GeoScope;
 import com.eki.model.KeyFigure;
 import com.eki.service.GeoScopeService;
 
+/**
+ * Some tests for the new Java 6 {@link java.time} API including:
+ * 
+ * <ul>
+ * <li>{@link java.time.Instant}</li>
+ * <li>{@link java.time.ZoneId}</li>
+ * <li>{@link java.time.ZonedDateTime}</li>
+ * <li>{@link java.time.LocalDateTime}</li>
+ * <li>{@link java.time.format.DateTimeFormatter}</li>
+ * </ul>
+ * 
+ * @author ekirschning
+ *
+ */
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -40,7 +52,6 @@ public class DateTimeTest {
 	@Autowired
 	private GeoScopeService geoScopeService;
 
-	
 	List<KeyFigure> keyFigures;
 
 	private final String inlandLocation = "DUSSELDORF";
@@ -104,25 +115,25 @@ public class DateTimeTest {
 		System.out.println("Equivalent java.time.LocalDateTime value:" + localDateTime);
 
 	}
-	
 
 	@Test
 	public void formatDateInGermanAndFrench() {
 
-		   LocalDate localDate=LocalDate.now();
-		   
-		    //Day of week and month in French
-		    String dateInFrench=localDate.format(DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy",Locale.FRENCH));
-		    System.out.println("'2016-01-01' in French: "+dateInFrench);
-		 
-		    //Day of week and month in German
-		    Locale germanLocale=new Locale("de", "DE");
-		    String dateInGerman=localDate.format(DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy",germanLocale));
-		    System.out.println("'2016-01-01' in German: "+dateInGerman);
-		 
-		   //German is the default locale for my system on which JVM is running
-		    String dateInDefault = localDate.format(DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy",Locale.getDefault()));
-		    System.out.println("'01-Jan-2016' in German(default): "+dateInDefault);
+		LocalDate localDate = LocalDate.now();
+
+		// Day of week and month in French
+		String dateInFrench = localDate.format(DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy", Locale.FRENCH));
+		System.out.println("'2016-01-01' in French: " + dateInFrench);
+
+		// Day of week and month in German
+		Locale germanLocale = new Locale("de", "DE");
+		String dateInGerman = localDate.format(DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy", germanLocale));
+		System.out.println("'2016-01-01' in German: " + dateInGerman);
+
+		// German is the default locale for my system on which JVM is running
+		String dateInDefault = localDate
+				.format(DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy", Locale.getDefault()));
+		System.out.println("'01-Jan-2016' in German(default): " + dateInDefault);
 
 	}
 
