@@ -40,6 +40,7 @@ public class DateTimeTest {
 	@Autowired
 	private GeoScopeService geoScopeService;
 
+	
 	List<KeyFigure> keyFigures;
 
 	private final String inlandLocation = "DUSSELDORF";
@@ -62,7 +63,7 @@ public class DateTimeTest {
 	@Test
 	public void convertNowUtcToDifferentTimeZones() {
 
-		// Starting with an java.time.Instant value
+		// Starting with an java.time.Instant value of now
 		Instant timeStamp = Instant.now();
 		System.out.println("Machine Time Now:" + timeStamp);
 

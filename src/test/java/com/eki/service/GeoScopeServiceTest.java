@@ -26,11 +26,13 @@ import com.eki.model.GeoScope;
 
 public class GeoScopeServiceTest {
 
-	@InjectMocks
-	private GeoScopeService geoScopeService;
 
 	@Mock
 	private GeoScopeRepository geoScopeRepository;
+	
+	@InjectMocks
+	private GeoScopeService geoScopeService;
+
 
 	private List<GeoScope> geoScopes = new ArrayList<>();
 

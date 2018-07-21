@@ -45,6 +45,17 @@ public class GeoScope implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
+	public GeoScope(long id, @NotNull String countryCode, String locationCode, @NotNull String geoScopeType,
+			String locationName, boolean port) {
+		super();
+		this.id = id;
+		this.countryCode = countryCode;
+		this.locationCode = locationCode;
+		this.geoScopeType = geoScopeType;
+		this.locationName = locationName;
+		this.port = port;
+	}
+
 	public long getId() {
 		return id;
 	}
