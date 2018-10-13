@@ -59,7 +59,7 @@ public class MysqlBootApplication implements CommandLineRunner {
 
 		
 		try {
-		//	List<GeoScope> geoScopes = mapper.readValue(inputStream, typeRef);
+			List<GeoScope> geoScopes = mapper.readValue(inputStream, typeRef);
 		//	geoScopeDao.deleteAll();
 		//	geoScopeDao.flush();
 
@@ -70,7 +70,7 @@ public class MysqlBootApplication implements CommandLineRunner {
 		}
 		
 			
-		Iterable<KeyFigure> kfs = this.getData();
+		//Iterable<KeyFigure> kfs = this.getData();
 	//	kfDao.deleteAll();
 	//	kfDao.saveAll(kfs);
 

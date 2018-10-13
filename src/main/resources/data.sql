@@ -1,27 +1,204 @@
-DROP TABLE IF EXISTS country;
+--
+-- Dumping data for table `hibernate_sequence`
+--
 
-CREATE TABLE IF NOT EXISTS country (
-    id   INTEGER      NOT NULL AUTO_INCREMENT,
-    name VARCHAR(128) NOT NULL,
-    code VARCHAR(2) NOT NULL,
-    PRIMARY KEY (id),
-    UNIQUE (name)
-);
+LOCK TABLES `hibernate_sequence` WRITE;
+/*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
+DELETE FROM `hibernate_sequence`; 
+INSERT INTO `hibernate_sequence` VALUES (77),(77),(77),(77);
+/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-INSERT  INTO country (name, code) VALUES ('Germany', 'DE');
-INSERT  INTO country (name, code) VALUES ('Danmark', 'DK');
-INSERT  INTO country (name, code) VALUES ('Italy', 'IT');
-INSERT  INTO country (name, code) VALUES ('France', 'FR');
-INSERT  INTO country (name, code) VALUES ('Finland', 'FI');
-INSERT  INTO country (name, code) VALUES ('Norway', 'NO');
-INSERT  INTO country (name, code) VALUES ('Sweden', 'SE');
-INSERT  INTO country (name, code) VALUES ('Switzerland', 'CH');
-INSERT  INTO country (name, code) VALUES ('Portugal', 'PT');
-INSERT  INTO country (name, code) VALUES ('Spain', 'ES');
-INSERT  INTO country (name, code) VALUES ('Brazil', 'BR');
-INSERT  INTO country (name, code) VALUES ('Argentina', 'AR');
-INSERT  INTO country (name, code) VALUES ('Japan', 'JP');
-INSERT  INTO country (name, code) VALUES ('China', 'CN');
-INSERT  INTO country (name, code) VALUES ('Canada', 'CA');
-INSERT  INTO country (name, code) VALUES ('Mexico', 'MX');
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+-- Dump completed on 2018-10-08 18:25:02
+
+
+CREATE DATABASE  IF NOT EXISTS `nre` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+USE `nre`;
+-- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: nre
+-- ------------------------------------------------------
+-- Server version	8.0.12
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ SET NAMES utf8 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `country`
+--
+
+DROP TABLE IF EXISTS `country`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `country` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `code` varchar(2) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `country`
+--
+
+LOCK TABLES `country` WRITE;
+/*!40000 ALTER TABLE `country` DISABLE KEYS */;
+INSERT INTO `country` VALUES (1,'Germany','DE'),(2,'Danmark','DK'),(3,'Italy','IT'),(4,'France','FR'),(5,'Finland','FI'),(6,'Norway','NO'),(7,'Sweden','SE'),(8,'Switzerland','CH'),(9,'Portugal','PT'),(10,'Spain','ES'),(11,'Brazil','BR'),(12,'Argentina','AR'),(13,'Japan','JP'),(14,'China','CN'),(15,'Canada','CA'),(16,'Mexico','MX');
+/*!40000 ALTER TABLE `country` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-10-08 18:25:01
+
+CREATE DATABASE  IF NOT EXISTS `nre` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+USE `nre`;
+-- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: nre
+-- ------------------------------------------------------
+-- Server version	8.0.12
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ SET NAMES utf8 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `geoscope`
+--
+
+DROP TABLE IF EXISTS `geoscope`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `geoscope` (
+  `id` bigint(20) NOT NULL,
+  `country_code` varchar(255) NOT NULL,
+  `geo_scope_type` varchar(255) NOT NULL,
+  `location_code` varchar(255) DEFAULT NULL,
+  `location_name` varchar(255) DEFAULT NULL,
+  `is_port` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `geoscope`
+--
+
+LOCK TABLES `geoscope` WRITE;
+/*!40000 ALTER TABLE `geoscope` DISABLE KEYS */;
+INSERT INTO `geoscope` VALUES (1,'DE','L','DEBRV','Bremerhaven',_binary ''),(2,'DE','L','DEHAM','Hamburg',_binary ''),(3,'NL','L','NLRTM','Rotterdam',_binary ''),(4,'BE','L','BEANR','Antwerp',_binary ''),(5,'DE','L','DEDOR','',_binary '\0'),(6,'BR','L','BRSSZ','Santos',_binary ''),(7,'BR','L','BRITJ','Itajai',_binary ''),(8,'BR','L','BRPNG','Paranagua',_binary ''),(9,'DE','L','DEDUS','',_binary '\0'),(10,'DE','L','DEDUI','',_binary '\0'),(11,'DE','T','BREMERHAVEN','',_binary '\0'),(12,'DE','T','HAMBURG','',_binary '\0'),(13,'NL','T','ROTTERDAM','',_binary '\0'),(14,'BE','T','ANTWERP','',_binary '\0'),(15,'CO','T','CARTAGENA','',_binary '\0'),(16,'BR','T','SANTOS','',_binary '\0'),(17,'BR','T','MANAUS','',_binary '\0'),(18,'BR','T','SUAPE','',_binary '\0'),(19,'DE','T','BERLIN','',_binary '\0'),(20,'DE','T','BOCHUM','',_binary '\0'),(21,'DE','T','BOTTROP','',_binary '\0'),(22,'DE','T','HAMBORN','',_binary '\0'),(23,'DE','T','HAMM','',_binary '\0'),(24,'DE','T','HAMFELDE','',_binary '\0'),(25,'DE','T','DUSSELDORF','',_binary '\0'),(26,'DE','T','DUISBURG','',_binary '\0'),(27,'DE','F','DEBRVCTAX','',_binary '\0'),(28,'DE','F','DEHAMCTBX','',_binary '\0'),(29,'NL','F','NLRTMCTAA','',_binary '\0'),(30,'BE','F','BEANRCTSM','',_binary '\0'),(31,'CO','F','COCTGCCFF','',_binary '\0'),(32,'BR','F','BRSSZSANT','',_binary '\0'),(33,'BR','F','BRMANCTTX','',_binary '\0'),(34,'DE','F','DEHAMATBX','',_binary '\0'),(35,'DE','F','DEHAMEURO','',_binary '\0'),(36,'CN','L','HKHKG','Hong Kong',_binary ''),(37,'CN','L','CNSHA','Shanghai',_binary ''),(38,'CO','L','COCTG','Cartagena',_binary ''),(39,'AR','L','ARBUE','Buenos Aires',_binary ''),(40,'UY','L','UYMVD','Montevideo',_binary ''),(41,'CN','L','CNSZX','Shenzhen',_binary ''),(42,'JPK','L','JPYOK','Yokohama',_binary ''),(43,'JP','L','JPTYO','Tokyo',_binary '');
+/*!40000 ALTER TABLE `geoscope` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-10-08 18:25:02
+CREATE DATABASE  IF NOT EXISTS `nre` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+USE `nre`;
+-- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: nre
+-- ------------------------------------------------------
+-- Server version	8.0.12
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ SET NAMES utf8 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `keyfigure`
+--
+
+DROP TABLE IF EXISTS `keyfigure`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `keyfigure` (
+  `id` bigint(20) NOT NULL,
+  `currency` varchar(255) DEFAULT NULL,
+  `def_eq_size` varchar(255) DEFAULT NULL,
+  `eq_group` varchar(255) DEFAULT NULL,
+  `eq_size` varchar(255) DEFAULT NULL,
+  `weight_class` int(11) DEFAULT NULL,
+  `im_route` bigint(20) DEFAULT NULL,
+  `preferred` bit(1) DEFAULT NULL,
+  `rate` decimal(10,2) DEFAULT '0.00',
+  `start_date` date DEFAULT NULL,
+  `tpmode` varchar(255) DEFAULT NULL,
+  `from_id` bigint(20) DEFAULT NULL,
+  `to_id` bigint(20) DEFAULT NULL,
+  `via_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKcxj9cj47hrad2nupobo4ox44a` (`from_id`),
+  KEY `FKbe03j61kgfnleagg9h1tsqqtf` (`to_id`),
+  KEY `FK2ve4o01blfayvjc60we3f5bmo` (`via_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `keyfigure`
+--
+
+LOCK TABLES `keyfigure` WRITE;
+/*!40000 ALTER TABLE `keyfigure` DISABLE KEYS */;
+INSERT INTO `keyfigure` VALUES (44,'EUR','40','RF','20',0,0,_binary '\0',200.00,'2018-10-08','TRUCK',9,1,NULL),(45,'EUR','40','GP','20',0,0,_binary '\0',400.35,'2018-10-08','TRUCK',9,2,NULL),(46,'EUR','40','GP','20',0,0,_binary '\0',600.35,'2018-10-08','TRUCK',9,3,NULL),(47,'EUR','40','GP','20',0,0,_binary '\0',800.34,'2018-10-08','TRUCK',9,4,NULL),(48,'EUR','40','GP','20',0,0,_binary '',1000.32,'2018-10-08','BARGE',9,4,10),(49,'EUR','40','RF','40',0,0,_binary '\0',900.30,'2018-10-08','TRUCK',9,1,NULL),(50,'EUR','40','GP','40',0,0,_binary '\0',1100.30,'2018-10-08','TRUCK',9,2,NULL),(51,'EUR','40','GP','40',0,0,_binary '\0',1300.35,'2018-10-08','TRUCK',9,3,NULL),(52,'EUR','40','GP','40',0,0,_binary '\0',1500.30,'2018-10-08','TRUCK',9,4,NULL),(53,'EUR','40','GP','40',0,0,_binary '',1700.30,'2018-10-08','RAIL/ROAD',9,2,10),(54,'EUR','40','GP','40',0,0,_binary '',1300.30,'2018-10-08','RAIL/ROAD',9,2,10),(55,'EUR','40','GP','40',0,0,_binary '',1400.30,'2018-10-08','RAIL/ROAD',9,4,10),(56,'EUR','40','GP','40',0,0,_binary '',1500.30,'2018-10-08','RAIL/ROAD',9,3,10),(57,'EUR','40','GP','40',0,0,_binary '',1600.30,'2018-10-08','RAIL/ROAD',9,1,10),(58,'EUR','40','GP','40',0,0,_binary '',1000.30,'2018-10-08','RAIL',9,2,10),(59,'EUR','40','GP','40',0,0,_binary '',700.30,'2018-10-08','BARGE',9,2,10),(60,'EUR','40','RF','20',0,0,_binary '\0',200.00,'2018-10-08','TRUCK',25,1,NULL),(61,'EUR','40','GP','20',0,0,_binary '\0',400.35,'2018-10-08','TRUCK',25,2,NULL),(62,'EUR','40','GP','20',0,0,_binary '\0',600.35,'2018-10-08','TRUCK',25,3,NULL),(63,'EUR','40','GP','20',0,0,_binary '\0',800.34,'2018-10-08','TRUCK',25,4,NULL),(64,'EUR','40','GP','20',0,0,_binary '',1000.32,'2018-10-08','BARGE',25,4,10),(65,'EUR','40','RF','40',0,0,_binary '\0',900.30,'2018-10-08','TRUCK',25,1,NULL),(66,'EUR','40','GP','40',0,0,_binary '\0',1100.30,'2018-10-08','TRUCK',25,2,NULL),(67,'EUR','40','GP','40',0,0,_binary '\0',1300.35,'2018-10-08','TRUCK',25,3,NULL),(68,'EUR','40','GP','40',0,0,_binary '\0',1500.30,'2018-10-08','TRUCK',25,4,NULL),(69,'EUR','40','GP','40',0,0,_binary '',1700.30,'2018-10-08','RAIL/ROAD',25,2,10),(70,'EUR','40','GP','40',0,0,_binary '',1300.30,'2018-10-08','RAIL/ROAD',25,2,10),(71,'EUR','40','GP','40',0,0,_binary '',1400.30,'2018-10-08','RAIL/ROAD',25,4,10),(72,'EUR','40','GP','40',0,0,_binary '',1500.30,'2018-10-08','RAIL/ROAD',25,3,10),(73,'EUR','40','GP','40',0,0,_binary '',1600.30,'2018-10-08','RAIL/ROAD',25,1,10),(74,'EUR','40','GP','40',0,0,_binary '',1000.30,'2018-10-08','RAIL',25,2,10),(75,'EUR','40','GP','40',0,0,_binary '',700.30,'2018-10-08','BARGE',25,2,10);
+/*!40000 ALTER TABLE `keyfigure` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-10-08 18:25:02

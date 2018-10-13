@@ -7,6 +7,8 @@ import static org.junit.Assert.assertThat;
 import java.util.Collection;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,7 @@ import com.eki.model.Country;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class CountryRepositoryTest {
 
-	
-	@Autowired
-	
-	private TestEntityManager entityManager;
-	
+		
 	@Autowired
 	private CountryRepository countryRepository;
 	
@@ -35,9 +33,10 @@ public class CountryRepositoryTest {
 	@Test
 	public void whenFindByName_thenReturnCountry() {
 	    // given
-	    Country absurdistan = new Country("Absurdistan","YX");
-	    entityManager.persist(absurdistan);
-	    entityManager.flush();
+	    Country absurdistan = new Country(100,"Serbia","SB");
+	  absurdistan =  countryRepository.save(absurdistan);
+	    
+
 	 
 	    // when
 	    Country found = countryRepository.findByCode(absurdistan.getCode());

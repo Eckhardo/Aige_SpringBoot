@@ -1,4 +1,20 @@
 -------------------------------------------------------------------------------
 Test set: com.eki.keyfigure.KeyFigureDynamicQueryDaoTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.599 s - in com.eki.keyfigure.KeyFigureDynamicQueryDaoTest
+Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.004 s <<< FAILURE! - in com.eki.keyfigure.KeyFigureDynamicQueryDaoTest
+givenAllPreferredPorts_whenSearchingForKeyFigures(com.eki.keyfigure.KeyFigureDynamicQueryDaoTest)  Time elapsed: 0.003 s  <<< ERROR!
+java.lang.NullPointerException
+	at com.eki.keyfigure.KeyFigureDynamicQueryDaoTest.givenAllPreferredPorts_whenSearchingForKeyFigures(KeyFigureDynamicQueryDaoTest.java:48)
+
+givenTransportModeAndEquipmentInfo_whenSearchingForKeyFigures(com.eki.keyfigure.KeyFigureDynamicQueryDaoTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at com.eki.keyfigure.KeyFigureDynamicQueryDaoTest.givenTransportModeAndEquipmentInfo_whenSearchingForKeyFigures(KeyFigureDynamicQueryDaoTest.java:101)
+
+givenOnePreferredPort_whenSearchingForKeyFigures(com.eki.keyfigure.KeyFigureDynamicQueryDaoTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at com.eki.keyfigure.KeyFigureDynamicQueryDaoTest.givenOnePreferredPort_whenSearchingForKeyFigures(KeyFigureDynamicQueryDaoTest.java:83)
+
+givenTransportModeAnd20Feet_whenSearchingForKeyFigures(com.eki.keyfigure.KeyFigureDynamicQueryDaoTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at com.eki.keyfigure.KeyFigureDynamicQueryDaoTest.givenTransportModeAnd20Feet_whenSearchingForKeyFigures(KeyFigureDynamicQueryDaoTest.java:120)
+

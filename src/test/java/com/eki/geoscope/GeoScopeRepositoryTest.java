@@ -53,7 +53,7 @@ public class GeoScopeRepositoryTest {
 
 		// then
 		assertThat(found.isEmpty(), is(false));
-		assertThat(found, hasSize(4));
+		assertThat(found.size(), is(4));
 		Predicate<GeoScope> p1 = g -> g.getLocationCode().equals("DEHAM");
 		assertTrue(found.stream().anyMatch(p1));
 		assertFalse(found.stream().allMatch(p1));
@@ -74,7 +74,7 @@ public class GeoScopeRepositoryTest {
 
 		// then
 		assertThat(found.isEmpty(), is(false));
-		assertThat(found, hasSize(10));
+		assertThat(found.size(), is(18));
 		Predicate<GeoScope> p1 = g -> g.getGeoScopeType().equals("L");
 		assertTrue(found.stream().allMatch(p1));
 	}
@@ -96,7 +96,7 @@ public class GeoScopeRepositoryTest {
 
 		// then
 		assertThat(found.isEmpty(), is(false));
-		assertThat(found, hasSize(9));
+		assertThat(found.size(), is(9));
 		Predicate<GeoScope> p1 = g -> g.getLocationCode().equals("DEHAM");
 		assertTrue(found.stream().anyMatch(p1));
 		assertFalse(found.stream().allMatch(p1));
@@ -177,7 +177,7 @@ public class GeoScopeRepositoryTest {
 
 		// then
 		assertThat(found.isEmpty(), is(false));
-		assertThat(found, hasSize(4));
+		assertThat(found.size(), is(4));
 		assertTrue(found.stream().anyMatch(p1));
 		assertFalse(found.stream().allMatch(p1));
 		assertTrue(found.stream().noneMatch(p2));

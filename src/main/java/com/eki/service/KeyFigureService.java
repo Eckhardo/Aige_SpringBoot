@@ -28,6 +28,8 @@ public class KeyFigureService {
 
 	public List<KeyFigure> searchKeyFigures(String inlandLocation, String geoScopeType, String countryCode,
 			String preferredPort, String tpMode, boolean is20, boolean is40, PageRequest pageRequest) {
+		System.out.println("inland:"+ inlandLocation);
+
 		List<String> preferredPorts = null;
 		if (!Optional.ofNullable(preferredPort).isPresent()) {
 			List<GeoScope> preferredGeoScopes = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
@@ -40,6 +42,9 @@ public class KeyFigureService {
 		List<KeyFigure> result = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
 				preferredPorts, is20, is40, tpMode);
 		logger.debug("# kfs: {}", result.size());
+		System.out.println("# kf:"+ result.size());
+
+		
 		return result;
 	}
 }

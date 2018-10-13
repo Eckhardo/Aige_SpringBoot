@@ -45,6 +45,13 @@ public class Country implements Serializable  {
 		this.code = code;
 	}
 
+	public Country(long id, @NotNull @Size(max = 50) String name, @NotNull @Size(max = 3) String code) {
+		this(name, code);
+		this.id = id;
+		
+	}
+
+
 	public long getId() {
 		return id;
 	}
