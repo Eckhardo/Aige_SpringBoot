@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,7 @@ import com.eki.model.KeyFigure;
 import com.eki.model.RESTDateParam;
 import com.eki.service.KeyFigureService;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowedHeaders="*")
+@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders="*")
 @RestController
 public class KeyFigureController {
 

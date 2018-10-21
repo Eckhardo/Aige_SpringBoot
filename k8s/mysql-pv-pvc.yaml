@@ -1,0 +1,26 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mysql-pv-volume
+spec:
+ capacity:
+    storage: 1Gi
+ accessModes:
+    - ReadWriteOnce
+    - ReadOnlyMany
+ persistentVolumeReclaimPolicy: Retain
+  
+ gcePersistentDisk: mysql
+ fsType: ext4
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage:1Gi

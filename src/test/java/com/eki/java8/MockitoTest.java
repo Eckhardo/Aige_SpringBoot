@@ -47,7 +47,7 @@ public class MockitoTest {
 	private GeoScopeRepository geoScopeRepository;
 	
 	@Captor
-	private ArgumentCaptor <Example<GeoScope>> captor;
+	private ArgumentCaptor <Example<GeoScope>> geoScopeCaptor;
 
 	@InjectMocks
 	private GeoScopeService geoScopeService;
@@ -134,9 +134,9 @@ public class MockitoTest {
 		//
 
 		// Assert Captured input of geoScopeRepository 
-		Mockito.verify(geoScopeRepository).findAll(captor.capture());
+		Mockito.verify(geoScopeRepository).findAll(geoScopeCaptor.capture());
 		
-		Example<GeoScope> capturedExample= captor.getValue();
+		Example<GeoScope> capturedExample= geoScopeCaptor.getValue();
 		assertThat(capturedExample.getProbe().getGeoScopeType(), equalTo("L"));
 		assertThat(capturedExample.getMatcher().getIgnoredPaths(), hasItems("id", "countryCode", "locationCode"));
 

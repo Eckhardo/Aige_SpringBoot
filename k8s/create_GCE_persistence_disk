@@ -1,0 +1,15 @@
+gcloud compute disks create --size=2GiB --zone=europe-west4-a mysql
+
+gcloud : WARNING: You have selected a disk size of under [200GB]. This may result in poor I/O performance. For more information, see: https://developers.google.com/compute/docs/disks#performance.
+In Zeile:1 Zeichen:1
++ gcloud compute disks create --size=2GiB --zone=europe-west4-a mysql
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING: You ha...ks#performance.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Created [https://www.googleapis.com/compute/v1/projects/aige-214017/zones/europe-west4-a/disks/mysql].
+NAME   ZONE            SIZE_GB  TYPE         STATUS
+mysql  europe-west4-a  2        pd-standard  READY
+New disks are unformatted. You must format and mount a disk before it
+can be used. You can find instructions on how to do this at:
+https://cloud.google.com/compute/docs/disks/add-persistent-disk#formatting

@@ -26,7 +26,6 @@ import org.springframework.util.StringUtils;
 
 import com.eki.model.GeoScope;
 import com.eki.model.KeyFigure;
-import com.eki.model.SearchCriteria;
 
 @Repository
 @Transactional
