@@ -15,5 +15,6 @@ com\eki\model\AuditModel.class
 com\eki\model\GeoScope.class
 com\eki\ResourceNotFoundException.class
 com\eki\model\RESTDateParam.class
+com\eki\hello\HelloController.class
 com\eki\keyfigure\KeyFigureRepository.class
 com\eki\model\Customer.class

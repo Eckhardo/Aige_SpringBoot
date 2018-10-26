@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: aigespring-mysql
   labels:
-    app: aigespring
+    app: aige-nre
 spec:
   ports:
     - port: 3306
   selector:
-    app: aigespring
+    app: aige-nre
     tier: mysql
-  clusterIP: None
+
