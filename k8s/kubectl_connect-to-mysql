@@ -1,5 +1,5 @@
 1.) kubectl exec -it aigespring-mysql-5c476bd797-vt6dq -- bash
 2.) mysql -uroot -p 
-magnillen
+
 
 1.) kubectl exec -it aigespring-mysql-5c476bd797-vt6dq -- mysql -uroot -p
