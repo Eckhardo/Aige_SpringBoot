@@ -43,6 +43,7 @@ public class KeyFigureDynamicQueryDaoTest {
 	String geoScopeType = "T";
 	String portLocation = "BEANR";
 	String tpMode = "TRUCK";
+	String eqGroup ="GP";
 
 	@Test
 	public void givenAllPreferredPorts_whenSearchingForKeyFigures() {
@@ -53,7 +54,7 @@ public class KeyFigureDynamicQueryDaoTest {
 		assertThat(preferredPorts.size(), is(4));
 
 		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
-				preferredPorts,true,true,null,PageRequest.of(0, 5));
+				preferredPorts,true,true,null,null,PageRequest.of(0, 5));
 		logPageDetails(page);
 
 		assertThat(page.getContent().size(), is(5));
@@ -65,7 +66,7 @@ public class KeyFigureDynamicQueryDaoTest {
 		while(page.hasNext()) {
 			Pageable nextPage=page.nextPageable();
 			 page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
-					preferredPorts,true,true,null,PageRequest.of(nextPage.getPageNumber(), 5));
+					preferredPorts,true,true,null,null,PageRequest.of(nextPage.getPageNumber(), 5));
 				logPageDetails(page);
 				assertTrue(page.getContent().stream().allMatch(p1));
 
@@ -83,7 +84,7 @@ public class KeyFigureDynamicQueryDaoTest {
 		// given
 	
 		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
-				Arrays.asList(portLocation),true,true,null, PageRequest.of(0, 5));
+				Arrays.asList(portLocation),true,true,null, null,PageRequest.of(0, 5));
 		logPageDetails(page);
 
 		assertThat(page.getContent().size(), is(4));
@@ -101,7 +102,7 @@ public class KeyFigureDynamicQueryDaoTest {
 		// given
 	
 		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
-				Arrays.asList(portLocation),true,true,tpMode,PageRequest.of(0, 5));
+				Arrays.asList(portLocation),true,true,tpMode,null,PageRequest.of(0, 5));
 		logPageDetails(page);
 
 		assertThat(page.getContent().size(), is(2));
@@ -120,7 +121,7 @@ public class KeyFigureDynamicQueryDaoTest {
 		// given
 	
 		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
-				Arrays.asList(portLocation),true,false,tpMode,PageRequest.of(0, 5));
+				Arrays.asList(portLocation),true,false,tpMode,null,PageRequest.of(0, 5));
 		logPageDetails(page);
 
 		assertThat(page.getContent().size(), is(1));
@@ -128,6 +129,21 @@ public class KeyFigureDynamicQueryDaoTest {
 		Predicate<KeyFigure> p2 = kf -> kf.getEquipmentSize().equals("20");
 		assertTrue(page.getContent().stream().allMatch(p1));
 		assertTrue(page.getContent().stream().allMatch(p2));
+		page.getContent().forEach(System.out::println);
+	
+
+	}
+	@Test
+	public void givenEquipmentGroup_whenSearchingForKeyFigures() {
+		// given
+	
+		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
+				Arrays.asList(portLocation),true,true,null,eqGroup,PageRequest.of(0, 5));
+		logPageDetails(page);
+
+		assertThat(page.getContent().size(), is(4));
+		Predicate<KeyFigure> p1 = kf -> kf.getEquipmentGroup().equals("GP");
+		assertTrue(page.getContent().stream().allMatch(p1));
 		page.getContent().forEach(System.out::println);
 	
 
