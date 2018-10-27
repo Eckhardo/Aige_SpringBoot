@@ -5,7 +5,7 @@
 gcloud config set compute/zone europe-west3-a
 gcloud config set compute/region europe-west3
 gcloud container clusters create aige-cluster --cluster-version=1.10.7-gke.6 --image-type=ubuntu --num-nodes=2
-gcloud container clusters get-credentials aige-cluster
+gcloud container clusters get-credentials xyz-cluster
 
 gcloud container clusters delete aige-cluster
 gcloud container clusters describe aigecluster
