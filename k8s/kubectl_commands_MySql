@@ -7,8 +7,8 @@ gcloud config set compute/region europe-west3
 gcloud container clusters create aige-cluster --cluster-version=1.10.7-gke.6 --image-type=ubuntu --num-nodes=2
 gcloud container clusters get-credentials xyz-cluster
 
-gcloud container clusters delete aige-cluster
-gcloud container clusters describe aigecluster
+gcloud container clusters delete xyz-cluster
+gcloud container clusters describe xyz-cluster
 
 
 #####################################################
@@ -23,4 +23,4 @@ gcloud compute disks create --size=1GiB --zone=europe-west-3a mysql
 ###### create secret for root passwd ################
 #####################################################
 
-kubectl create secret generic mysql-pass --from-literal=password=magnillen
+kubectl create secret generic mysql-pass --from-literal=password=xyz
