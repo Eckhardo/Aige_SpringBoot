@@ -26,7 +26,7 @@ public class KeyFigureService {
 	private GeoScopeService geoScopeService;
 
 	public List<KeyFigure> searchKeyFigures(String inlandLocation, String geoScopeType, String countryCode,
-			String preferredPort, String tpMode, boolean is20, boolean is40, PageRequest pageRequest) {
+			String preferredPort, String tpMode, boolean is20, boolean is40, String equipmentType, PageRequest pageRequest) {
 		System.out.println("inland:"+ inlandLocation);
 
 		List<String> preferredPorts = null;
@@ -39,7 +39,7 @@ public class KeyFigureService {
 			preferredPorts = Arrays.asList(preferredPort);
 		}
 		List<KeyFigure> result = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
-				preferredPorts, is20, is40, tpMode);
+				preferredPorts, is20, is40, tpMode,equipmentType);
 		logger.debug("# kfs: {}", result.size());
 		System.out.println("# kf:"+ result.size());
 

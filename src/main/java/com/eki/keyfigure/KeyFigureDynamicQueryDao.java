@@ -52,7 +52,7 @@ public class KeyFigureDynamicQueryDao {
 
 	}
 	public List<KeyFigure> searchKeyFigures(String inlandLocation, String countryCode, String geoScopeType,
-			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode) {
+			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode, String equipmentType) {
 	
 		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		final CriteriaQuery<KeyFigure> cq = builder.createQuery(KeyFigure.class);
@@ -81,6 +81,10 @@ public class KeyFigureDynamicQueryDao {
 		}
 		 if (Optional.ofNullable(tpMode).isPresent()) {
 			predicates.add(builder.and(builder.equal(root.get("transportMode"), tpMode)));
+
+		}
+		 if (Optional.ofNullable(equipmentType).isPresent()) {
+			predicates.add(builder.and(builder.equal(root.get("equipmentGroup"), equipmentType)));
 
 		}
 		Predicate preds = builder.and(predicates.toArray(new Predicate[predicates.size()]));

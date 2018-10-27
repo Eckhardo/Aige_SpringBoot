@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.keyfigure.KeyFigureDynamicQueryDao;
@@ -37,6 +38,7 @@ import com.eki.service.GeoScopeService;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
+@TestPropertySource(locations="classpath:application-test.properties")
 public class ComparatorTest {
 
 	@Autowired
@@ -60,12 +62,12 @@ public class ComparatorTest {
 		List<String> preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScopes);
 		assertThat(preferredPorts.size(), is(4));
 		keyFiguresWithDifferentRates = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode,
-				geoScopeType, preferredPorts, true, true, "TRUCK");
+				geoScopeType, preferredPorts, true, true, "TRUCK", null);
 
 		assertThat(keyFiguresWithDifferentRates.size(), is(8));
 
 		keyFiguresWithEqualRates = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
-				preferredPorts, true, true, null);
+				preferredPorts, true, true, null,null);
 
 		assertThat(keyFiguresWithEqualRates.size(), is(16));
 

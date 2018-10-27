@@ -57,7 +57,7 @@ public class KeyFigureController {
 		}
 
 		return  kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode,
-				portLocation, transportMode, eq20, eq40, PageRequest.of(page, 5));
+				portLocation, transportMode, eq20, eq40, equipmentType ,PageRequest.of(page, 5));
 	
 	}
 

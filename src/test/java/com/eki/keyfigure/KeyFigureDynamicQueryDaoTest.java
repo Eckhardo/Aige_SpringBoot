@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.model.GeoScope;
@@ -26,6 +27,7 @@ import com.eki.service.GeoScopeService;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
+@TestPropertySource(locations="classpath:application-test.properties")
 public class KeyFigureDynamicQueryDaoTest {
 
 	@Autowired

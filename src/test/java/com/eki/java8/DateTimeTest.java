@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.keyfigure.KeyFigureDynamicQueryDao;
@@ -44,6 +45,7 @@ import com.eki.service.GeoScopeService;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
+@TestPropertySource(locations="classpath:application-test.properties")
 public class DateTimeTest {
 
 	@Autowired
@@ -65,7 +67,7 @@ public class DateTimeTest {
 		List<String> preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScopes);
 		assertThat(preferredPorts.size(), is(4));
 		keyFigures = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
-				preferredPorts, true, true, "TRUCK");
+				preferredPorts, true, true, "TRUCK", null);
 
 		assertThat(keyFigures.size(), is(8));
 
