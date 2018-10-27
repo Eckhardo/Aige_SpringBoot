@@ -1,5 +1,6 @@
 # Aige_SpringBoot
-Spring RESTful Web Services for the Retrieval of Shipment-related Data: 
-This is a Spring Boot Application which uses Spring Data (Hibernate) and a MySQL database. Tne correpsponding Web Client
-is an Angular 5 Single Page Application which is located in an own Repository (see Aige_Angular).
+A Microservice for the Retrieval of Shipment-related Data using Spring Boot, Docker and Kubernetes. 
+The Spring Boot Application uses Spring Data (Hibernate) and is connected to dockerized MySQL database running
+with Kubernetes. The corresponding Web Client is a dockerized Angular 6 Single Page Application which is 
+located in an own Repository and which also runs as a Kubernetes Pod/Service (see Aige_Angular).
 
