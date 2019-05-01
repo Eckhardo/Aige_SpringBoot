@@ -43,7 +43,7 @@ public class KeyFigureController {
 			@RequestParam(value = "endDate") RESTDateParam endDate,
 			@RequestParam(value = "page", required=false, defaultValue="0") int page) {
             
-		System.out.println("com.eki.globe.KeyFigureResource.filterKeyFigures()");
+		logger.debug("com.eki.globe.KeyFigureResource.filterKeyFigures()");
 
 		if (includeAllPrefPorts) {
 			portLocation = null;
@@ -55,10 +55,46 @@ public class KeyFigureController {
 		if (transportMode.equals("ALL")) {
 			transportMode = null;
 		}
+		logger.debug("eq:" + equipmentType);
 
-		return  kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode,
-				portLocation, transportMode, eq20, eq40, equipmentType ,PageRequest.of(page, 5));
-	
+
+		String eqGroup = null;
+		if (equipmentType.equals("GENERAL")) {
+			eqGroup ="GP";
+		}
+		else if(equipmentType.equals("REEFER")) {
+			eqGroup ="RF";
+		}
+
+		List<KeyFigure> kfs=  kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode,
+				portLocation, transportMode, eq20, eq40, eqGroup ,PageRequest.of(page, 5));
+	     if(kfs.isEmpty())throw new KeyFigureNotFoundException();
+	     return kfs;
 	}
+	@GetMapping({ "/keyfigure/find" })
+	public List<KeyFigure> searchSimple(
+				@RequestParam(value = "inlandLocation") String inlandLocation,
+			@RequestParam(value = "inlandGeoScopeType") String inlandGeoScopeType,
+			@RequestParam(value = "countryCode") String countryCode,
+			@RequestParam(value = "portLocation") String portLocation,
+			@RequestParam(value = "includeAllPrefPorts", defaultValue = "true") boolean includeAllPrefPorts) {
+            
+		logger.debug("com.eki.globe.KeyFigureResource.filterKeyFigures()");
 
+		if (includeAllPrefPorts) {
+			portLocation = null;
+		}
+		String country = countryCode;
+		if (country.isEmpty()) {
+			country = inlandLocation.substring(0, 2);
+		}
+
+
+	
+
+		List<KeyFigure> kfs=  kfService.searchKeyFiguresSimple(inlandLocation, inlandGeoScopeType, countryCode,
+				portLocation);
+	     if(kfs.isEmpty())throw new KeyFigureNotFoundException();
+	     return kfs;
+	}
 }

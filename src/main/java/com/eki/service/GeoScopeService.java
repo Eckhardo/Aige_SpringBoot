@@ -105,6 +105,7 @@ public class GeoScopeService {
 		Example<GeoScope> example = Example.of(geoScopeExample, exampleMatcher);
 
 		List<GeoScope> geoScopeList = geoScopeRepository.findAll(example);
+		logger.debug("# preferredGeoScopes: {}", geoScopeList.size());
 
 		return filterByCountryCode(geoScopeList, country);
 

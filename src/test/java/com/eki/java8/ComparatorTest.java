@@ -1,9 +1,10 @@
 package com.eki.java8;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
-import java.util.Collections;
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 
@@ -38,7 +39,7 @@ import com.eki.service.GeoScopeService;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@TestPropertySource(locations="classpath:application-test.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class ComparatorTest {
 
 	@Autowired
@@ -67,7 +68,7 @@ public class ComparatorTest {
 		assertThat(keyFiguresWithDifferentRates.size(), is(8));
 
 		keyFiguresWithEqualRates = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
-				preferredPorts, true, true, null,null);
+				preferredPorts, true, true, null, null);
 
 		assertThat(keyFiguresWithEqualRates.size(), is(16));
 
@@ -79,11 +80,9 @@ public class ComparatorTest {
 		assertThat(keyFiguresWithDifferentRates.size(), is(8));
 
 		// test
-		Comparator<KeyFigure> rateComparator = (KeyFigure kf1, KeyFigure kf2) -> {
-			return (kf1.getRate().compareTo(kf2.getRate()));
-		};
+		Comparator<KeyFigure> rateComparator = (kf1, kf2) -> (kf1.getRate().compareTo(kf2.getRate()));
 
-		Collections.sort(keyFiguresWithDifferentRates, rateComparator);
+		keyFiguresWithDifferentRates.sort(rateComparator);
 
 		assertCorrectSorting(keyFiguresWithDifferentRates);
 	}
@@ -96,9 +95,10 @@ public class ComparatorTest {
 		// test
 		Comparator<KeyFigure> rateComparator = Comparator.comparing((KeyFigure kf) -> kf.getRate());
 
-		Collections.sort(keyFiguresWithDifferentRates, rateComparator);
+		keyFiguresWithDifferentRates.sort(rateComparator);
 
 		assertCorrectSorting(keyFiguresWithDifferentRates);
+
 	}
 
 	@Test
@@ -107,10 +107,9 @@ public class ComparatorTest {
 		assertThat(keyFiguresWithEqualRates.size(), is(16));
 
 		// test
-		Comparator<KeyFigure> rateComparator = Comparator.comparing(KeyFigure::getTransportMode,
-				Comparator.nullsFirst(String::compareTo));
+		Comparator<KeyFigure> rateComparator = Comparator.comparing((KeyFigure kf) -> kf.getTransportMode());
 
-		Collections.sort(keyFiguresWithEqualRates, rateComparator);
+		keyFiguresWithDifferentRates.sort(rateComparator);
 
 		assertCorrectSortingPreferred(keyFiguresWithEqualRates);
 	}
@@ -121,12 +120,13 @@ public class ComparatorTest {
 		assertThat(keyFiguresWithEqualRates.size(), is(16));
 
 		// test
-		Comparator<KeyFigure> rateComparator = Comparator.comparing(KeyFigure::getTransportMode,
-				Comparator.nullsLast(String::compareTo));
+		Comparator<KeyFigure> rateComparator = Comparator.comparing(KeyFigure::getRate,
+				Comparator.nullsLast(BigDecimal::compareTo));
 
-		Collections.sort(keyFiguresWithEqualRates, rateComparator);
+		keyFiguresWithEqualRates.sort(rateComparator);
 
-		assertCorrectSortingPreferred(keyFiguresWithEqualRates);
+		assertCorrectSorting(keyFiguresWithEqualRates);
+
 	}
 
 	private void assertCorrectSortingPreferred(List<KeyFigure> kfs) {
@@ -136,14 +136,19 @@ public class ComparatorTest {
 		}
 	}
 
+	/**
+	 * sorted values are either ascending or arre equal.
+	 * 
+	 * @param kfs A collection of key figures.
+	 */
 	private void assertCorrectSorting(List<KeyFigure> kfs) {
 		KeyFigure latestKf = null;
 		for (KeyFigure keyFigure : kfs) {
 			if (latestKf != null) {
-				assertThat(keyFigure.getRate().compareTo(latestKf.getRate()), is(1));
-			}
+				assertThat(keyFigure.getRate().compareTo(latestKf.getRate()), not(-1));
+			} 
 			latestKf = keyFigure;
-			System.out.println(keyFigure.getRate());
+
 		}
 	}
 

@@ -5,7 +5,7 @@ com\eki\java8\DateTimeTest.class
 com\eki\geoscope\GeoScopeControllerTest.class
 com\eki\java8\MockitoTest.class
 com\eki\service\GeoScopeServiceTest.class
+com\eki\ContextLoadsTest.class
 com\eki\java8\FunctionTest.class
 com\eki\java8\ComparatorTest.class
 com\eki\keyfigure\KeyFigureDynamicQueryDaoTest.class
-com\eki\MysqlBootApplicationTests.class

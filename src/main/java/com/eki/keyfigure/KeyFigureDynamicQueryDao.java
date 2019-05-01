@@ -36,7 +36,6 @@ public class KeyFigureDynamicQueryDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-
 	public List<KeyFigure> saveAll(Iterable<KeyFigure> keyFigures) {
 		Assert.notNull(keyFigures, "The given Iterable of entities not be null!");
 
@@ -51,55 +50,68 @@ public class KeyFigureDynamicQueryDao {
 		return result;
 
 	}
+
 	public List<KeyFigure> searchKeyFigures(String inlandLocation, String countryCode, String geoScopeType,
-			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode, String equipmentType) {
-	
+			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode, String eqGroup) {
+
 		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		final CriteriaQuery<KeyFigure> cq = builder.createQuery(KeyFigure.class);
-		final Root<KeyFigure> root = cq.from(KeyFigure.class);
+		final CriteriaQuery<KeyFigure> query = builder.createQuery(KeyFigure.class);
+		final Root<KeyFigure> root = query.from(KeyFigure.class);
 		Join<KeyFigure, GeoScope> from = root.join("from", JoinType.LEFT);
 		Join<KeyFigure, GeoScope> to = root.join("to", JoinType.LEFT);
-		cq.select(root);
-		List<Predicate> predicates = new ArrayList<>();
+
 		String country = countryCode;
 		if (StringUtils.isEmpty(countryCode)) {
 			country = inlandLocation.substring(0, 2);
 		}
-
+		// A Predicate is an Expression
+		List<Predicate> predicates = new ArrayList<>();
 		predicates.add(builder.and(builder.equal(from.get("countryCode"), country),
 				builder.equal(from.get("geoScopeType"), geoScopeType),
-				builder.equal(from.get("locationCode"), inlandLocation), 
-				to.get("locationCode").in(preferredPorts)));
-		if (eq20 && eq40) {
-			predicates.add(root.get("equipmentSize").in("20", "40"));
+				builder.equal(from.get("locationCode"), inlandLocation), to.get("locationCode").in(preferredPorts)));
+		Predicate p = buildEquSizeExpression(eq20, eq40, builder, root);
+		if (Optional.ofNullable(p).isPresent()) {
+			predicates.add(p);
 		}
-		else if (eq20) {
-			predicates.add(builder.and(builder.equal(root.get("equipmentSize"), "20")));
-		}
-		else if (eq40) {
-			predicates.add(builder.and(builder.equal(root.get("equipmentSize"), "40")));
-		}
-		 if (Optional.ofNullable(tpMode).isPresent()) {
+		if (Optional.ofNullable(tpMode).isPresent()) {
 			predicates.add(builder.and(builder.equal(root.get("transportMode"), tpMode)));
 
 		}
-		 if (Optional.ofNullable(equipmentType).isPresent()) {
-			predicates.add(builder.and(builder.equal(root.get("equipmentGroup"), equipmentType)));
+		if (Optional.ofNullable(eqGroup).isPresent()) {
+			predicates.add(builder.and(builder.equal(root.get("equipmentGroup"), eqGroup)));
 
 		}
 		Predicate preds = builder.and(predicates.toArray(new Predicate[predicates.size()]));
-		cq.where(preds);
+		query.select(root);
+		query.where(preds);
 
-		TypedQuery<KeyFigure> tq = entityManager.createQuery(cq);
+		TypedQuery<KeyFigure> tq = entityManager.createQuery(query);
+		System.out.println("# query:"+ query.toString());
 
 		return tq.getResultList();
 
 	}
 
+	private Predicate buildEquSizeExpression(boolean eq20, boolean eq40, final CriteriaBuilder builder,
+			final Root<KeyFigure> root) {
+		Predicate p = null;
+		if (eq20 && eq40) {
+			p = root.get("equipmentSize").in("20", "40");
+		} else if (eq20) {
+			p = builder.and(builder.equal(root.get("equipmentSize"), "20"));
+		} else if (eq40) {
+			p = builder.and(builder.equal(root.get("equipmentSize"), "40"));
+		}
+		return p;
+	}
+
 	public Page<KeyFigure> searchPageableKeyFigures(String inlandLocation, String countryCode, String geoScopeType,
-			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode, PageRequest pageRequest) {
-		preferredPorts.stream().forEach((myPojo) -> {logger.warn(myPojo.toString());});
-	
+			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode, String eqGroup,
+			PageRequest pageRequest) {
+		preferredPorts.stream().forEach((myPojo) -> {
+			logger.warn(myPojo.toString());
+		});
+
 		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		final CriteriaQuery<KeyFigure> cq = builder.createQuery(KeyFigure.class);
 		final Root<KeyFigure> root = cq.from(KeyFigure.class);
@@ -114,42 +126,73 @@ public class KeyFigureDynamicQueryDao {
 
 		predicates.add(builder.and(builder.equal(from.get("countryCode"), country),
 				builder.equal(from.get("geoScopeType"), geoScopeType),
-				builder.equal(from.get("locationCode"), inlandLocation), 
-				to.get("locationCode").in(preferredPorts)));
-		if (eq20 && eq40) {
-			predicates.add(root.get("equipmentSize").in("20", "40"));
+				builder.equal(from.get("locationCode"), inlandLocation), to.get("locationCode").in(preferredPorts)));
+		Predicate p = buildEquSizeExpression(eq20, eq40, builder, root);
+		if (Optional.ofNullable(p).isPresent()) {
+			predicates.add(p);
 		}
-		else if (eq20) {
-			predicates.add(builder.and(builder.equal(root.get("equipmentSize"), "20")));
-		}
-		else if (eq40) {
-			predicates.add(builder.and(builder.equal(root.get("equipmentSize"), "40")));
-		}
-		 if (Optional.ofNullable(tpMode).isPresent()) {
+		if (Optional.ofNullable(tpMode).isPresent()) {
 			predicates.add(builder.and(builder.equal(root.get("transportMode"), tpMode)));
 
 		}
+		if (Optional.ofNullable(eqGroup).isPresent()) {
+			predicates.add(builder.and(builder.equal(root.get("equipmentGroup"), eqGroup)));
+
+		}
+
 		Predicate preds = builder.and(predicates.toArray(new Predicate[predicates.size()]));
 		cq.where(preds);
 
 		TypedQuery<KeyFigure> query = entityManager.createQuery(cq);
-		  // Here you have to count the total size of the result
-	    int totalRows = query.getResultList().size();
-	    logger.warn("# of kfs: {}", totalRows);
-	    
+		// Here you have to count the total size of the result
+		int totalRows = query.getResultList().size();
+		logger.warn("# of kfs: {}", totalRows);
 
-	    // Paging you don't want to access all entities of a given query but rather only a page of them      
-	    // (e.g. page 1 by a page size of 10). Right now this is addressed with two integers that limit 
-	    // the query appropriately. (http://spring.io/blog/2011/02/10/getting-started-with-spring-data-jpa)
-	    query.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize());
-	    query.setMaxResults(pageRequest.getPageSize());
+		// Paging you don't want to access all entities of a given query but rather only
+		// a page of them
+		// (e.g. page 1 by a page size of 10). Right now this is addressed with two
+		// integers that limit
+		// the query appropriately.
+		// (http://spring.io/blog/2011/02/10/getting-started-with-spring-data-jpa)
+		query.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize());
+		query.setMaxResults(pageRequest.getPageSize());
 
-	    PageImpl<KeyFigure> page = new PageImpl<KeyFigure>(query.getResultList(), pageRequest, totalRows);
+		PageImpl<KeyFigure> page = new PageImpl<KeyFigure>(query.getResultList(), pageRequest, totalRows);
 
-	    logger.warn("# of kfs in page: {}", page.getContent().size());
-		 
-	    return page;
-		
+		logger.warn("# of kfs in page: {}", page.getContent().size());
 
+		return page;
+
+	}
+
+	public List<KeyFigure> searchKeyFiguresSimple(String inlandLocation, String countryCode, String inlandGeoScopeType,
+			List<String> preferredPorts) {
+		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		final CriteriaQuery<KeyFigure> cq = builder.createQuery(KeyFigure.class);
+		final Root<KeyFigure> root = cq.from(KeyFigure.class);
+		Join<KeyFigure, GeoScope> from = root.join("from", JoinType.LEFT);
+		Join<KeyFigure, GeoScope> to = root.join("to", JoinType.LEFT);
+		cq.select(root);
+		List<Predicate> predicates = new ArrayList<>();
+		String country = countryCode;
+		if (StringUtils.isEmpty(countryCode)) {
+			country = inlandLocation.substring(0, 2);
+		}
+
+		predicates.add(builder.and(builder.equal(from.get("countryCode"), country),
+				builder.equal(from.get("geoScopeType"), inlandGeoScopeType),
+				builder.equal(from.get("locationCode"), inlandLocation), to.get("locationCode").in(preferredPorts)));
+	
+
+		Predicate preds = builder.and(predicates.toArray(new Predicate[predicates.size()]));
+		cq.where(preds);
+
+		TypedQuery<KeyFigure> query = entityManager.createQuery(cq);
+	
+		List<KeyFigure>  kfs = query.getResultList();
+
+		logger.warn("# of kfs in page: {}", kfs.size());
+
+		return kfs;
 	}
 }

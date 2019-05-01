@@ -38,8 +38,8 @@ public class KeyFigureDynamicQueryDaoTest {
 
 
 	
-	String inlandLocation = "DUSSELDORF";
-	String countryCode = "DE";
+	static String DUSSELDORF = "DUSSELDORF";
+	static String DE = "DE";
 	String geoScopeType = "T";
 	String portLocation = "BEANR";
 	String tpMode = "TRUCK";
@@ -48,12 +48,12 @@ public class KeyFigureDynamicQueryDaoTest {
 	@Test
 	public void givenAllPreferredPorts_whenSearchingForKeyFigures() {
 		// given
-		List<GeoScope> preferredGeoScopes = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
+		List<GeoScope> preferredGeoScopes = geoScopeService.findPreferredGeoScopes(DUSSELDORF, DE);
 		assertThat(preferredGeoScopes.size(), is(4));
 		List<String> preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScopes);
 		assertThat(preferredPorts.size(), is(4));
 
-		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
+		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(DUSSELDORF, DE, geoScopeType,
 				preferredPorts,true,true,null,null,PageRequest.of(0, 5));
 		logPageDetails(page);
 
@@ -65,7 +65,7 @@ public class KeyFigureDynamicQueryDaoTest {
 		
 		while(page.hasNext()) {
 			Pageable nextPage=page.nextPageable();
-			 page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
+			 page = keyFigureDynamicQueryDao.searchPageableKeyFigures(DUSSELDORF, DE, geoScopeType,
 					preferredPorts,true,true,null,null,PageRequest.of(nextPage.getPageNumber(), 5));
 				logPageDetails(page);
 				assertTrue(page.getContent().stream().allMatch(p1));
@@ -83,7 +83,7 @@ public class KeyFigureDynamicQueryDaoTest {
 	public void givenOnePreferredPort_whenSearchingForKeyFigures() {
 		// given
 	
-		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
+		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(DUSSELDORF, DE, geoScopeType,
 				Arrays.asList(portLocation),true,true,null, null,PageRequest.of(0, 5));
 		logPageDetails(page);
 
@@ -101,7 +101,7 @@ public class KeyFigureDynamicQueryDaoTest {
 	public void givenTransportModeAndEquipmentInfo_whenSearchingForKeyFigures() {
 		// given
 	
-		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
+		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(DUSSELDORF, DE, geoScopeType,
 				Arrays.asList(portLocation),true,true,tpMode,null,PageRequest.of(0, 5));
 		logPageDetails(page);
 
@@ -120,7 +120,7 @@ public class KeyFigureDynamicQueryDaoTest {
 	public void givenTransportModeAnd20Feet_whenSearchingForKeyFigures() {
 		// given
 	
-		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
+		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(DUSSELDORF, DE, geoScopeType,
 				Arrays.asList(portLocation),true,false,tpMode,null,PageRequest.of(0, 5));
 		logPageDetails(page);
 
@@ -137,7 +137,7 @@ public class KeyFigureDynamicQueryDaoTest {
 	public void givenEquipmentGroup_whenSearchingForKeyFigures() {
 		// given
 	
-		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(inlandLocation, countryCode, geoScopeType,
+		Page<KeyFigure> page = keyFigureDynamicQueryDao.searchPageableKeyFigures(DUSSELDORF, DE, geoScopeType,
 				Arrays.asList(portLocation),true,true,null,eqGroup,PageRequest.of(0, 5));
 		logPageDetails(page);
 
