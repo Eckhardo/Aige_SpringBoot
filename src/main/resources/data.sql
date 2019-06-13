@@ -202,3 +202,91 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2018-10-08 18:25:02
+-- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
+--
+-- Host: localhost    Database: nre
+-- ------------------------------------------------------
+-- Server version	8.0.12
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ SET NAMES utf8 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `ocean_route_errors`
+--
+
+DROP TABLE IF EXISTS `ocean_route_errors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `ocean_route_errors` (
+  `ocean_route_id` bigint(20) NOT NULL,
+  `errors` varchar(255) DEFAULT NULL,
+  KEY `FK49eeaepvrb8x57y5jhlo32557` (`ocean_route_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ocean_route_errors`
+--
+
+LOCK TABLES `ocean_route_errors` WRITE;
+/*!40000 ALTER TABLE `ocean_route_errors` DISABLE KEYS */;
+INSERT INTO `ocean_route_errors` VALUES (83,'MIN_TRANSIT_RATIO'),(84,'NSHKF'),(84,'MIN_TRANSIT_RATIO'),(85,'REMAX'),(85,'MAX_TRANSIT_RATIO'),(85,'MIN_TRANSIT_RATIO'),(86,'MIN_TRANSIT_RATIO');
+/*!40000 ALTER TABLE `ocean_route_errors` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `oceanroute`
+--
+
+DROP TABLE IF EXISTS `oceanroute`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `oceanroute` (
+  `id` bigint(20) NOT NULL,
+  `pod` varchar(255) DEFAULT NULL,
+  `pod_fac` varchar(255) DEFAULT NULL,
+  `pol` varchar(255) DEFAULT NULL,
+  `pol_fac` varchar(255) DEFAULT NULL,
+  `prof` varchar(255) DEFAULT NULL,
+  `prof2` varchar(255) DEFAULT NULL,
+  `prof3` varchar(255) DEFAULT NULL,
+  `tt` int(11) DEFAULT NULL,
+  `ts1` varchar(255) DEFAULT NULL,
+  `ts1fac2` varchar(255) DEFAULT NULL,
+  `ts1fac3` varchar(255) DEFAULT NULL,
+  `ts2` varchar(255) DEFAULT NULL,
+  `ts3` varchar(255) DEFAULT NULL,
+  `ts_fac1` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `oceanroute`
+--
+
+LOCK TABLES `oceanroute` WRITE;
+/*!40000 ALTER TABLE `oceanroute` DISABLE KEYS */;
+INSERT INTO `oceanroute` VALUES (77,'HKHKG','564077','BRSSZ','115861','41020SIM1768','','',31,'','','','','',''),(78,'HKHKG','564077','BRSSZ','115861','41020SIM1763','','',32,'','','','','',''),(79,'HKHKG','564077','BRSSZ','565152 ','41060SIM1887','','',33,'','','','','',''),(80,'HKHKG','564077','BRSSZ','565151','61010SIM1827','41060SIM1886','',48,'BRSPB','','','','','565153'),(81,'HKHKG','564077','BRSSZ','1680535','11050SIM0004','71020SIM1810','',44,'ESALG','','','','','1621517'),(82,'HKHKG','564077','BRSSZ','565151','52015SIM1670','','75010SIM1963',37,'COCTG','568229','','COCTG','','1528540'),(83,'HKHKG','564077','BRSSZ','565151','61010SIM1827','41060SIM1886','',47,'BRRIO','','','','','568761'),(84,'HKHKG','564077','BRSSZ','565151','61030SIM1923','','41070SIM0006',49,'ARBUE','568677','','ARBUE','','568675'),(85,'HKHKG','564077','BRSSZ','565151','42610SIM1703','41020SIM1768','',86,'BRPNG','','','','','565149'),(86,'HKHKG','564077','BRSSZ','565151','41020SIM1763','71010SIM1884','',39,'SGSIN','','','','','568079');
+/*!40000 ALTER TABLE `oceanroute` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2019-06-13 19:27:47

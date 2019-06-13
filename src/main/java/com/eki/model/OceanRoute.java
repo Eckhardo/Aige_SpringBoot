@@ -29,6 +29,10 @@ import javax.persistence.Table;
 
 public class OceanRoute  implements Serializable  {
 
+	public OceanRoute() {
+		super();
+	}
+
 	private static final long serialVersionUID = -7182994144556273088L;
 
     /**

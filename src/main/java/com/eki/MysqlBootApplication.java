@@ -3,6 +3,7 @@ package com.eki;
 import java.io.InputStream;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,8 +11,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.eki.model.GeoScope;
+import com.eki.model.OceanRoute;
+import com.eki.oceanroute.OceanRouteRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import data.OceanRouteData;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -19,6 +24,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //Spring Boot will automatically perform a component scan in the package of the Spring Boot main class and below.
 // Seems, it does not work :-(
 public class MysqlBootApplication implements CommandLineRunner {
+	
+	@Autowired
+	OceanRouteRepository oceanRouteDao;
 
 	
 	public static void main(String[] args) {
@@ -50,8 +58,11 @@ public class MysqlBootApplication implements CommandLineRunner {
 		//Iterable<KeyFigure> kfs = this.getData();
 	//	kfDao.deleteAll();
 	//	kfDao.saveAll(kfs);
-
-		System.out.println("FINISHED");
+		
+		Iterable<OceanRoute> oceanRoutes =OceanRouteData.getOceanRoutes();
+//	oceanRouteDao.deleteAll();
+//		 oceanRouteDao.saveAll(oceanRoutes);
+	System.out.println("FINISHED");
 	}
 
 //    public  Iterable<KeyFigure> getData() {

@@ -179,7 +179,8 @@ public class KeyFigureDynamicQueryDao {
 			country = inlandLocation.substring(0, 2);
 		}
 
-		predicates.add(builder.and(builder.equal(from.get("countryCode"), country),
+		predicates.add(builder.and(
+				builder.equal(from.get("countryCode"), country),
 				builder.equal(from.get("geoScopeType"), inlandGeoScopeType),
 				builder.equal(from.get("locationCode"), inlandLocation), to.get("locationCode").in(preferredPorts)));
 	

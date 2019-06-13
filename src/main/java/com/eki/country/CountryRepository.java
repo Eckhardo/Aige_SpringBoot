@@ -14,6 +14,8 @@ public interface  CountryRepository extends CrudRepository<Country, Long> {
 
 	
 	    Country findByCode(String code);
+	    
+	    
 	    @Query("SELECT c FROM Country c WHERE c.code LIKE %:searchTerm%")
 	    public Collection<Country> findByCodeLike(@Param("searchTerm") String searchTerm);
 	 

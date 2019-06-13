@@ -17,7 +17,7 @@ import com.eki.model.OceanRoute;
  */
 public class OceanRouteData {
     
-    public static List<OceanRoute> getData() {
+    public static Iterable<OceanRoute> getOceanRoutes() {
          
         OceanRoute o1 = new OceanRoute(31, "BRSSZ", "115861", "HKHKG", "564077", "", "", "", "", "", "", "41020SIM1768", "", "", Collections.emptyList());
         OceanRoute o2 = new OceanRoute(32, "BRSSZ", "115861", "HKHKG", "564077", "", "", "", "", "", "", "41020SIM1763", "", "", Collections.emptyList());
