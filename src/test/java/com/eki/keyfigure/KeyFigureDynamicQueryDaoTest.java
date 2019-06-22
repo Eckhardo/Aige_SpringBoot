@@ -4,7 +4,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -75,9 +77,63 @@ public class KeyFigureDynamicQueryDaoTest {
 	}
 
 
-
-
+	@Test
+	public void given20And40Feet_whenSearchingForKeyFigures() {
+		// given
 	
+		List<KeyFigure> kfs = keyFigureDynamicQueryDao.searchKeyFigures(DUSSELDORF, DE, geoScopeType,
+				new ArrayList<>(), true, true, null, null);
+
+		assertThat(kfs.size(), is(16));
+	
+
+	}
+
+
+	@Test
+	public void given40Feet_whenSearchingForKeyFigures() {
+		// given
+	
+		List<KeyFigure> kfs = keyFigureDynamicQueryDao.searchKeyFigures(DUSSELDORF, DE, geoScopeType,
+				new ArrayList<>(), false, true, null, null);
+
+		assertThat(kfs.size(), is(11));
+	
+
+	}
+	@Test
+	public void given20Feet_whenSearchingForKeyFigures() {
+		// given
+	
+		List<KeyFigure> kfs = keyFigureDynamicQueryDao.searchKeyFigures(DUSSELDORF, DE, geoScopeType,
+				new ArrayList<>(), true, false, null, null);
+
+		assertThat(kfs.size(), is(5));
+
+	}
+	
+	@Test
+	public void givenTransportModeBarge_whenSearchingForKeyFigures() {
+		// given
+	
+		List<KeyFigure> kfs = keyFigureDynamicQueryDao.searchKeyFigures(DUSSELDORF, DE, geoScopeType,
+				new ArrayList<>(), true, true, "BARGE", null);
+
+		assertThat(kfs.size(), is(2));
+	
+
+	}
+	@Test
+	public void givenTransportModeEmptyString_whenSearchingForKeyFigures() {
+		// given
+	
+		List<KeyFigure> kfs = keyFigureDynamicQueryDao.searchKeyFigures(DUSSELDORF, DE, geoScopeType,
+				new ArrayList<>(), true, true, "", null);
+
+		assertThat(kfs.size(), is(16));
+	
+
+	}
 
 	@Test
 	public void givenOnePreferredPort_whenSearchingForKeyFigures() {

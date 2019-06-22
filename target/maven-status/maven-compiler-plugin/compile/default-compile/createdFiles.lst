@@ -3,6 +3,7 @@ com\eki\oceanroute\OceanRouteRepository.class
 data\PreferredPortData.class
 com\eki\model\PreferredPort.class
 com\eki\service\GeoScopeService.class
+com\eki\keyfigure\KeyFigureNotFoundException.class
 com\eki\geoscope\GeoScopeRepository.class
 com\eki\model\KeyFigure.class
 data\MissingRoutingsData.class
@@ -31,5 +32,6 @@ com\eki\service\KeyFigureService.class
 com\eki\model\SearchCriteria.class
 data\OceanRouteData.class
 com\eki\model\Country.class
+com\eki\keyfigure\KeyFigureExceptionController.class
 com\eki\hello\HelloController.class
 com\eki\model\Trade.class

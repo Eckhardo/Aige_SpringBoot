@@ -25,7 +25,7 @@ public class KeyFigureController {
 	private KeyFigureService kfService;
 
 	@GetMapping({ "/keyfigure/filter" })
-	public List<KeyFigure> searchGeoScope(
+	public List<KeyFigure> searchKeyFigures(
 			@RequestParam(value = "includeImTariff", defaultValue = "false") boolean includeIt,
 			@RequestParam(value = "includeImSchedule", defaultValue = "false") boolean includeIs,
 			@RequestParam(value = "isPreCarriage", defaultValue = "true") boolean isPreCarriage,
@@ -88,10 +88,6 @@ public class KeyFigureController {
 		if (country.isEmpty()) {
 			country = inlandLocation.substring(0, 2);
 		}
-
-
-	
-
 		List<KeyFigure> kfs=  kfService.searchKeyFiguresSimple(inlandLocation, inlandGeoScopeType, countryCode,
 				portLocation);
 	     if(kfs.isEmpty())throw new KeyFigureNotFoundException();

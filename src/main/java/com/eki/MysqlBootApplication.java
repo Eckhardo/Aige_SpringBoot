@@ -11,12 +11,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.eki.model.GeoScope;
-import com.eki.model.OceanRoute;
 import com.eki.oceanroute.OceanRouteRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import data.OceanRouteData;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -24,45 +21,41 @@ import data.OceanRouteData;
 //Spring Boot will automatically perform a component scan in the package of the Spring Boot main class and below.
 // Seems, it does not work :-(
 public class MysqlBootApplication implements CommandLineRunner {
-	
+
 	@Autowired
 	OceanRouteRepository oceanRouteDao;
 
-	
 	public static void main(String[] args) {
 		SpringApplication.run(MysqlBootApplication.class, args);
 	}
-
-	   
 
 	@Override
 	public void run(String... args) throws Exception {
 
 		ObjectMapper mapper = new ObjectMapper();
-		TypeReference<List<GeoScope>> typeRef =new TypeReference<List<GeoScope>>() {};
-		InputStream inputStream= TypeReference.class.getResourceAsStream("/json/geoScope.json");
+		TypeReference<List<GeoScope>> typeRef = new TypeReference<List<GeoScope>>() {
+		};
+		InputStream inputStream = TypeReference.class.getResourceAsStream("/json/geoScope.json");
 
-		
 		try {
 			List<GeoScope> geoScopes = mapper.readValue(inputStream, typeRef);
-		//	geoScopeDao.deleteAll();
-		//	geoScopeDao.flush();
+			// geoScopeDao.deleteAll();
+			// geoScopeDao.flush();
 
-		//	geoScopeService.save(geoScopes);
+			// geoScopeService.save(geoScopes);
 		} catch (Exception e) {
 			System.out.println("Unable to save geoscopes" + e.getMessage());
 			throw new RuntimeException(e.getCause());
 		}
-		
-			
-		//Iterable<KeyFigure> kfs = this.getData();
-	//	kfDao.deleteAll();
-	//	kfDao.saveAll(kfs);
-		
-		Iterable<OceanRoute> oceanRoutes =OceanRouteData.getOceanRoutes();
-//	oceanRouteDao.deleteAll();
-//		 oceanRouteDao.saveAll(oceanRoutes);
-	System.out.println("FINISHED");
+
+		// Iterable<KeyFigure> kfs = this.getData();
+		// kfDao.deleteAll();
+		// kfDao.saveAll(kfs);
+
+		// Iterable<OceanRoute> oceanRoutes = OceanRouteData.getOceanRoutes();
+		// oceanRouteDao.deleteAll();
+		// oceanRouteDao.saveAll(oceanRoutes);
+		System.out.println("FINISHED");
 	}
 
 //    public  Iterable<KeyFigure> getData() {

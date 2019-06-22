@@ -12,7 +12,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.eki.model.Country;
 import com.eki.model.KeyFigure;
 
 @RunWith(SpringRunner.class)

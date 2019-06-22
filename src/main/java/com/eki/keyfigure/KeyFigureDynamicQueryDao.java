@@ -54,11 +54,11 @@ public class KeyFigureDynamicQueryDao {
 	public List<KeyFigure> searchKeyFigures(String inlandLocation, String countryCode, String geoScopeType,
 			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode, String eqGroup) {
 
-		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		final CriteriaQuery<KeyFigure> query = builder.createQuery(KeyFigure.class);
-		final Root<KeyFigure> root = query.from(KeyFigure.class);
-		Join<KeyFigure, GeoScope> from = root.join("from", JoinType.LEFT);
-		Join<KeyFigure, GeoScope> to = root.join("to", JoinType.LEFT);
+		final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		final CriteriaQuery<KeyFigure> cq = cb.createQuery(KeyFigure.class);
+		final Root<KeyFigure> keyFigure = cq.from(KeyFigure.class);
+		Join<KeyFigure, GeoScope> from = keyFigure.join("from", JoinType.INNER);
+		Join<KeyFigure, GeoScope> to = keyFigure.join("to", JoinType.INNER);
 
 		String country = countryCode;
 		if (StringUtils.isEmpty(countryCode)) {
@@ -66,27 +66,32 @@ public class KeyFigureDynamicQueryDao {
 		}
 		// A Predicate is an Expression
 		List<Predicate> predicates = new ArrayList<>();
-		predicates.add(builder.and(builder.equal(from.get("countryCode"), country),
-				builder.equal(from.get("geoScopeType"), geoScopeType),
-				builder.equal(from.get("locationCode"), inlandLocation), to.get("locationCode").in(preferredPorts)));
-		Predicate p = buildEquSizeExpression(eq20, eq40, builder, root);
+		Predicate pCountry = cb.equal(from.get("countryCode"), country);
+		Predicate pType = cb.equal(from.get("geoScopeType"), geoScopeType);
+		Predicate pInland = cb.equal(from.get("locationCode"), inlandLocation);
+		Predicate pAnd = cb.and(pCountry, pType, pInland);
+		predicates.add(pAnd);
+		Predicate p = buildEquSizeExpression(eq20, eq40, cb, keyFigure);
 		if (Optional.ofNullable(p).isPresent()) {
 			predicates.add(p);
 		}
-		if (Optional.ofNullable(tpMode).isPresent()) {
-			predicates.add(builder.and(builder.equal(root.get("transportMode"), tpMode)));
+		if (!preferredPorts.isEmpty()) {
+			Predicate ports = to.get("locationCode").in(preferredPorts);
+			predicates.add(ports);
+		}
+		if (!StringUtils.isEmpty(tpMode)) {
+			predicates.add(cb.and(cb.equal(keyFigure.get("transportMode"), tpMode)));
 
 		}
-		if (Optional.ofNullable(eqGroup).isPresent()) {
-			predicates.add(builder.and(builder.equal(root.get("equipmentGroup"), eqGroup)));
+		if (!StringUtils.isEmpty(eqGroup)) {
+			predicates.add(cb.and(cb.equal(keyFigure.get("equipmentGroup"), eqGroup)));
 
 		}
-		Predicate preds = builder.and(predicates.toArray(new Predicate[predicates.size()]));
-		query.select(root);
-		query.where(preds);
+		Predicate finalPredicate = cb.and(predicates.toArray(new Predicate[predicates.size()]));
+		cq.select(keyFigure);
+		cq.where(finalPredicate);
 
-		TypedQuery<KeyFigure> tq = entityManager.createQuery(query);
-		System.out.println("# query:"+ query.toString());
+		TypedQuery<KeyFigure> tq = entityManager.createQuery(cq);
 
 		return tq.getResultList();
 
@@ -179,18 +184,16 @@ public class KeyFigureDynamicQueryDao {
 			country = inlandLocation.substring(0, 2);
 		}
 
-		predicates.add(builder.and(
-				builder.equal(from.get("countryCode"), country),
+		predicates.add(builder.and(builder.equal(from.get("countryCode"), country),
 				builder.equal(from.get("geoScopeType"), inlandGeoScopeType),
 				builder.equal(from.get("locationCode"), inlandLocation), to.get("locationCode").in(preferredPorts)));
-	
 
 		Predicate preds = builder.and(predicates.toArray(new Predicate[predicates.size()]));
 		cq.where(preds);
 
 		TypedQuery<KeyFigure> query = entityManager.createQuery(cq);
-	
-		List<KeyFigure>  kfs = query.getResultList();
+
+		List<KeyFigure> kfs = query.getResultList();
 
 		logger.warn("# of kfs in page: {}", kfs.size());
 
