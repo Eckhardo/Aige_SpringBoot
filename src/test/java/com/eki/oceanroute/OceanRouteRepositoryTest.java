@@ -71,7 +71,7 @@ public class OceanRouteRepositoryTest {
 	@Test
 	public void whenFindByExample_thenReturnOceanRoutes() {
 
-		OceanRoute or=new OceanRoute(pol,pod);
+		OceanRoute or=new OceanRoute(pol,pod, null, null);
 		ExampleMatcher matcher = ExampleMatcher.matchingAny()
 				.withIgnorePaths("transitTime", "polFac")
 				.withMatcher("pol", m -> m.startsWith())

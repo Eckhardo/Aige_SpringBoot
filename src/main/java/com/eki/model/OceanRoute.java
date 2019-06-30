@@ -6,17 +6,21 @@
 package com.eki.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.CollectionTable;
 
+import javax.persistence.JoinColumn;
 /**
  * OceanRoute [transitTime=P64D, routing=BRSSZ(565151) --> PACTB(1632414) -->
  * HKHKG(564077)] (52010SIM1917(842225),77030SIM0007(803165)) - ERRORS: []
@@ -35,9 +39,12 @@ public class OceanRoute implements Serializable {
 		super();
 	}
 
-	public OceanRoute(String pol, String pod) {
+	public OceanRoute(String pol, String pod, String ts1, List<String> errors) {
 		this.pol = pol;
 		this.pod = pod;
+		this.ts1=ts1;
+		this.errors=errors;
+	
 	}
 
 
@@ -87,8 +94,10 @@ public class OceanRoute implements Serializable {
 	private String prof2;
 	private String prof3;
 
-	@ElementCollection
-	private List<String> errors;
+	@ElementCollection(fetch=FetchType.EAGER)
+    @CollectionTable(name="ocean_route_errors", joinColumns=@JoinColumn(name="ocean_route_id"))
+    @Column(name="errors")
+    private List<String> errors;
 
 	public int getTransitTime() {
 		return transitTime;
@@ -96,6 +105,18 @@ public class OceanRoute implements Serializable {
 
 	public String getPol() {
 		return pol;
+	}
+
+	public void setPol(String pol) {
+		this.pol = pol;
+	}
+
+	public void setPod(String pod) {
+		this.pod = pod;
+	}
+
+	public void setTs1(String ts1) {
+		this.ts1 = ts1;
 	}
 
 	public String getPolFac() {

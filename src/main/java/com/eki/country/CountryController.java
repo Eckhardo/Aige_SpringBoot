@@ -22,7 +22,7 @@ public class CountryController {
 
 	@Autowired
 	private GeoScopeService geoScopeService;
-
+//curl -X GET "localhost:8086/nre/country/find?country_code=DE"
 	@GetMapping("/country/filter")
 	public Collection<Country> searchByCode(@RequestParam(value = "country_code", required = true) String countryCode) {
 		return geoScopeService.searchCountries(countryCode);

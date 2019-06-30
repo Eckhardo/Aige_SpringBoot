@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,6 +57,7 @@ public class OceanRouteDynamicQueryDaoTest {
 	}
 	@Test
 	public void givenPolAndPodAndTS1AndTs2_whenSearchingForOceanRoutes() {
+		
 
 		List<OceanRoute> oceanRoutes = oceanRouteDynamicQueryDao.findRoutes(POL, POD, TS1, TS1, null, false);
 		assertThat(oceanRoutes.size(), is(1));
@@ -70,5 +72,15 @@ public class OceanRouteDynamicQueryDaoTest {
 		List<OceanRoute> oceanRoutes = oceanRouteDynamicQueryDao.findRoutes(POL, POD, null, null, null, true);
 		assertThat(oceanRoutes.size(), is(2));
 		assertTrue(oceanRoutes.stream().allMatch(e -> e.isShunting()));
+	}
+	
+	@Test
+	public void givenIncludeInvalidRoutes_whenSearchingForOceanRoutes() {
+
+		List<OceanRoute> oceanRoutes = oceanRouteDynamicQueryDao.findRoutes(POL, POD, null, null, null, false);
+		
+	oceanRoutes=	oceanRoutes.stream().filter(or -> ! or.getErrors().isEmpty()).collect(Collectors.toList());
+		assertThat(oceanRoutes.size(), is(4));
+		assertTrue(oceanRoutes.stream().noneMatch(e -> e.getErrors().isEmpty()));
 	}
 }
