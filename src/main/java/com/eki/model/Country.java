@@ -11,10 +11,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.hateoas.ResourceSupport;
+
 
 @Entity
 @Table(name = "country")
-public class Country implements Serializable  {
+public class Country   {
 
 	
 	private static final long serialVersionUID = -3009157732242241606L;

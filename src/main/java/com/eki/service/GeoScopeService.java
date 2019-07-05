@@ -146,4 +146,8 @@ public class GeoScopeService {
 		return countryRepository.findByCode(countryCode);
 	}
 
+	public Iterable<Country> findAll() {
+		return countryRepository.findAll();
+	}
+
 }

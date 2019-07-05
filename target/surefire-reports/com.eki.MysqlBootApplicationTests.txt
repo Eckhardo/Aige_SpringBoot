@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.eki.MysqlBootApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.119 s - in com.eki.MysqlBootApplicationTests

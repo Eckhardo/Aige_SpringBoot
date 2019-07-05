@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.eki</groupId>
-	<artifactId>NRE</artifactId>
+	<artifactId>ShipmentDataSearchApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -64,6 +64,11 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.6.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+			<version>2.1.4.RELEASE</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -72,8 +77,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-				<finalName>nre-spring-boot</finalName>
-				
+					<finalName>nre-spring-boot</finalName>
+
 				</configuration>
 			</plugin>
 		</plugins>

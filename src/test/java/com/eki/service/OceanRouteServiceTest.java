@@ -38,7 +38,7 @@ public class OceanRouteServiceTest {
 	@InjectMocks
 	OceanRouteService oceanService;
 
-	private List<OceanRoute> oceanRoutes = new ArrayList<>();
+	private List<OceanRoute> routes = new ArrayList<>();
 
 	@Before
 	public void init() {
@@ -48,25 +48,25 @@ public class OceanRouteServiceTest {
 		OceanRoute simple= new OceanRoute("BRSSZ", "HKHKG", null, new ArrayList<>());
 		OceanRoute withTsPort= new OceanRoute("BRSSZ", "HKHKG", "ARBUE", new ArrayList<>());
 		OceanRoute withErrors= new OceanRoute("BRSSZ", "HKHKG", "ARBUE", Arrays.asList("NO_SHUNTING"));
-		oceanRoutes.add(simple);
-		oceanRoutes.add(withTsPort);
-		oceanRoutes.add(withErrors);
+		routes.add(simple);
+		routes.add(withTsPort);
+		routes.add(withErrors);
 	}
 	
 	@Test
 	public void whenSearchValidRoutes_thenReturnValidList() {
-		when(oceanDynamicQueryDao.findRoutes("BRSSZ", "HKHKG", null, null, null, false)).thenReturn(oceanRoutes);
+		when(oceanDynamicQueryDao.findRoutes("BRSSZ", "HKHKG", null, null, null, false)).thenReturn(routes);
 		List<OceanRoute> result = oceanService.searchOceanRoutes(false, false, "1", "BRSSZ", "HKHKG", null, null, null, null, null, null);
 		assertThat(result.size(), is(2));
-		assertThat(result.get(0), is(oceanRoutes.get(0)));
+		assertThat(result.get(0), is(routes.get(0)));
 		verify(oceanDynamicQueryDao, times(1)).findRoutes("BRSSZ", "HKHKG", null, null, null, false);
 	}
 	@Test
 	public void whenSearchAllRoutes_thenReturnWholeList() {
-		when(oceanDynamicQueryDao.findRoutes("BRSSZ", "HKHKG", null, null, null, false)).thenReturn(oceanRoutes);
+		when(oceanDynamicQueryDao.findRoutes("BRSSZ", "HKHKG", null, null, null, false)).thenReturn(routes);
 		List<OceanRoute> result = oceanService.searchOceanRoutes(true, false, "1", "BRSSZ", "HKHKG", null, null, null, null, null, null);
 		assertThat(result.size(), is(3));
-		assertThat(result.get(0), is(oceanRoutes.get(0)));
+		assertThat(result.get(0), is(routes.get(0)));
 		verify(oceanDynamicQueryDao, times(1)).findRoutes("BRSSZ", "HKHKG", null, null, null, false);
 	}
 }
