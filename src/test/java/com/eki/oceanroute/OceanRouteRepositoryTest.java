@@ -23,8 +23,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static com.eki.TestData.*;
 import com.eki.model.OceanRoute;
+
+import static com.eki.TestData.*;
 
 /**
  * @author eckhard kirschning
