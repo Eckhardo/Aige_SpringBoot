@@ -50,7 +50,6 @@ public class OceanRouteRepositoryTest {
 
 		// then
 		assertThat(found.isEmpty(), is(false));
-
 		Predicate<OceanRoute> isBrssz = or -> or.getPol().equals(LOCATION_BRSSZ);
 		assertTrue(found.stream().allMatch(isBrssz));
 	}
@@ -70,7 +69,7 @@ public class OceanRouteRepositoryTest {
 	
 	@Test
 	public void whenFindByExample_thenReturnOceanRoutes() {
-
+        
 		OceanRoute or=new OceanRoute(LOCATION_BRSSZ,LOCATION_HKHKG, null, null);
 		ExampleMatcher matcher = ExampleMatcher.matchingAny()
 				.withIgnorePaths("transitTime", "polFac")
