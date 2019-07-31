@@ -5,5 +5,5 @@ public class TestData {
 	public static final String LOCATION_HKHKG = "HKHKG";
 	public static final String LOCATION_COCTG = "COCTG";
 	public static final String LOCATION_ARBUE = "ARBUE";
-
+        public static final String LOCATION_DEHAM = "DEHAM";
 }
