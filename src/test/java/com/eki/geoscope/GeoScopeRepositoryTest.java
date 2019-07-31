@@ -183,4 +183,22 @@ public class GeoScopeRepositoryTest {
 		assertTrue(found.stream().noneMatch(p2));
 	}
 
+	
+
+	@Test
+	public void whenFindPorts_thenReturnGeoScopeCollection() {
+		// given
+		Predicate<GeoScope> p1 = g -> g.getLocationCode().equals("DEHAM");
+		Predicate<GeoScope> p2 = g -> g.getLocationCode().equals("BRSSZ");
+
+		// when
+		Collection<GeoScope> found = repository.findPortsLike("DE");
+
+		// then
+		assertThat(found.isEmpty(), is(false));
+		assertThat(found.size(), is(2));
+		assertTrue(found.stream().anyMatch(p1));
+		assertFalse(found.stream().allMatch(p1));
+		assertTrue(found.stream().noneMatch(p2));
+	}
 }
