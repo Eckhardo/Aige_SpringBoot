@@ -23,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static com.eki.TestData.*;
 import com.eki.model.OceanRoute;
 
 /**
@@ -38,20 +39,18 @@ public class OceanRouteRepositoryTest {
 
 	@Autowired
 	private OceanRouteRepository oceanRouteRepository;
-	String pol = "BRSSZ";
-	String pod= "HKHKG";
 
 
 	@Test
 	public void whenFindByPol_thenReturnOceanRouteList() {
 
 		// when
-		List<OceanRoute> found = oceanRouteRepository.findByPol(pol);
+		List<OceanRoute> found = oceanRouteRepository.findByPol(LOCATION_BRSSZ);
 
 		// then
 		assertThat(found.isEmpty(), is(false));
 
-		Predicate<OceanRoute> isBrssz = or -> or.getPol().equals(pol);
+		Predicate<OceanRoute> isBrssz = or -> or.getPol().equals(LOCATION_BRSSZ);
 		assertTrue(found.stream().allMatch(isBrssz));
 	}
 	
@@ -60,7 +59,7 @@ public class OceanRouteRepositoryTest {
 	public void whenFindByPol_thenPrintOceanRoutePols() {
 
 		// when
-		List<OceanRoute> found = oceanRouteRepository.findByPol(pol);
+		List<OceanRoute> found = oceanRouteRepository.findByPol(LOCATION_BRSSZ);
 		assertThat(found.isEmpty(), is(false));
 
 
@@ -71,7 +70,7 @@ public class OceanRouteRepositoryTest {
 	@Test
 	public void whenFindByExample_thenReturnOceanRoutes() {
 
-		OceanRoute or=new OceanRoute(pol,pod, null, null);
+		OceanRoute or=new OceanRoute(LOCATION_BRSSZ,LOCATION_HKHKG, null, null);
 		ExampleMatcher matcher = ExampleMatcher.matchingAny()
 				.withIgnorePaths("transitTime", "polFac")
 				.withMatcher("pol", m -> m.startsWith())
