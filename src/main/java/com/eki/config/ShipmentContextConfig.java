@@ -7,7 +7,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 
-
 @Configuration
 @ImportResource("classpath*:shipmentContextConfig.xml")
 @PropertySource({ "classpath:env-${envTarget:dev}.properties" })
