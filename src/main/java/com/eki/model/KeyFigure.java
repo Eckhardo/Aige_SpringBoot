@@ -72,7 +72,7 @@ public class KeyFigure implements Serializable {
 	@Column(name = "def_eq_size")
 	private  String defaultEquipmentSize;
 
-	@Basic
+	@Column(name = "start_date")
 	@Temporal(TemporalType.DATE)
 	private  Date startDate;
 //---------------------- contrcutor ------

@@ -146,7 +146,7 @@ public class DateTimeTest {
 
 		// returns an instance of java.sql.Date which extends java.util.Date (does not
 		// carry time information)
-		java.util.Date sqlDate = kf.getStartDate();
+		java.util.Date sqlDate = new Date();
 		java.util.Date utilDate = new Date(sqlDate.getTime());
 		System.out.println("java.sql.Date value:" + sqlDate);
 		System.out.println("java.util.Date value:" + utilDate);

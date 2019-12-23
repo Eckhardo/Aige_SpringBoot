@@ -81,14 +81,19 @@ public class OceanRoute implements Serializable {
 
 	@Column(name = "pol")
 	private String pol;
+	@Column(name = "pol_fac")
 	private String polFac;
 	private String pod;
+	@Column(name = "pod_fac")
 	private String podFac;
 	private String ts1;
+	@Column(name = "ts_fac1")
 	private String tsFac1;
 	private String ts2;
+	@Column(name = "ts1fac2")
 	private String ts1Fac2;
 	private String ts3;
+	@Column(name = "ts1fac3")
 	private String ts1Fac3;
 	private String prof;
 	private String prof2;

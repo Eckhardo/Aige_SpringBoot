@@ -3,15 +3,15 @@ package com.eki;
 import java.io.InputStream;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import com.eki.config.ShipmentContextConfig;
+import com.eki.config.ShipmentPersistenceJpaConfig;
 import com.eki.model.GeoScope;
-import com.eki.oceanroute.OceanRouteRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -22,11 +22,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // Seems, it does not work :-(
 public class MysqlBootApplication implements CommandLineRunner {
 
-	@Autowired
-	OceanRouteRepository oceanRouteDao;
+    private final static Class[] CONFIGS = { // @formatter:off
+            ShipmentContextConfig.class,
+            ShipmentPersistenceJpaConfig.class,
+            MysqlBootApplication.class
+    }; // @formatter:on
 
 	public static void main(String[] args) {
-		SpringApplication.run(MysqlBootApplication.class, args);
+	    final SpringApplication springApplication = new SpringApplication(CONFIGS);
+        springApplication.addInitializers(new MyApplicationContextInitializer());
+        springApplication.run(args);
 	}
 
 	@Override
