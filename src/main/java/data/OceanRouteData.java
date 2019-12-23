@@ -8,7 +8,7 @@ package data;
 import java.util.Arrays;
 import java.util.Collections;
 
-import com.eki.model.OceanRoute;
+import com.eki.shipment.model.OceanRoute;
 
 /**
  *

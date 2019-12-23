@@ -17,7 +17,14 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
+/**
+ * @Configuration tags the class as a source of bean definitions for the application context.
+ * 
+ * @ComponentScan tells Spring to look for other components, configurations, 
+ * and services in the hello package, allowing it to find the controllers
+ * @author eckha
+ *
+ */
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({ "com.eki" })

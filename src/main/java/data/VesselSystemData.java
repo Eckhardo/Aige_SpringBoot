@@ -8,7 +8,7 @@ package data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.eki.model.VesselSystemModel;
+import com.eki.shipment.model.VesselSystemModel;
 
 /**
  *

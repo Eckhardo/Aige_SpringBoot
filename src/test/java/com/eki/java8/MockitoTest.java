@@ -21,9 +21,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.springframework.data.domain.Example;
 
-import com.eki.geoscope.GeoScopeRepository;
-import com.eki.model.GeoScope;
-import com.eki.service.GeoScopeService;
+import com.eki.shipment.dao.GeoScopeRepository;
+import com.eki.shipment.model.GeoScope;
+import com.eki.shipment.service.GeoScopeService;
 
 /**
  * Mockito tests for<ul>

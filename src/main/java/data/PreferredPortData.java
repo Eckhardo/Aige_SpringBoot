@@ -8,7 +8,7 @@ package data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.eki.model.PreferredPort;
+import com.eki.shipment.model.PreferredPort;
 
 /**
  *
@@ -19,7 +19,7 @@ public class PreferredPortData {
     public static List<PreferredPort> getData() {
         List<PreferredPort> geoscopes = new ArrayList<>();
 
-        geoscopes.add(new com.eki.model.PreferredPort(1, "L", "DEBRV"));
+        geoscopes.add(new com.eki.shipment.model.PreferredPort(1, "L", "DEBRV"));
         geoscopes.add(new PreferredPort(2, "L", "DEHAM"));
         geoscopes.add(new PreferredPort(3, "L", "NLRTM"));
         geoscopes.add(new PreferredPort(4, "L", "BEANR"));

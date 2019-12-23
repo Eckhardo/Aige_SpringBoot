@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import com.eki.model.MissingRoutingsModel;
+import com.eki.shipment.model.MissingRoutingsModel;
 
 /**
  *

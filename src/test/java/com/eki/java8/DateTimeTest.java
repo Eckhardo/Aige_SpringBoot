@@ -23,10 +23,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.eki.keyfigure.KeyFigureDynamicQueryDao;
-import com.eki.model.GeoScope;
-import com.eki.model.KeyFigure;
-import com.eki.service.GeoScopeService;
+import com.eki.shipment.dao.AbstractRepositoryTest;
+import com.eki.shipment.dao.KeyFigureDynamicQueryDao;
+import com.eki.shipment.model.GeoScope;
+import com.eki.shipment.model.KeyFigure;
+import com.eki.shipment.service.GeoScopeService;
 
 /**
  * Some tests for the new Java 6 {@link java.time} API including:
@@ -42,11 +43,8 @@ import com.eki.service.GeoScopeService;
  * @author ekirschning
  *
  */
-@RunWith(SpringRunner.class)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@TestPropertySource(locations="classpath:application-test.properties")
-public class DateTimeTest {
+
+public class DateTimeTest extends AbstractRepositoryTest {
 
 	@Autowired
 	private KeyFigureDynamicQueryDao keyFigureDynamicQueryDao;
