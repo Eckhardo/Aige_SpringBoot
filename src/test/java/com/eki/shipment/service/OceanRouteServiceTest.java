@@ -26,12 +26,8 @@ import com.eki.shipment.service.OceanRouteService;
 @RunWith(MockitoJUnitRunner.class)
 public class OceanRouteServiceTest {
 
-	
-
 	@Mock
 	private OceanRouteRepository oceanRepository;
-
-	
 
 	@Mock
 	private OceanRouteDynamicQueryDao oceanDynamicQueryDao;
