@@ -3,6 +3,8 @@
  */
 package com.eki.shipment.dao;
 
+import static com.eki.TestData.LOCATION_BRSSZ;
+import static com.eki.TestData.LOCATION_HKHKG;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -11,22 +13,14 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.shipment.model.OceanRoute;
-import com.eki.shipment.run.MysqlBootApplication;
-
-import static com.eki.TestData.*;
 
 /**
  * @author eckhard kirschning
@@ -34,6 +28,7 @@ import static com.eki.TestData.*;
  */
 
 public class OceanRouteRepositoryTest extends AbstractRepositoryTest{
+	Logger logger = LoggerFactory.getLogger(OceanRouteRepositoryTest.class);
 
 	@Autowired
 	private OceanRouteRepository oceanRouteRepository;
@@ -60,7 +55,7 @@ public class OceanRouteRepositoryTest extends AbstractRepositoryTest{
 		assertThat(found.isEmpty(), is(false));
 
 
-			Consumer<String> action = System.out::println;
+			Consumer<String> action = logger::trace;
 		found.stream().map(oc -> oc.getPol()).forEach(action);
 	}
 	
@@ -79,7 +74,7 @@ public class OceanRouteRepositoryTest extends AbstractRepositoryTest{
 		assertThat(found.isEmpty(), is(false));
 
 
-			Consumer<String> action = System.out::println;
+			Consumer<String> action =  logger::trace;
 		found.stream().map(oc -> oc.getPod()).forEach(action);
 	}
 }

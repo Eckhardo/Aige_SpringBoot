@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.shipment.model.GeoScope;
@@ -30,6 +32,7 @@ import com.google.common.collect.ImmutableMap;
  */
 @RunWith(SpringRunner.class)
 public class FunctionTest {
+	Logger logger = LoggerFactory.getLogger(FunctionTest.class);
 
 	static List<GeoScope> geoScopeList = new ArrayList<>(
 			Arrays.asList(new GeoScope(1, "DE", "DEHAM", "L", "Hamburg", true),
@@ -68,7 +71,7 @@ public class FunctionTest {
 
 	@Test
 	public void testStreamFilterMapReduce() {
-		String s = geoScopeList.stream().filter(b -> b.isPort()).map(b -> b.getLocationName()).reduce("",
+		String s = geoScopeList.stream().filter(b -> b.isPort()).map(b -> b.getName()).reduce("",
 				(s1, s2) -> (s1.isEmpty()) ? s2 : s1 + ", " + s2);
 		assertTrue(s.equals("Hamburg, Bremerhaven, Antwerp, Rotterdam"));
 
@@ -84,7 +87,7 @@ public class FunctionTest {
 		  .flatMap(Collection::stream)
 		    .collect(Collectors.toList());
 		
-		phones.forEach(System.out:: println);
+		phones.forEach(logger::debug);
 	}
 	@Test
 	public void streamWithMap() {
@@ -119,9 +122,9 @@ public class FunctionTest {
 	@Test
 	public void testIterateMap() {
    // map.forEach
-		MY_MAP.forEach((k, v) -> System.out.println((k + ":" + v)));
+		MY_MAP.forEach((k, v) -> logger.debug((k + ":" + v)));
 		//map.entrySet.stream.forEch
-		MY_MAP.entrySet().stream().forEach(e -> System.out.println(e.getKey() + ":" + e.getValue()));
+		MY_MAP.entrySet().stream().forEach(e -> logger.debug(e.getKey() + ":" + e.getValue()));
 	
 	}
 }

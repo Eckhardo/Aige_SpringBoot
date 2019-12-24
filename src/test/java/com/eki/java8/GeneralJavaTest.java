@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -18,26 +20,28 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 public class GeneralJavaTest {
+	Logger logger = LoggerFactory.getLogger(GeneralJavaTest.class);
+
 	/**
-	 * System.out.println() with DOUBLE QUOTES : String
+	 * logger.debug() with DOUBLE QUOTES : String
 	 */
 	@Test
 	public void predefinedMethodInJava() {
 		// String Literal
-		System.out.println("Hello Java");
+		logger.debug("Hello Java");
 
-		System.out.println("Hello \"Java\" ");
-		System.out.println("Hello \n Java");
-		System.out.println("Hello\nJava");
-		System.out.println("Hello\tJava");
+		logger.debug("Hello \"Java\" ");
+		logger.debug("Hello \n Java");
+		logger.debug("Hello\nJava");
+		logger.debug("Hello\tJava");
 		// expression
-		System.out.println(2 * 5);
+		logger.debug("(2 * 5)");
 
 		// String Literal
-		System.out.println("2 * 5");
+		logger.debug("2 * 5");
 
 		// Concatenation of String Literals and an Expression
-		System.out.println("Current Year" + ": " + 2 * 1009);
+		logger.debug("Current Year" + ": " + 2 * 1009);
 	}
 
 	/**
@@ -95,7 +99,7 @@ public class GeneralJavaTest {
 		int two = 2;
 		int six = 6;
 
-		System.out.println(System.getenv());
+		logger.debug(System.getenv().toString());
 		assertTrue(five * two + six == 16);
 		assertTrue(five * (two + six) == 40);
 	}

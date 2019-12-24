@@ -1,7 +1,5 @@
 package com.eki.shipment.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,18 +8,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.eki.common.interfaces.INameableDto;
+import com.eki.common.interfaces.INameableEntity;
+
 @Entity
 @Table(name = "geoscope")
-public class GeoScope implements Serializable {
+public class GeoScope implements INameableEntity, INameableDto {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6449537980828936420L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
 	@NotNull
 	@Column(name = "country_code")
@@ -35,9 +36,8 @@ public class GeoScope implements Serializable {
 	private String geoScopeType;
 
 	@Column(name = "location_name")
-	private String locationName;
+	private String name;
 
-	
 	@Column(name = "is_port")
 	private boolean port;
 
@@ -46,22 +46,38 @@ public class GeoScope implements Serializable {
 	}
 
 	public GeoScope(long id, @NotNull String countryCode, String locationCode, @NotNull String geoScopeType,
-			String locationName, boolean port) {
+			String name, boolean port) {
 		super();
 		this.id = id;
 		this.countryCode = countryCode;
 		this.locationCode = locationCode;
 		this.geoScopeType = geoScopeType;
-		this.locationName = locationName;
+		this.name = name;
 		this.port = port;
 	}
 
-	public long getId() {
+	@Override
+	public Long getId() {
+
 		return id;
 	}
 
-	public void setId(long id) {
+	@Override
+	public void setId(Long id) {
+
 		this.id = id;
+	}
+
+	@Override
+	public String getName() {
+
+		return this.name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+
 	}
 
 	public String getCountryCode() {
@@ -96,15 +112,6 @@ public class GeoScope implements Serializable {
 		this.port = isPort;
 	}
 
-
-	public String getLocationName() {
-		return locationName;
-	}
-
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
-	}
-
 	@Override
 	public String toString() {
 		return String.format("GoScope[id=%d, locationCode='%s', type='%s']", id, locationCode, geoScopeType);
@@ -117,7 +124,7 @@ public class GeoScope implements Serializable {
 		result = prime * result + ((countryCode == null) ? 0 : countryCode.hashCode());
 		result = prime * result + ((geoScopeType == null) ? 0 : geoScopeType.hashCode());
 		result = prime * result + ((locationCode == null) ? 0 : locationCode.hashCode());
-		result = prime * result + ((locationName == null) ? 0 : locationName.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + (port ? 1231 : 1237);
 		return result;
 	}
@@ -146,10 +153,10 @@ public class GeoScope implements Serializable {
 				return false;
 		} else if (!locationCode.equals(other.locationCode))
 			return false;
-		if (locationName == null) {
-			if (other.locationName != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!locationName.equals(other.locationName))
+		} else if (!name.equals(other.name))
 			return false;
 		if (port != other.port)
 			return false;

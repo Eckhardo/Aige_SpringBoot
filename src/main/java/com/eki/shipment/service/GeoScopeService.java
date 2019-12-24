@@ -128,8 +128,8 @@ public class GeoScopeService {
 		return geoScopeRepository.findById(id);
 	}
 
-	public Optional<GeoScope> findByLocationName(String locationName) {
-		return geoScopeRepository.findByLocationName(locationName);
+	public GeoScope findByLocationName(String locationName) {
+		return geoScopeRepository.findByName(locationName);
 	}
 	// ---------------------- country----------------------------
 

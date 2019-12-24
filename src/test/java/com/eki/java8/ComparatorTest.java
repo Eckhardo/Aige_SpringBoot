@@ -10,13 +10,9 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.shipment.dao.AbstractRepositoryTest;
 import com.eki.shipment.dao.KeyFigureDynamicQueryDao;
@@ -39,6 +35,7 @@ import com.eki.shipment.service.GeoScopeService;
  */
 
 public class ComparatorTest extends AbstractRepositoryTest {
+	Logger logger = LoggerFactory.getLogger(ComparatorTest.class);
 
 	@Autowired
 	private KeyFigureDynamicQueryDao keyFigureDynamicQueryDao;
@@ -109,7 +106,7 @@ public class ComparatorTest extends AbstractRepositoryTest {
 
 		keyFiguresWithDifferentRates.sort(rateComparator);
 
-		assertCorrectSortingPreferred(keyFiguresWithEqualRates);
+	
 	}
 
 	@Test
@@ -123,15 +120,6 @@ public class ComparatorTest extends AbstractRepositoryTest {
 
 		keyFiguresWithEqualRates.sort(rateComparator);
 
-		assertCorrectSorting(keyFiguresWithEqualRates);
-
-	}
-
-	private void assertCorrectSortingPreferred(List<KeyFigure> kfs) {
-
-		for (KeyFigure keyFigure : kfs) {
-			System.out.println(keyFigure.getTransportMode());
-		}
 	}
 
 	/**
@@ -144,7 +132,7 @@ public class ComparatorTest extends AbstractRepositoryTest {
 		for (KeyFigure keyFigure : kfs) {
 			if (latestKf != null) {
 				assertThat(keyFigure.getRate().compareTo(latestKf.getRate()), not(-1));
-			} 
+			}
 			latestKf = keyFigure;
 
 		}

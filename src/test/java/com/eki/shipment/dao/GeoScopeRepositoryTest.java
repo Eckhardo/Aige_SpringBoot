@@ -8,28 +8,24 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.shipment.model.GeoScope;
-import com.eki.shipment.run.MysqlBootApplication;
 
 public class GeoScopeRepositoryTest extends AbstractRepositoryTest{
+	Logger logger = LoggerFactory.getLogger(GeoScopeRepositoryTest.class);
+
 	@Autowired
 	private GeoScopeRepository repository;
 
@@ -87,8 +83,8 @@ public class GeoScopeRepositoryTest extends AbstractRepositoryTest{
 		Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "locationCode"));
 		// when
 		List<GeoScope> found = repository.findAll(example, sort);
-		found.forEach(System.out::println);
-
+		List<String> names =found.stream().map(g-> g.getName()).collect(Collectors.toList());
+		names.forEach(logger::trace);
 		// then
 		assertThat(found.isEmpty(), is(false));
 		assertThat(found.size(), is(9));
@@ -119,16 +115,17 @@ public class GeoScopeRepositoryTest extends AbstractRepositoryTest{
 			int size = page.getSize();
 			long totalElements = page.getTotalElements();
 			int totalPages = page.getTotalPages();
-			System.out.printf(
+			logger.trace(
 					"page info - page number %s, numberOfElements: %s, size: %s, "
 							+ "totalElements: %s, totalPages: %s%n",
 					number, numberOfElements, size, totalElements, totalPages);
 			List<GeoScope> geoscopeList = page.getContent();
-			geoscopeList.forEach(System.out::println);
+			List<String> names =geoscopeList.stream().map(g-> g.getName()).collect(Collectors.toList());
+			names.forEach(logger::trace);
 			if (!page.hasNext()) {
 				break;
 			} else {
-				System.out.println("has next");
+				logger.trace("has next");
 			}
 			pageable = page.nextPageable();
 		}
@@ -153,11 +150,12 @@ public class GeoScopeRepositoryTest extends AbstractRepositoryTest{
 		int size = page.getSize();
 		long totalElements = page.getTotalElements();
 		int totalPages = page.getTotalPages();
-		System.out.printf(
+		logger.trace(
 				"page info - page number %s, numberOfElements: %s, size: %s, " + "totalElements: %s, totalPages: %s%n",
 				number, numberOfElements, size, totalElements, totalPages);
 		List<GeoScope> geoscopeList = page.getContent();
-		geoscopeList.forEach(System.out::println);
+		List<String> names =geoscopeList.stream().map(g-> g.getName()).collect(Collectors.toList());
+		names.forEach(logger::trace);
 
 	}
 

@@ -6,27 +6,24 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.service.GeoScopeService;
 
 public class KeyFigureDynamicQueryDaoTest extends AbstractRepositoryTest {
+	Logger logger = LoggerFactory.getLogger(KeyFigureDynamicQueryDaoTest.class);
 
 	@Autowired
 	private KeyFigureDynamicQueryDao keyFigureDynamicQueryDao;
@@ -144,8 +141,14 @@ public class KeyFigureDynamicQueryDaoTest extends AbstractRepositoryTest {
 		Predicate<KeyFigure> p2 = kf -> kf.getTo().getLocationCode().equals("BEANR");
 		assertTrue(page.getContent().stream().allMatch(p1));
 		assertTrue(page.getContent().stream().allMatch(p2));
-		page.getContent().forEach(System.out::println);
+		logResult(page);
 
+	}
+
+
+	private void logResult(Page<KeyFigure> page) {
+		List<String> names =page.stream().map(kf-> kf.getFrom().getName()).collect(Collectors.toList());
+		names.forEach(logger::trace);
 	}
 	
 
@@ -163,7 +166,7 @@ public class KeyFigureDynamicQueryDaoTest extends AbstractRepositoryTest {
 	
 		assertTrue(page.getContent().stream().allMatch(p1));
 		assertTrue(page.getContent().stream().allMatch(p2));
-		page.getContent().forEach(System.out::println);
+		logResult(page);
 
 	}
 
@@ -181,7 +184,8 @@ public class KeyFigureDynamicQueryDaoTest extends AbstractRepositoryTest {
 		Predicate<KeyFigure> p2 = kf -> kf.getEquipmentSize().equals("20");
 		assertTrue(page.getContent().stream().allMatch(p1));
 		assertTrue(page.getContent().stream().allMatch(p2));
-		page.getContent().forEach(System.out::println);
+		logResult(page);
+
 	
 
 	}
@@ -196,7 +200,8 @@ public class KeyFigureDynamicQueryDaoTest extends AbstractRepositoryTest {
 		assertThat(page.getContent().size(), is(4));
 		Predicate<KeyFigure> p1 = kf -> kf.getEquipmentGroup().equals("GP");
 		assertTrue(page.getContent().stream().allMatch(p1));
-		page.getContent().forEach(System.out::println);
+		logResult(page);
+
 	
 
 	}
@@ -206,7 +211,7 @@ public class KeyFigureDynamicQueryDaoTest extends AbstractRepositoryTest {
 		int size = page.getSize();
 		long totalElements = page.getTotalElements();
 		int totalPages = page.getTotalPages();
-		System.out.printf(
+		logger.debug(
 				"page info - page number %s, numberOfElements: %s, size: %s, " + "totalElements: %s, totalPages: %s%n",
 				number, numberOfElements, size, totalElements, totalPages);
 	}

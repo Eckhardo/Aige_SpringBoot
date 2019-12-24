@@ -15,13 +15,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.eki.shipment.dao.OceanRouteDynamicQueryDao;
 import com.eki.shipment.dao.OceanRouteRepository;
 import com.eki.shipment.model.OceanRoute;
-import com.eki.shipment.service.OceanRouteService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OceanRouteServiceTest {

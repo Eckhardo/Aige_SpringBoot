@@ -15,13 +15,9 @@ import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.shipment.dao.AbstractRepositoryTest;
 import com.eki.shipment.dao.KeyFigureDynamicQueryDao;
@@ -45,6 +41,7 @@ import com.eki.shipment.service.GeoScopeService;
  */
 
 public class DateTimeTest extends AbstractRepositoryTest {
+	Logger logger = LoggerFactory.getLogger(DateTimeTest.class);
 
 	@Autowired
 	private KeyFigureDynamicQueryDao keyFigureDynamicQueryDao;
@@ -76,15 +73,15 @@ public class DateTimeTest extends AbstractRepositoryTest {
 
 		// Starting with an java.time.Instant value of now
 		Instant timeStamp = Instant.now();
-		System.out.println("Machine Time Now:" + timeStamp);
+		logger.debug("Machine Time Now:" + timeStamp);
 
 		// timeStamp in zone - "Europe/Paris"
 		ZonedDateTime parisTZ = timeStamp.atZone(ZoneId.of("Europe/Paris"));
-		System.out.println("In Paris, France, Time Zone:" + parisTZ);
+		logger.debug("In Paris, France, Time Zone:" + parisTZ);
 
 		// timeStamp in zone - "Europe/Moscow"
 		ZonedDateTime moscowTZ = timeStamp.atZone(ZoneId.of("Europe/Moscow"));
-		System.out.println("In Moscow, Russia, Time Zone:" + moscowTZ);
+		logger.debug("In Moscow, Russia, Time Zone:" + moscowTZ);
 
 	}
 
@@ -93,14 +90,14 @@ public class DateTimeTest extends AbstractRepositoryTest {
 
 		// Starting with an java.time.LocalDateTime value of now
 		LocalDateTime localDateTime = LocalDateTime.now();
-		System.out.println("LocalDateTime is:" + localDateTime);
+		logger.debug("LocalDateTime is:" + localDateTime);
 		// timeStamp in zone - "Europe/Paris"
 		ZonedDateTime parisTZ = localDateTime.atZone(ZoneId.of("Europe/Paris"));
-		System.out.println("In Paris, France, Time Zone:" + parisTZ);
+		logger.debug("In Paris, France, Time Zone:" + parisTZ);
 
 		// timeStamp in zone - "Europe/Moscow"
 		ZonedDateTime moscowTZ = localDateTime.atZone(ZoneId.of("Europe/Moscow"));
-		System.out.println("In Moscow, Russia, Time Zone:" + moscowTZ);
+		logger.debug("In Moscow, Russia, Time Zone:" + moscowTZ);
 
 	}
 
@@ -110,9 +107,9 @@ public class DateTimeTest extends AbstractRepositoryTest {
 		Date java7Date = new java.util.Date();
 		LocalDateTime localDateTime = java7Date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 		LocalDate localDate = localDateTime.toLocalDate();
-		System.out.println("java.util.Date value:" + java7Date);
-		System.out.println("Equivalent java.time.LocalDate value:" + localDate);
-		System.out.println("Equivalent java.time.LocalDateTime value:" + localDateTime);
+		logger.debug("java.util.Date value:" + java7Date);
+		logger.debug("Equivalent java.time.LocalDate value:" + localDate);
+		logger.debug("Equivalent java.time.LocalDateTime value:" + localDateTime);
 
 	}
 
@@ -123,17 +120,17 @@ public class DateTimeTest extends AbstractRepositoryTest {
 
 		// Day of week and month in French
 		String dateInFrench = localDate.format(DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy", Locale.FRENCH));
-		System.out.println("'2016-01-01' in French: " + dateInFrench);
+		logger.debug("'2016-01-01' in French: " + dateInFrench);
 
 		// Day of week and month in German
 		Locale germanLocale = new Locale("de", "DE");
 		String dateInGerman = localDate.format(DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy", germanLocale));
-		System.out.println("'2016-01-01' in German: " + dateInGerman);
+		logger.debug("'2016-01-01' in German: " + dateInGerman);
 
 		// German is the default locale for my system on which JVM is running
 		String dateInDefault = localDate
 				.format(DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy", Locale.getDefault()));
-		System.out.println("'01-Jan-2016' in German(default): " + dateInDefault);
+		logger.debug("'01-Jan-2016' in German(default): " + dateInDefault);
 
 	}
 
@@ -146,14 +143,14 @@ public class DateTimeTest extends AbstractRepositoryTest {
 		// carry time information)
 		java.util.Date sqlDate = new Date();
 		java.util.Date utilDate = new Date(sqlDate.getTime());
-		System.out.println("java.sql.Date value:" + sqlDate);
-		System.out.println("java.util.Date value:" + utilDate);
+		logger.debug("java.sql.Date value:" + sqlDate);
+		logger.debug("java.util.Date value:" + utilDate);
 
 		LocalDateTime localDateTime = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 		LocalDate localDate = localDateTime.toLocalDate();
-		System.out.println("java.util.Date value:" + utilDate);
-		System.out.println("Equivalent java.time.LocalDate value:" + localDate);
-		System.out.println("Equivalent java.time.LocalDateTime value:" + localDateTime);
+		logger.debug("java.util.Date value:" + utilDate);
+		logger.debug("Equivalent java.time.LocalDate value:" + localDate);
+		logger.debug("Equivalent java.time.LocalDateTime value:" + localDateTime);
 
 	}
 

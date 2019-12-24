@@ -19,6 +19,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
 
 import com.eki.shipment.dao.GeoScopeRepository;
@@ -41,6 +43,7 @@ import com.eki.shipment.service.GeoScopeService;
  *
  */
 public class MockitoTest {
+	Logger logger = LoggerFactory.getLogger(MockitoTest.class);
 
 
 	@Mock
@@ -84,39 +87,38 @@ public class MockitoTest {
 	public void shouldReturnOptionalGeoScope_whenArgumentMatcher() throws Exception {
 		// Arrange
 		when(geoScopeRepository
-				.findByLocationName(ArgumentMatchers.argThat((locationName) -> locationName.equals("Montevideo"))))
-						.thenReturn(Optional.of(exampleGeoScope2));
+				.findByName(ArgumentMatchers.argThat((locationName) -> locationName.equals("Montevideo"))))
+						.thenReturn(exampleGeoScope2);
 
 		// Act
-		Optional<GeoScope> retrievedGeoScope = geoScopeService.findByLocationName("Montevideo");
-		Optional<GeoScope> emptyGeoScope = geoScopeService.findByLocationName("Hamburg");
+		GeoScope retrievedGeoScope = geoScopeService.findByLocationName("Montevideo");
+		GeoScope emptyGeoScope = geoScopeService.findByLocationName("Hamburg");
 
 		// Assert
-		assertThat(retrievedGeoScope, equalTo(Optional.of(exampleGeoScope2)));
-		assertThat(emptyGeoScope, equalTo(Optional.empty()));
+		assertThat(retrievedGeoScope, equalTo(exampleGeoScope2));
+		assertThat(emptyGeoScope, equalTo(null));
 	
 	}
 
 	@Test
 	public void shouldReturnOptionalGeoScope_whenThenAnswer() throws Exception {
 		// Arrange
-		when(geoScopeRepository.findByLocationName(Mockito.anyString())).thenAnswer((InvocationOnMock invocation) -> {
+		when(geoScopeRepository.findByName(Mockito.anyString())).thenAnswer((InvocationOnMock invocation) -> {
 			String locationName = (String) invocation.getArguments()[0];
-			System.out.println(locationName);
 			if (locationName.equals("Montevideo")) {
-				return Optional.of(exampleGeoScope2);
+				return exampleGeoScope2;
 			} else {
-				return Optional.empty();
+				return null;
 			}
 
 		});
 		// Act
-		Optional<GeoScope> retrievedGeoScope = geoScopeService.findByLocationName("Montevideo");
-		Optional<GeoScope> emptyGeoScope = geoScopeService.findByLocationName("Hamburg");
+		GeoScope retrievedGeoScope = geoScopeService.findByLocationName("Montevideo");
+		GeoScope emptyGeoScope = geoScopeService.findByLocationName("Hamburg");
 
 		// Assert
-		assertThat(retrievedGeoScope, equalTo(Optional.of(exampleGeoScope2)));
-		assertThat(emptyGeoScope, equalTo(Optional.empty()));
+		assertThat(retrievedGeoScope, equalTo(exampleGeoScope2));
+		assertThat(emptyGeoScope, equalTo(null));
 
 	}
 	

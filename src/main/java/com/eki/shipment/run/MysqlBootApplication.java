@@ -3,6 +3,8 @@ package com.eki.shipment.run;
 import java.io.InputStream;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,8 +32,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // Needed, otherwise some tests fail!
 @ComponentScan("com.eki")
 public class MysqlBootApplication implements CommandLineRunner {
+	Logger logger = LoggerFactory.getLogger(MysqlBootApplication.class);
 
-    private final static Class[] CONFIGS = { // @formatter:off
+    @SuppressWarnings("rawtypes")
+	private final static Class[] CONFIGS = { // @formatter:off
             ShipmentContextConfig.class,
             ShipmentPersistenceJpaConfig.class,
             MysqlBootApplication.class
@@ -58,7 +62,7 @@ public class MysqlBootApplication implements CommandLineRunner {
 
 			// geoScopeService.save(geoScopes);
 		} catch (Exception e) {
-			System.out.println("Unable to save geoscopes" + e.getMessage());
+			logger.error("Unable to save geoscopes" + e.getMessage());
 			throw new RuntimeException(e.getCause());
 		}
 
@@ -69,7 +73,7 @@ public class MysqlBootApplication implements CommandLineRunner {
 		// Iterable<OceanRoute> oceanRoutes = OceanRouteData.getOceanRoutes();
 		// oceanRouteDao.deleteAll();
 		// oceanRouteDao.saveAll(oceanRoutes);
-		System.out.println("FINISHED");
+		logger.info("Boot process FINISHED");
 	}
 
 //    public  Iterable<KeyFigure> getData() {

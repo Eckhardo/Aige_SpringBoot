@@ -1,7 +1,5 @@
 package com.eki.shipment.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,20 +8,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import org.springframework.hateoas.ResourceSupport;
+import com.eki.common.interfaces.INameableDto;
+import com.eki.common.interfaces.INameableEntity;
 
 
 @Entity
 @Table(name = "country")
-public class Country   {
+@XmlRootElement
+public class Country implements INameableEntity, INameableDto   {
 
 	
 	private static final long serialVersionUID = -3009157732242241606L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
 	
 	@NotNull
@@ -53,11 +54,26 @@ public class Country   {
 		
 	}
 
-
-	public long getId() {
-		return id;
+	@Override
+	public Long getId() {
+	return id;
 	}
 
+
+	@Override
+	public void setId(Long id) {
+	this.id=id;
+		
+	}
+
+
+	@Override
+	public void setName(String name) {
+	 this.name=name;
+		
+	}
+
+@Override
 	public String getName() {
 		return name;
 	}
@@ -70,4 +86,7 @@ public class Country   {
 	                "Country[id=%d, name='%s', code='%s']",
 	                id, name, code);
 	    }
+
+
+
 }

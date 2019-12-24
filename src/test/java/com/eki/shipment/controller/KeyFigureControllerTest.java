@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
-import com.eki.shipment.dao.AbstractRepositoryTest;
 import com.eki.shipment.model.KeyFigure;
 
 public class KeyFigureControllerTest extends AbstractWebControllerTest{

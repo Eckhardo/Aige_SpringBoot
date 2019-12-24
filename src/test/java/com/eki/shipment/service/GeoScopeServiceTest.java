@@ -21,7 +21,6 @@ import org.springframework.data.domain.Example;
 
 import com.eki.shipment.dao.GeoScopeRepository;
 import com.eki.shipment.model.GeoScope;
-import com.eki.shipment.service.GeoScopeService;
 
 public class GeoScopeServiceTest {
 

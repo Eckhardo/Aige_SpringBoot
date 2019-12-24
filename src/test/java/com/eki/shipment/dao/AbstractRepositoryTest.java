@@ -19,7 +19,7 @@ import com.eki.shipment.run.MysqlBootApplication;
 public class AbstractRepositoryTest {
 	@Test
 	public void testDummy() {
-		
+		// in use to prevent "No test method in class......
 	}
 
 }

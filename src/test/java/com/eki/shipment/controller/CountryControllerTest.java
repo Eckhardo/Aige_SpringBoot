@@ -13,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
-import com.eki.shipment.dao.AbstractRepositoryTest;
 import com.eki.shipment.model.Country;
 
 public class CountryControllerTest extends AbstractWebControllerTest {
