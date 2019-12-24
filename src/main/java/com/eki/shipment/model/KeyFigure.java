@@ -1,10 +1,8 @@
 package com.eki.shipment.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,10 +15,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.eki.common.interfaces.IDto;
+import com.eki.common.interfaces.IEntity;
+
 @Entity
 @Table(name = "keyfigure")
 
-public class KeyFigure implements Serializable {
+public class KeyFigure implements IEntity, IDto {
 
 
 	/**
@@ -30,7 +31,7 @@ public class KeyFigure implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "from_id")
@@ -101,9 +102,15 @@ public class KeyFigure implements Serializable {
 	}
 
 
+	@Override
+	public Long getId() {
+	return id;
+	}
 
-	public long getId() {
-		return id;
+	@Override
+	public void setId(Long id) {
+	this.id=id;
+		
 	}
 
 	public GeoScope getFrom() {
@@ -253,6 +260,8 @@ public class KeyFigure implements Serializable {
 			return false;
 		return true;
 	}
+
+	
 
 
 	

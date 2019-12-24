@@ -5,11 +5,10 @@
  */
 package com.eki.shipment.model;
 
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -17,10 +16,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.CollectionTable;
-
 import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
+import com.eki.common.interfaces.IDto;
+import com.eki.common.interfaces.IEntity;
+
 /**
  * OceanRoute [transitTime=P64D, routing=BRSSZ(565151) --> PACTB(1632414) -->
  * HKHKG(564077)] (52010SIM1917(842225),77030SIM0007(803165)) - ERRORS: []
@@ -31,7 +32,7 @@ import javax.persistence.JoinColumn;
 @Entity
 @Table(name = "oceanroute")
 
-public class OceanRoute implements Serializable {
+public class OceanRoute implements IEntity, IDto {
 
 	private static final long serialVersionUID = -7182994144556273088L;
 
@@ -42,11 +43,10 @@ public class OceanRoute implements Serializable {
 	public OceanRoute(String pol, String pod, String ts1, List<String> errors) {
 		this.pol = pol;
 		this.pod = pod;
-		this.ts1=ts1;
-		this.errors=errors;
-	
-	}
+		this.ts1 = ts1;
+		this.errors = errors;
 
+	}
 
 	public OceanRoute(int transitTime, String pol, String polFac, String pod, String podFac, String ts1, String ts1Fac,
 			String ts2, String ts1Fac2, String ts3, String ts1Fac3, String prof, String prof2, String prof3,
@@ -74,7 +74,7 @@ public class OceanRoute implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
 	@Column(name = "tt")
 	private int transitTime;
@@ -99,10 +99,21 @@ public class OceanRoute implements Serializable {
 	private String prof2;
 	private String prof3;
 
-	@ElementCollection(fetch=FetchType.EAGER)
-    @CollectionTable(name="ocean_route_errors", joinColumns=@JoinColumn(name="ocean_route_id"))
-    @Column(name="errors")
-    private List<String> errors;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "ocean_route_errors", joinColumns = @JoinColumn(name = "ocean_route_id"))
+	@Column(name = "errors")
+	private List<String> errors;
+
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id;
+
+	}
 
 	public int getTransitTime() {
 		return transitTime;
@@ -188,8 +199,10 @@ public class OceanRoute implements Serializable {
 
 		return count;
 	}
- public boolean isShunting() {
-	 
-	 return this.ts1.equals(ts2);
- }
+
+	public boolean isShunting() {
+
+		return this.ts1.equals(ts2);
+	}
+
 }
