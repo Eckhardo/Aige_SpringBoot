@@ -17,9 +17,6 @@ import com.eki.shipment.model.GeoScope;
 @Repository
 public interface GeoScopeRepository extends JpaRepository<GeoScope, Long>, JpaSpecificationExecutor<GeoScope>, IByNameApi<GeoScope> { 
 
-	
-	
- 
    GeoScope findByLocationCode(String code);
     
     @Query("SELECT g FROM  GeoScope g WHERE g.locationCode LIKE %:searchTerm%")
@@ -30,6 +27,4 @@ public interface GeoScopeRepository extends JpaRepository<GeoScope, Long>, JpaSp
 
     List<GeoScope> findAllByCountryCodeAndLocationCode(String countryCode, String locationCode);
     
-   
-
 }
