@@ -22,7 +22,6 @@ public abstract class AbstractService<T extends IEntity> implements IServiceOper
 
 	public AbstractService(final Class<T> clazzToSet) {
 		super();
-
 		clazz = clazzToSet;
 	}
 
@@ -51,7 +50,6 @@ public abstract class AbstractService<T extends IEntity> implements IServiceOper
 
 	@Override
 	public List<T> findAllPaginated(int page, int size) {
-	
 		Page<T> findAllPaginated= getDao().findAll(	PageRequest.of(page, size));
 		return findAllPaginated.getContent();
 	}
