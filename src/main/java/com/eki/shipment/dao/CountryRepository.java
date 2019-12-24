@@ -14,11 +14,9 @@ import com.eki.shipment.model.Country;
 
 @Repository
 public interface  CountryRepository extends JpaRepository<Country, Long>, JpaSpecificationExecutor<Country>, IByNameApi<Country> { 
-
 	
 	    Country findByCode(String code);
-	    
-	    
+	    	    
 	    @Query("SELECT c FROM Country c WHERE c.code LIKE %:searchTerm%")
 	    public Collection<Country> findByCodeLike(@Param("searchTerm") String searchTerm);
 	 
