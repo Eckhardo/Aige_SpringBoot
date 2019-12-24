@@ -8,7 +8,7 @@ package com.eki.shipment.model;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import com.eki.ResourceNotFoundException;
+import com.eki.shipment.exception.ResourceNotFoundException;
 
 public class RESTDateParam {
  

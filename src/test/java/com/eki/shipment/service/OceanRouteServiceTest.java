@@ -37,8 +37,6 @@ public class OceanRouteServiceTest {
 
 	@Before
 	public void init() {
-			oceanService.setOceanRepository(oceanRepository);
-		oceanService.setOceanDynamicQueryDao(oceanDynamicQueryDao);
 		
 		OceanRoute simple= new OceanRoute("BRSSZ", "HKHKG", null, new ArrayList<>());
 		OceanRoute withTsPort= new OceanRoute("BRSSZ", "HKHKG", "ARBUE", new ArrayList<>());

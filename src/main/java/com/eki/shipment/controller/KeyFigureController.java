@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.model.RESTDateParam;
+import com.eki.shipment.service.GeoScopeService;
 import com.eki.shipment.service.KeyFigureService;
+import com.google.common.collect.Lists;
 
-@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders="*")
+@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 @RestController
 public class KeyFigureController {
 
@@ -23,6 +26,8 @@ public class KeyFigureController {
 
 	@Autowired
 	private KeyFigureService kfService;
+	@Autowired
+	private GeoScopeService geoScopeService;
 
 	@GetMapping({ "/keyfigure/filter" })
 	public List<KeyFigure> searchKeyFigures(
@@ -41,13 +46,11 @@ public class KeyFigureController {
 			@RequestParam(value = "weightBasedOnly", defaultValue = "false") boolean weightBasedOnly,
 			@RequestParam(value = "startDate") RESTDateParam startDate,
 			@RequestParam(value = "endDate") RESTDateParam endDate,
-			@RequestParam(value = "page", required=false, defaultValue="0") int page) {
-            
+			@RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+
 		logger.debug("com.eki.globe.KeyFigureResource.filterKeyFigures()");
 
-		if (includeAllPrefPorts) {
-			portLocation = null;
-		}
+	
 		String country = countryCode;
 		if (country.isEmpty()) {
 			country = inlandLocation.substring(0, 2);
@@ -57,40 +60,47 @@ public class KeyFigureController {
 		}
 		logger.debug("eq:" + equipmentType);
 
-
 		String eqGroup = null;
 		if (equipmentType.equals("GENERAL")) {
-			eqGroup ="GP";
+			eqGroup = "GP";
+		} else if (equipmentType.equals("REEFER")) {
+			eqGroup = "RF";
 		}
-		else if(equipmentType.equals("REEFER")) {
-			eqGroup ="RF";
+		List<String> preferredPorts = Lists.newArrayList();
+		if (includeAllPrefPorts) {
+			List<GeoScope> preferredGeoScopes = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
+			preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScopes);
 		}
-
-		List<KeyFigure> kfs=  kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode,
-				portLocation, transportMode, eq20, eq40, eqGroup ,PageRequest.of(page, 5));
-	     if(kfs.isEmpty())throw new KeyFigureNotFoundException();
-	     return kfs;
+		List<KeyFigure> kfs = kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode, preferredPorts,
+				transportMode, eq20, eq40, eqGroup, PageRequest.of(page, 5));
+		if (kfs.isEmpty())
+			throw new KeyFigureNotFoundException();
+		return kfs;
 	}
+
 	@GetMapping({ "/keyfigure/find" })
-	public List<KeyFigure> searchSimple(
-				@RequestParam(value = "inlandLocation") String inlandLocation,
+	public List<KeyFigure> searchSimple(@RequestParam(value = "inlandLocation") String inlandLocation,
 			@RequestParam(value = "inlandGeoScopeType") String inlandGeoScopeType,
 			@RequestParam(value = "countryCode") String countryCode,
 			@RequestParam(value = "portLocation") String portLocation,
 			@RequestParam(value = "includeAllPrefPorts", defaultValue = "true") boolean includeAllPrefPorts) {
-            
+
 		logger.debug("com.eki.globe.KeyFigureResource.filterKeyFigures()");
 
-		if (includeAllPrefPorts) {
-			portLocation = null;
-		}
 		String country = countryCode;
 		if (country.isEmpty()) {
 			country = inlandLocation.substring(0, 2);
 		}
-		List<KeyFigure> kfs=  kfService.searchKeyFiguresSimple(inlandLocation, inlandGeoScopeType, countryCode,
-				portLocation);
-	     if(kfs.isEmpty())throw new KeyFigureNotFoundException();
-	     return kfs;
+		List<String> preferredPorts = Lists.newArrayList();
+		if (includeAllPrefPorts) {
+			List<GeoScope> preferredGeoScopes = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
+			preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScopes);
+		}
+
+		List<KeyFigure> kfs = kfService.searchKeyFiguresSimple(inlandLocation, inlandGeoScopeType, countryCode,
+				preferredPorts);
+		if (kfs.isEmpty())
+			throw new KeyFigureNotFoundException();
+		return kfs;
 	}
 }

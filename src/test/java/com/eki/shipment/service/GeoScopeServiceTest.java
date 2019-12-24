@@ -15,12 +15,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Sort;
 
 import com.eki.shipment.dao.GeoScopeRepository;
 import com.eki.shipment.model.GeoScope;
