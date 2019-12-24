@@ -137,8 +137,6 @@ public class DateTimeTest extends AbstractRepositoryTest {
 	@Test
 	public void convertSqlDateToLocalDateTime() {
 
-		KeyFigure kf = keyFigures.get(0);
-
 		// returns an instance of java.sql.Date which extends java.util.Date (does not
 		// carry time information)
 		java.util.Date sqlDate = new Date();

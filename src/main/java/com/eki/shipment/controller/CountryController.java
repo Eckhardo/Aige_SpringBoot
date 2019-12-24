@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eki.shipment.model.Country;
+import com.eki.shipment.service.CountryService;
 import com.eki.shipment.service.GeoScopeService;
 
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
@@ -21,16 +22,16 @@ public class CountryController {
 	Logger logger = LoggerFactory.getLogger(CountryController.class);
 
 	@Autowired
-	private GeoScopeService geoScopeService;
+	private CountryService countryService;
 //curl -X GET "localhost:8086/nre/country/find?country_code=DE"
 	@GetMapping("/country/filter")
 	public Collection<Country> searchByCode(@RequestParam(value = "country_code", required = true) String countryCode) {
-		return geoScopeService.searchCountries(countryCode);
+		return countryService.searchCountries(countryCode);
 	}
 
 	@GetMapping("/country/find")
 	public Country findByCode(@RequestParam(value = "country_code", required = true) String countryCode) {
-		return geoScopeService.findCountry(countryCode);
+		return countryService.findCountry(countryCode);
 	}
 
 }

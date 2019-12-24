@@ -13,11 +13,14 @@ import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 
 import com.eki.shipment.dao.GeoScopeRepository;
 import com.eki.shipment.model.GeoScope;
@@ -37,8 +40,7 @@ public class GeoScopeServiceTest {
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		geoScopeService.setGeoScopeRepository(geoScopeRepository);
-
+	
 		GeoScope deham = new GeoScope();
 		deham.setCountryCode("DE");
 		deham.setLocationCode("DEHAM");
@@ -86,20 +88,20 @@ public class GeoScopeServiceTest {
 
 	@Test
 	public void whenSearchPreferredPortsDE_thenReturnResultList() {
-		when(geoScopeRepository.findAll(Mockito.any(Example.class))).thenReturn(geoScopes);
+		when(geoScopeRepository.findAll(ArgumentMatchers.<Example<GeoScope>>any())).thenReturn(geoScopes);
 		List<GeoScope> result = geoScopeService.findPreferredGeoScopes("DEDUS", "DE");
 		assertThat(result.size(), is(3));
 		List<String> codes = result.stream().map((gs) -> gs.getLocationCode()).collect(Collectors.toList());
 
 		assertThat(codes, hasItems("DEHAM", "DEDUS", "DEDUI"));
-		verify(geoScopeRepository, times(1)).findAll(Mockito.any(Example.class));
+		verify(geoScopeRepository, times(1)).findAll(ArgumentMatchers.<Example<GeoScope>>any());
 		
 
 	}
 	@Test
 	public void whenSearchPreferredPortsBR_thenReturnResultList() {
-		when(geoScopeRepository.findAll(Mockito.any(Example.class))).thenReturn(geoScopes);
-		List<GeoScope> result = geoScopeService.findPreferredGeoScopes("BRSSZ", "BR");
+		when(geoScopeRepository.findAll(ArgumentMatchers.<Example<GeoScope>>any())).thenReturn(geoScopes);
+			List<GeoScope> result = geoScopeService.findPreferredGeoScopes("BRSSZ", "BR");
 		assertThat(result.size(), is(1));
 		List<String> codes = result.stream().map((gs) -> gs.getLocationCode()).collect(Collectors.toList());
 

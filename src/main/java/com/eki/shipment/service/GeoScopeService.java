@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.eki.shipment.dao.CountryRepository;
@@ -21,34 +23,25 @@ import com.eki.shipment.model.Country;
 import com.eki.shipment.model.GeoScope;
 
 @Service
-public class GeoScopeService {
+@Transactional
+public class GeoScopeService extends AbstractService<GeoScope> {
+
 	private static final Logger logger = LoggerFactory.getLogger(GeoScopeService.class);
 
-	private CountryRepository countryRepository;
-
-	private GeoScopeRepository geoScopeRepository;
-
-	@Autowired
-	public void setCountryRepository(CountryRepository countryRepository) {
-		this.countryRepository = countryRepository;
+	public GeoScopeService() {
+		super(GeoScope.class);
 	}
 
 	@Autowired
-	public void setGeoScopeRepository(GeoScopeRepository geoScopeRepository) {
-		this.geoScopeRepository = geoScopeRepository;
+	private GeoScopeRepository dao;
+
+
+
+	@Override
+	protected GeoScopeRepository getDao() {
+		return dao;
 	}
 
-	public GeoScope save(GeoScope geoScope) {
-		return geoScopeRepository.save(geoScope);
-	}
-
-	public Iterable<GeoScope> save(List<GeoScope> geoScopes) {
-		return geoScopeRepository.saveAll(geoScopes);
-	}
-
-	public Iterable<GeoScope> list() {
-		return geoScopeRepository.findAll();
-	}
 
 	/**
 	 * 
@@ -64,7 +57,7 @@ public class GeoScopeService {
 		Predicate<GeoScope> countryCodeFilter = (GeoScope gs) -> StringUtils.isEmpty(countryCode) ? true
 				: gs.getCountryCode().equals(countryCode);
 
-		List<GeoScope> result = geoScopeRepository.findAll();
+		List<GeoScope> result = dao.findAll();
 
 		return result.stream().filter(locationCodeFilter).filter(geoScopeTypeFilter).filter(countryCodeFilter)
 				.collect(toList());
@@ -73,7 +66,7 @@ public class GeoScopeService {
 
 	public Collection<GeoScope> findPorts(String searchTerm) {
 
-		return geoScopeRepository.findPortsLike(searchTerm);
+		return dao.findPortsLike(searchTerm);
 	}
 
 	public List<String> mapGeoScopesToPorts(List<GeoScope> preferredGeoScopes) {
@@ -96,7 +89,7 @@ public class GeoScopeService {
 		if (country.isEmpty() && locationCode.length() == 5) {
 			country = locationCode.substring(0, 2);
 		} else if (country.isEmpty() && locationCode.length() != 5) {
-			GeoScope nonLocation = geoScopeRepository.findByLocationCode(locationCode);
+			GeoScope nonLocation = dao.findByLocationCode(locationCode);
 			country = nonLocation.getCountryCode();
 		}
 		geoScopeExample.setPort(true);
@@ -104,7 +97,7 @@ public class GeoScopeService {
 				.withMatcher("geoScopeType", matcher -> matcher.exact());
 		Example<GeoScope> example = Example.of(geoScopeExample, exampleMatcher);
 
-		List<GeoScope> geoScopeList = geoScopeRepository.findAll(example);
+		List<GeoScope> geoScopeList = dao.findAll(example);
 		logger.debug("# preferredGeoScopes: {}", geoScopeList.size());
 
 		return filterByCountryCode(geoScopeList, country);
@@ -123,31 +116,10 @@ public class GeoScopeService {
 
 	}
 
-	public Optional<GeoScope> findOne(long id) {
-
-		return geoScopeRepository.findById(id);
-	}
-
 	public GeoScope findByLocationName(String locationName) {
-		return geoScopeRepository.findByName(locationName);
+		return dao.findByName(locationName);
 	}
 	// ---------------------- country----------------------------
 
-	/**
-	 * 
-	 * @param searchTerm
-	 * @return a collection of {@link Country} instances
-	 */
-	public Collection<Country> searchCountries(String searchTerm) {
-		return countryRepository.findByCodeLike(searchTerm);
-	}
-
-	public Country findCountry(String countryCode) {
-		return countryRepository.findByCode(countryCode);
-	}
-
-	public Iterable<Country> findAll() {
-		return countryRepository.findAll();
-	}
 
 }

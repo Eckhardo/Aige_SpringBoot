@@ -42,12 +42,12 @@ import com.eki.shipment.service.GeoScopeService;
  * @author ekirschning
  *
  */
-public class MockitoTest {
+public final class MockitoTest {
 	Logger logger = LoggerFactory.getLogger(MockitoTest.class);
 
 
 	@Mock
-	private GeoScopeRepository geoScopeRepository;
+	private GeoScopeRepository dao;
 	
 	@Captor
 	private ArgumentCaptor <Example<GeoScope>> geoScopeCaptor;
@@ -55,16 +55,14 @@ public class MockitoTest {
 	@InjectMocks
 	private GeoScopeService geoScopeService;
 
-	GeoScope exampleGeoScope;
+	private GeoScope exampleGeoScope;
 
-	GeoScope exampleGeoScope2;
+	private GeoScope exampleGeoScope2;
 	
 
 	@Before
 	public void setupMock() {
 		MockitoAnnotations.initMocks(this);
-		geoScopeService = new GeoScopeService();
-		geoScopeService.setGeoScopeRepository(geoScopeRepository);
 		exampleGeoScope = new GeoScope(1L, "DE", "DEHAM", "L", "Hamburg", false);
 		exampleGeoScope2 = new GeoScope(2L, "UY", "UYMVD", "L", "Montevideo", false);
 
@@ -73,20 +71,20 @@ public class MockitoTest {
 	@Test
 	public void shouldReturnOptionalGeoScope_whenThenReturn() throws Exception {
 		// Arrange
-		when(geoScopeRepository.findById(5L)).thenReturn(Optional.of(exampleGeoScope));
+		when(dao.findById(5L)).thenReturn(Optional.of(exampleGeoScope));
 		// Act
-		Optional<GeoScope> retrievedGeoScope = geoScopeService.findOne(5L);
-		Optional<GeoScope> emptyGeoScope = geoScopeService.findOne(1L);
+		GeoScope retrievedGeoScope = geoScopeService.findOne(5L);
+		GeoScope emptyGeoScope = geoScopeService.findOne(1L);
 
 		// Assert
-		assertThat(retrievedGeoScope, equalTo(Optional.of(exampleGeoScope)));
-		assertThat(emptyGeoScope, equalTo(Optional.empty()));
+		assertThat(retrievedGeoScope, equalTo(exampleGeoScope));
+		assertThat(emptyGeoScope, equalTo(null));
 	}
 
 	@Test
 	public void shouldReturnOptionalGeoScope_whenArgumentMatcher() throws Exception {
 		// Arrange
-		when(geoScopeRepository
+		when(dao
 				.findByName(ArgumentMatchers.argThat((locationName) -> locationName.equals("Montevideo"))))
 						.thenReturn(exampleGeoScope2);
 
@@ -103,7 +101,7 @@ public class MockitoTest {
 	@Test
 	public void shouldReturnOptionalGeoScope_whenThenAnswer() throws Exception {
 		// Arrange
-		when(geoScopeRepository.findByName(Mockito.anyString())).thenAnswer((InvocationOnMock invocation) -> {
+		when(dao.findByName(Mockito.anyString())).thenAnswer((InvocationOnMock invocation) -> {
 			String locationName = (String) invocation.getArguments()[0];
 			if (locationName.equals("Montevideo")) {
 				return exampleGeoScope2;
@@ -125,7 +123,7 @@ public class MockitoTest {
 	@Test
 	public void shouldReturnOptionalGeoScope_whenArgumentCapture() throws Exception {
 		// Arrange
-			when(geoScopeRepository.findAll(ArgumentMatchers.<Example<GeoScope>>any())).thenReturn(
+			when(dao.findAll(ArgumentMatchers.<Example<GeoScope>>any())).thenReturn(
 						Arrays.asList(exampleGeoScope,exampleGeoScope2)
 				);
 			
@@ -136,7 +134,7 @@ public class MockitoTest {
 		//
 
 		// Assert Captured input of geoScopeRepository 
-		Mockito.verify(geoScopeRepository).findAll(geoScopeCaptor.capture());
+		Mockito.verify(dao).findAll(geoScopeCaptor.capture());
 		
 		Example<GeoScope> capturedExample= geoScopeCaptor.getValue();
 		assertThat(capturedExample.getProbe().getGeoScopeType(), equalTo("L"));

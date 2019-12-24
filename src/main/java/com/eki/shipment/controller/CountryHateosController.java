@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eki.shipment.model.Country;
+import com.eki.shipment.service.CountryService;
 import com.eki.shipment.service.GeoScopeService;
 
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
@@ -20,18 +21,16 @@ import com.eki.shipment.service.GeoScopeService;
 public class CountryHateosController {
 	Logger logger = LoggerFactory.getLogger(CountryHateosController.class);
 
-	@Autowired
-	private GeoScopeService geoScopeService;
-//curl -X GET "localhost:8086/nre/country/find?country_code=DE"
+	private CountryService countryService;
+	//curl -X GET "localhost:8086/nre/country/find?country_code=DE"
 	@GetMapping(produces = { "application/hal+json" })
 	public Iterable<Country> findAll() {
-		return geoScopeService.findAll();
+		return countryService.findAll();
 	}
 
-
-	  @GetMapping("/{countryId}")
-	    public Country getCountryById(@PathVariable String countryId) {
-	        return geoScopeService.findCountry(countryId);
-	    }
+	@GetMapping("/{countryId}")
+	public Country getCountryById(@PathVariable String countryId) {
+		return countryService.findCountry(countryId);
+	}
 
 }
