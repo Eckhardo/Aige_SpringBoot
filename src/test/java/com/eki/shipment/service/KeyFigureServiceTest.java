@@ -36,7 +36,6 @@ public class KeyFigureServiceTest {
 	KeyFigureRepository dao;
 	@Mock
 	KeyFigureDynamicQueryDao dynamicDao;
-
 	@InjectMocks
 	KeyFigureService kfService;
 
