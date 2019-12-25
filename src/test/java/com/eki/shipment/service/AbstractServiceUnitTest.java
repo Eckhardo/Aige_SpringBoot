@@ -16,8 +16,8 @@ public abstract class AbstractServiceUnitTest<T extends IEntity> {
 
 	public void before() {
 		when(getDAO().findAll()).thenReturn(Lists.newArrayList());
-
 	}
+
 	@Test
 	public final void whenGetIsTriggered_thenEntityIsRetrieved() {
 		stubDaoGetOne(1l);
@@ -49,8 +49,6 @@ public abstract class AbstractServiceUnitTest<T extends IEntity> {
 		// Then
 		verify(getDAO()).save(entity);
 	}
-
-	
 	
 	   @Test
 	    public void whenUpdateIsTriggered_thenEntityIsUpdated() {
