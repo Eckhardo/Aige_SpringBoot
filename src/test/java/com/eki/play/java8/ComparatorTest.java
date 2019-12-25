@@ -19,6 +19,7 @@ import com.eki.shipment.dao.KeyFigureDynamicQueryDao;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.service.GeoScopeService;
+import com.google.common.collect.Ordering;
 
 /**
  * Some tests for the new Java 6 {@link java.util.Comparator} including:
@@ -108,7 +109,9 @@ public class ComparatorTest extends AbstractRepositoryTest {
 
 	
 	}
-
+	public static boolean isSorted(List<Long> listOfStrings) {
+	    return Ordering.<Long> natural().isOrdered(listOfStrings);
+	}
 	@Test
 	public void compareWithComparingNullsLast() {
 		// given
