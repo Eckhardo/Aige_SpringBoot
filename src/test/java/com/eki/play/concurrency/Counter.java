@@ -1,4 +1,4 @@
-package com.eki.concurrency;
+package com.eki.play.concurrency;
 
 class Counter {
     int count = 0;

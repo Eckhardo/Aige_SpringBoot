@@ -1,4 +1,4 @@
-package com.eki.util;
+package com.eki.shipment.util;
 
 import java.util.Random;
 

@@ -22,7 +22,7 @@ import com.eki.shipment.dao.KeyFigureDynamicQueryDao;
 import com.eki.shipment.dao.KeyFigureRepository;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
-import com.eki.util.IDUtil;
+import com.eki.shipment.util.IDUtil;
 
 import data.GeoScopeData;
 import data.KeyFigureData;

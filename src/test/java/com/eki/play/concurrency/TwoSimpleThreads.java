@@ -1,4 +1,4 @@
-package com.eki.concurrency;
+package com.eki.play.concurrency;
 
 /**
  * The following example brings together some of the concepts of this section.

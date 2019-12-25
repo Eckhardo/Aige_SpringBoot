@@ -1,4 +1,4 @@
-package com.eki.java8;
+package com.eki.play.java8;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;

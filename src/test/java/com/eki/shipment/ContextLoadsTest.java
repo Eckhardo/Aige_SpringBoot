@@ -1,4 +1,4 @@
-package com.eki;
+package com.eki.shipment;
 
 import org.junit.Test;
 

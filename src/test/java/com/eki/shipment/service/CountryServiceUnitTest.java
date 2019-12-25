@@ -10,7 +10,7 @@ import org.junit.Before;
 
 import com.eki.shipment.dao.CountryRepository;
 import com.eki.shipment.model.Country;
-import com.eki.util.EntityFactory;
+import com.eki.shipment.util.EntityFactory;
 import com.google.common.collect.Lists;
 
 public class CountryServiceUnitTest extends AbstractServiceUnitTest<Country> {

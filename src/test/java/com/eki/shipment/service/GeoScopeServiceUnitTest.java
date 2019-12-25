@@ -1,7 +1,7 @@
 package com.eki.shipment.service;
 
-import static com.eki.util.EntityFactory.createGeoScope;
-import static com.eki.util.EntityFactory.createGeoScopes;
+import static com.eki.shipment.util.EntityFactory.createGeoScope;
+import static com.eki.shipment.util.EntityFactory.createGeoScopes;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

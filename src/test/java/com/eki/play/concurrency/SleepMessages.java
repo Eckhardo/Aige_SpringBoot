@@ -1,4 +1,4 @@
-package com.eki.concurrency;
+package com.eki.play.concurrency;
 
 /**
  * Notice that main declares that it throws InterruptedException. This is an

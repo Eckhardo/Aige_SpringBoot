@@ -1,4 +1,4 @@
-package com.eki.java8;
+package com.eki.play.java8;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

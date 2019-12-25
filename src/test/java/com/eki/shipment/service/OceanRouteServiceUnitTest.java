@@ -1,6 +1,6 @@
 package com.eki.shipment.service;
 
-import static com.eki.util.EntityFactory.createOceanRoutes;
+import static com.eki.shipment.util.EntityFactory.createOceanRoutes;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.times;
@@ -19,7 +19,7 @@ import org.mockito.MockitoAnnotations;
 import com.eki.shipment.dao.OceanRouteDynamicQueryDao;
 import com.eki.shipment.dao.OceanRouteRepository;
 import com.eki.shipment.model.OceanRoute;
-import com.eki.util.IDUtil;
+import com.eki.shipment.util.IDUtil;
 
 public final class OceanRouteServiceUnitTest extends AbstractServiceUnitTest<OceanRoute> {
 

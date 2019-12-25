@@ -1,4 +1,4 @@
-package com.eki.concurrency;
+package com.eki.play.concurrency;
 
 public class HelloThread extends Thread {
 

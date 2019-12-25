@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.eki.common.interfaces.IEntity;
-import com.eki.util.IDUtil;
+import com.eki.shipment.util.IDUtil;
 
 public abstract class AbstractServiceUnitTest<T extends IEntity> {
 
