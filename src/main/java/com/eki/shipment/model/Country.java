@@ -42,7 +42,7 @@ public class Country implements INameableEntity, INameableDto   {
 	}
 
 
-	public Country(String name, String code) {
+	public Country( @NotNull @Size(max = 50) String name, @NotNull @Size(max = 3) String code) {
 		super();
 		this.name = name;
 		this.code = code;

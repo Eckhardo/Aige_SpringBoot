@@ -1,4 +1,4 @@
-package com.eki;
+package com.eki.util;
 
 public class TestData {
 	public static final String LOCATION_BRSSZ = "BRSSZ";
