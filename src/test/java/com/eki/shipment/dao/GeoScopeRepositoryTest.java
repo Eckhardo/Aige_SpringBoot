@@ -176,8 +176,6 @@ public class GeoScopeRepositoryTest extends AbstractRepositoryTest{
 		assertTrue(found.stream().noneMatch(p2));
 	}
 
-	
-
 	@Test
 	public void whenFindPorts_thenReturnGeoScopeCollection() {
 		// given
