@@ -7,20 +7,41 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.common.interfaces.IEntity;
-import com.eki.shipment.model.KeyFigure;
+import com.eki.shipment.run.MysqlBootApplication;
 import com.eki.shipment.service.IServiceOperations;
 import com.eki.shipment.util.IDUtil;
 import com.google.common.collect.Ordering;
 
+
+/**
+ * TestRestTemplate is only auto-configured when @SpringBootTest has been
+ * configured with a webEnvironment that means it starts the web container and
+ * listens for HTTP requests. For example:
+ * 
+ * @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT) @author eckha
+ *
+ */
+@SpringBootTest(classes = MysqlBootApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+@RunWith(SpringRunner.class)
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+@TestPropertySource(locations = "classpath:application-test.properties")
 public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 	
 	// find one
@@ -113,7 +134,7 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
         persistNewEntity();
 
         // When
-        final List<T> resourcesSorted = getApi().findAllSorted("ID", Sort.Direction.ASC.name());
+        final List<T> resourcesSorted = getApi().findAllSorted("id", Sort.Direction.ASC.name());
 
         // Then
           List<Long> ids = resourcesSorted.stream().map(t-> t.getId()).collect(Collectors.toList());
@@ -134,7 +155,8 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 	protected abstract IServiceOperations<T> getApi();
 
 	protected T persistNewEntity() {
-		return getApi().create(createNewEntity());
+		T entity = getApi().create(createNewEntity());
+		return entity;
 	}
 
 }

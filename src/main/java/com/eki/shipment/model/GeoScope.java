@@ -1,12 +1,19 @@
 package com.eki.shipment.model;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.eki.common.interfaces.INameableDto;
 import com.eki.common.interfaces.INameableEntity;
@@ -36,6 +43,7 @@ public class GeoScope implements INameableEntity, INameableDto {
 	private String geoScopeType;
 
 	@Column(name = "location_name")
+	@NotNull()
 	private String name;
 
 	@Column(name = "is_port")
@@ -45,10 +53,9 @@ public class GeoScope implements INameableEntity, INameableDto {
 		// TODO Auto-generated constructor stub
 	}
 
-	public GeoScope(long id, @NotNull String countryCode, String locationCode, @NotNull String geoScopeType,
-			String name, boolean port) {
+	public GeoScope(@NotNull String countryCode, String locationCode, @NotNull String geoScopeType, String name,
+			boolean port) {
 		super();
-		this.id = id;
 		this.countryCode = countryCode;
 		this.locationCode = locationCode;
 		this.geoScopeType = geoScopeType;

@@ -63,8 +63,8 @@ public final class MockitoTest {
 	@Before
 	public void setupMock() {
 		MockitoAnnotations.initMocks(this);
-		exampleGeoScope = new GeoScope(1L, "DE", "DEHAM", "L", "Hamburg", false);
-		exampleGeoScope2 = new GeoScope(2L, "UY", "UYMVD", "L", "Montevideo", false);
+		exampleGeoScope = new GeoScope("DE", "DEHAM", "L", "Hamburg", false);
+		exampleGeoScope2 = new GeoScope("UY", "UYMVD", "L", "Montevideo", false);
 
 	}
 

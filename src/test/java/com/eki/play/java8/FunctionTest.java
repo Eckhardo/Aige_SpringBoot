@@ -35,12 +35,12 @@ public class FunctionTest {
 	Logger logger = LoggerFactory.getLogger(FunctionTest.class);
 
 	static List<GeoScope> geoScopeList = new ArrayList<>(
-			Arrays.asList(new GeoScope(1, "DE", "DEHAM", "L", "Hamburg", true),
-					new GeoScope(1, "DE", "DEBRV", "L", "Bremerhaven", true),
-					new GeoScope(1, "DE", "DEBER", "L", "Berlin", false),
-					new GeoScope(1, "DE", "DEHAJ", "L", "Hannover", false),
-					new GeoScope(1, "BE", "BEANR", "L", "Antwerp", true),
-					new GeoScope(1, "NL", "NLRTM", "L", "Rotterdam", true)));
+			Arrays.asList(new GeoScope("DE", "DEHAM", "L", "Hamburg", true),
+					new GeoScope("DE", "DEBRV", "L", "Bremerhaven", true),
+					new GeoScope("DE", "DEBER", "L", "Berlin", false),
+					new GeoScope("DE", "DEHAJ", "L", "Hannover", false),
+					new GeoScope("BE", "BEANR", "L", "Antwerp", true),
+					new GeoScope("NL", "NLRTM", "L", "Rotterdam", true)));
 
 	static Map<Integer, String> MY_MAP = ImmutableMap.of(1, "one", 2, "two", 3, "three", 4, "four");
 
