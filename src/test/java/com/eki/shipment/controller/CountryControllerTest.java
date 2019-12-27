@@ -40,7 +40,6 @@ public class CountryControllerTest extends AbstractWebControllerTest {
 	public void likeCountryTest() {
 		Country[] body = this.restTemplate.getForObject("/country/filter?country_code=D", Country[].class);
 		assertThat(body.length, is(2));
-
 	}
 
 	@Test
@@ -50,7 +49,6 @@ public class CountryControllerTest extends AbstractWebControllerTest {
 				String.class);
 
 		String expected = "{\"id\":1,\"name\":\"Germany\",\"code\":\"DE\"}";
-
 		JSONAssert.assertEquals(expected, response.getBody(), false);
 	}
 
@@ -61,7 +59,6 @@ public class CountryControllerTest extends AbstractWebControllerTest {
 				requestEntity, String.class);
 
 		String expected = "{\"id\":1,\"name\":\"Germany\",\"code\":\"DE\"}";
-
 		JSONAssert.assertEquals(expected, response.getBody(), false);
 	}
 
@@ -80,7 +77,6 @@ public class CountryControllerTest extends AbstractWebControllerTest {
 		ResponseEntity<List<Country>> responseEntity = restTemplate.exchange(createURL("/sorted?sortBy=code"),
 				HttpMethod.GET, null, new ParameterizedTypeReference<List<Country>>() {
 				});
-
 		assertThat(responseEntity.getBody().size(), is(16));
 	}
 
