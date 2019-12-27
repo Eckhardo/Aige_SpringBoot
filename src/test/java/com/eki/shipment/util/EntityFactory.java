@@ -9,8 +9,9 @@ import java.util.List;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.OceanRoute;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 public class EntityFactory {
 
     private EntityFactory() {
@@ -20,55 +21,40 @@ public class EntityFactory {
     // User
 
     public static Country createNewCountry() {
-        return createNewCountry("Germany", "DE");
+        return createNewCountry(randomAlphabetic(8), randomAlphabetic(2));
     }
     public static Country createNewCountry(final String name, final String code) {
         return new Country(name, code);
     }
 	public static List<GeoScope> createGeoScopes() {
 		List<GeoScope> geoScopes = new ArrayList<>();
-		GeoScope deham = new GeoScope();
-		deham.setCountryCode("DE");
-		deham.setLocationCode("DEHAM");
-		deham.setGeoScopeType("L");
-		geoScopes.add(deham);
+		geoScopes.add(new GeoScope(randomAlphabetic(2), randomAlphabetic(5), randomAlphabetic(1), randomAlphabetic(10), true));
+		geoScopes.add(new GeoScope(randomAlphabetic(2), randomAlphabetic(5), randomAlphabetic(1), randomAlphabetic(10), true));
+		geoScopes.add(new GeoScope(randomAlphabetic(2), randomAlphabetic(5), randomAlphabetic(1), randomAlphabetic(10), true));
+		geoScopes.add(new GeoScope(randomAlphabetic(2), randomAlphabetic(5), randomAlphabetic(1), randomAlphabetic(10), true));
 
-		GeoScope dedus = new GeoScope();
-		dedus.setCountryCode("DE");
-		dedus.setLocationCode("DEDUS");
-		dedus.setGeoScopeType("L");
-		geoScopes.add(dedus);
 
-		GeoScope dedui = new GeoScope();
-		dedui.setCountryCode("DE");
-		dedui.setLocationCode("DEDUI");
-		dedui.setGeoScopeType("L");
-		geoScopes.add(dedui);
-
-		GeoScope brssz = new GeoScope();
-		brssz.setCountryCode("BR");
-		brssz.setLocationCode("BRSSZ");
-		brssz.setGeoScopeType("L");
-		geoScopes.add(brssz);
 		return geoScopes;
 	}
 	public static GeoScope createGeoScope() {
-		return createGeoScopes().get(0);
+		return new GeoScope(randomAlphabetic(2), randomAlphabetic(5), randomAlphabetic(1), randomAlphabetic(10), true);
 	}
 	
 	
 	public static List<OceanRoute> createOceanRoutes() {
 	 List<OceanRoute> routes= new ArrayList<>();
 		
-		OceanRoute simple= new OceanRoute("BRSSZ", "HKHKG", null, new ArrayList<>());
-		OceanRoute withTsPort= new OceanRoute("BRSSZ", "HKHKG", "ARBUE", new ArrayList<>());
-		OceanRoute withErrors= new OceanRoute("BRSSZ", "HKHKG", "ARBUE", Arrays.asList("NO_SHUNTING"));
+		OceanRoute simple=  new OceanRoute(randomAlphabetic(3), randomAlphabetic(3), null, Arrays.asList(randomAlphabetic(10)));
+		OceanRoute withTsPort=  new OceanRoute(randomAlphabetic(3), randomAlphabetic(3), randomAlphabetic(3), Lists.newArrayList());
+		OceanRoute withErrors=  new OceanRoute(randomAlphabetic(3), randomAlphabetic(3), randomAlphabetic(3), Arrays.asList(randomAlphabetic(10)));
 		routes.add(simple);
 		routes.add(withTsPort);
 		routes.add(withErrors);
 		return routes;
 	}
-	public static OceanRoute createOceanRoute() {
-		return createOceanRoutes().get(0);
+	public final static OceanRoute createOceanRoute() {
+	return    new OceanRoute(39, "BRSSZ", "565151", "HKHKG", "564077", "SGSIN", "568079", "", "", "", "", "41020SIM1763", "71010SIM1884", "", Arrays.asList("MIN_TRANSIT_RATIO"));
+	 
+	
 	}
 }

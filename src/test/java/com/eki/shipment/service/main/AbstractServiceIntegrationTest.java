@@ -1,7 +1,7 @@
 package com.eki.shipment.service.main;
 
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -28,7 +28,6 @@ import com.eki.shipment.service.IServiceOperations;
 import com.eki.shipment.util.IDUtil;
 import com.google.common.collect.Ordering;
 
-
 /**
  * TestRestTemplate is only auto-configured when @SpringBootTest has been
  * configured with a webEnvironment that means it starts the web container and
@@ -43,7 +42,7 @@ import com.google.common.collect.Ordering;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @TestPropertySource(locations = "classpath:application-test.properties")
 public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
-	
+
 	// find one
 	@Test
 	public final void givenResourceDoesNotExist_whenResourceIsRetrieved_thenNoResourceIsReceived() {
@@ -60,7 +59,7 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 		final T retrievedResource = getApi().findOne(existingResource.getId());
 		assertEquals(existingResource, retrievedResource);
 	}
-	
+
 	// find all
 
 	@Test
@@ -87,8 +86,7 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 	public void whenNullResourceIsCreated_thenException() {
 		getApi().create(null);
 	}
-	
-	
+
 	// update
 
 	@Test
@@ -114,7 +112,7 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 		// Then
 		assertEquals(existingResource, updatedResource);
 	}
-	
+
 	// delete
 
 	@Test
@@ -128,21 +126,22 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 		// Then
 		assertNull(getApi().findOne(existingResource.getId()));
 	}
-    @Test
-    /**/public final void whenResourcesAreRetrievedSorted_thenResourcesAreIndeedOrdered() {
-        persistNewEntity();
-        persistNewEntity();
 
-        // When
-        final List<T> resourcesSorted = getApi().findAllSorted("id", Sort.Direction.ASC.name());
+	@Test
+	/**/public final void whenResourcesAreRetrievedSorted_thenResourcesAreIndeedOrdered() {
+		persistNewEntity();
+		persistNewEntity();
 
-        // Then
-          List<Long> ids = resourcesSorted.stream().map(t-> t.getId()).collect(Collectors.toList());
-          assertTrue(isSorted(ids));
-    }
-    
+		// When
+		final List<T> resourcesSorted = getApi().findAllSorted("id", Sort.Direction.ASC.name());
+
+		// Then
+		List<Long> ids = resourcesSorted.stream().map(t -> t.getId()).collect(Collectors.toList());
+		assertTrue(isSorted(ids));
+	}
+
 	private static boolean isSorted(List<Long> ids) {
-	    return Ordering.<Long> natural().isOrdered(ids);
+		return Ordering.<Long>natural().isOrdered(ids);
 	}
 	// template method
 

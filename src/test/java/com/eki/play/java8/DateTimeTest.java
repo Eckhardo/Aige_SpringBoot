@@ -15,15 +15,20 @@ import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.shipment.dao.AbstractRepositoryTest;
+import com.eki.shipment.dao.GeoScopeRepository;
 import com.eki.shipment.dao.KeyFigureDynamicQueryDao;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.service.GeoScopeService;
+import com.eki.shipment.service.main.AbstractServiceIntegrationTest;
 
 /**
  * Some tests for the new Java 6 {@link java.time} API including:
@@ -40,33 +45,9 @@ import com.eki.shipment.service.GeoScopeService;
  *
  */
 
-public class DateTimeTest extends AbstractRepositoryTest {
+public class DateTimeTest {
 	Logger logger = LoggerFactory.getLogger(DateTimeTest.class);
 
-	@Autowired
-	private KeyFigureDynamicQueryDao keyFigureDynamicQueryDao;
-
-	@Autowired
-	private GeoScopeService geoScopeService;
-
-	List<KeyFigure> keyFigures;
-
-	private final String inlandLocation = "DUSSELDORF";
-	private String countryCode = "DE";
-	private String geoScopeType = "T";
-
-	@Before
-	public void init() {
-		List<GeoScope> preferredGeoScopes = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
-		assertThat(preferredGeoScopes.size(), is(4));
-		List<String> preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScopes);
-		assertThat(preferredPorts.size(), is(4));
-		keyFigures = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
-				preferredPorts, true, true, "TRUCK", null);
-
-		assertThat(keyFigures.size(), is(8));
-
-	}
 
 	@Test
 	public void convertNowUtcToDifferentTimeZones() {

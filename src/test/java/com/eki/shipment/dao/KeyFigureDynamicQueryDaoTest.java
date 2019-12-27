@@ -1,5 +1,6 @@
 package com.eki.shipment.dao;
 
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -11,18 +12,31 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
+import com.eki.shipment.run.MysqlBootApplication;
 import com.eki.shipment.service.GeoScopeService;
-
-public class KeyFigureDynamicQueryDaoTest extends AbstractRepositoryTest {
+@SpringBootTest(classes = MysqlBootApplication.class)
+@RunWith(SpringRunner.class)
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+@TestPropertySource(locations="classpath:application-test.properties")
+public class KeyFigureDynamicQueryDaoTest {
 	Logger logger = LoggerFactory.getLogger(KeyFigureDynamicQueryDaoTest.class);
 
 	@Autowired
@@ -215,5 +229,7 @@ public class KeyFigureDynamicQueryDaoTest extends AbstractRepositoryTest {
 				"page info - page number %s, numberOfElements: %s, size: %s, " + "totalElements: %s, totalPages: %s%n",
 				number, numberOfElements, size, totalElements, totalPages);
 	}
+
+
 
 }

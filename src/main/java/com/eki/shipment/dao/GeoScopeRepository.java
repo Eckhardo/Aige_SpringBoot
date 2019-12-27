@@ -18,10 +18,10 @@ public interface GeoScopeRepository extends JpaRepository<GeoScope, Long>, JpaSp
    GeoScope findByLocationCode(String code);
     
     @Query("SELECT g FROM  GeoScope g WHERE g.locationCode LIKE %:searchTerm%")
-     Collection<GeoScope> findByLocationCodeLike(@Param("searchTerm") String searchTerm);
+     List<GeoScope> findByLocationCodeLike(@Param("searchTerm") String searchTerm);
    
     @Query("SELECT g FROM  GeoScope g WHERE g.port=true AND g.locationCode LIKE %:searchTerm%")
-    public Collection<GeoScope> findPortsLike(@Param("searchTerm") String searchTerm);
+    public List<GeoScope> findPortsLike(@Param("searchTerm") String searchTerm);
 
     List<GeoScope> findAllByCountryCodeAndLocationCode(String countryCode, String locationCode);
     

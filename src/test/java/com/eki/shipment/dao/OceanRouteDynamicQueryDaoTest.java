@@ -9,11 +9,24 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.shipment.model.OceanRoute;
+import com.eki.shipment.run.MysqlBootApplication;
 
-public class OceanRouteDynamicQueryDaoTest extends AbstractRepositoryTest{
+@SpringBootTest(classes = MysqlBootApplication.class)
+@RunWith(SpringRunner.class)
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+@TestPropertySource(locations="classpath:application-test.properties")
+public class OceanRouteDynamicQueryDaoTest {
 
 	@Autowired
 	private OceanRouteDynamicQueryDao oceanRouteDynamicQueryDao;

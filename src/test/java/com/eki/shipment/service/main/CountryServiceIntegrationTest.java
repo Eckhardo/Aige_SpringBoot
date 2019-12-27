@@ -1,13 +1,14 @@
 package com.eki.shipment.service.main;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import com.eki.shipment.model.Country;
 import com.eki.shipment.service.CountryService;
-import com.eki.shipment.service.IServiceOperations;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+
 public class CountryServiceIntegrationTest extends AbstractServiceIntegrationTest<Country> {
 
 	@Autowired
@@ -20,7 +21,7 @@ public class CountryServiceIntegrationTest extends AbstractServiceIntegrationTes
 
 	@Test(expected = DataAccessException.class)
 	public void whenAUniqueConstraintIsBroken_thenSpringSpecificExceptionIsThrown() {
-		final String name =randomAlphabetic(3);
+		final String name = randomAlphabetic(3);
 
 		getApi().create(createNewEntity(name));
 		getApi().create(createNewEntity(name));

@@ -64,7 +64,7 @@ public class GeoScopeService extends AbstractService<GeoScope> {
 
 	}
 
-	public Collection<GeoScope> findPorts(String searchTerm) {
+	public List<GeoScope> findPorts(String searchTerm) {
 
 		return dao.findPortsLike(searchTerm);
 	}

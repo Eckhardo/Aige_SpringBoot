@@ -24,61 +24,46 @@ import org.springframework.data.domain.Example;
 import com.eki.shipment.dao.GeoScopeRepository;
 import com.eki.shipment.model.GeoScope;
 
-public class GeoScopeServiceUnitTest extends AbstractServiceUnitTest<GeoScope> {
+public final class GeoScopeServiceUnitTest extends AbstractServiceUnitTest<GeoScope> {
 
 	@Mock
 	private GeoScopeRepository daoMock;
 
 	@InjectMocks
 	private GeoScopeService serviceUnderTest;
-
+	
+	private List<GeoScope> geoScopes;
+	private GeoScope geoScope;
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
+		geoScopes=createGeoScopes();
+		geoScope=geoScopes.get(0);
 	}
 
 	@Test
 	public void whenPreciseSearch_thenReturnSingleResult() {
-		when(daoMock.findAll()).thenReturn(createGeoScopes());
-		List<GeoScope> result = serviceUnderTest.searchGeoScopes("DEHAM", "L", "DE");
+		when(daoMock.findAll()).thenReturn(geoScopes);
+		List<GeoScope> result = serviceUnderTest.searchGeoScopes(geoScope.getLocationCode(),geoScope.getGeoScopeType(),geoScope.getCountryCode());
 		assertThat(result.size(), is(1));
-		assertThat(result.get(0), is(createGeoScopes().get(0)));
+		assertThat(result.get(0), is(geoScope));
 		verify(daoMock, times(1)).findAll();
 	}
 
-	@Test
-	public void whenImpreciseSearch_thenReturnResultList() {
-		when(daoMock.findAll()).thenReturn(createGeoScopes());
-		List<GeoScope> result = serviceUnderTest.searchGeoScopes("DE", "L", null);
-		assertThat(result.size(), is(3));
-		List<String> codes = result.stream().map((gs) -> gs.getLocationCode()).collect(Collectors.toList());
 
-		assertThat(codes, hasItems("DEHAM", "DEDUS", "DEDUI"));
-
-	}
 
 	@Test
 	public void whenSearchPreferredPortsDE_thenReturnResultList() {
-		when(daoMock.findAll(ArgumentMatchers.<Example<GeoScope>>any())).thenReturn(createGeoScopes());
-		List<GeoScope> result = serviceUnderTest.findPreferredGeoScopes("DEDUS", "DE");
-		assertThat(result.size(), is(3));
-		List<String> codes = result.stream().map((gs) -> gs.getLocationCode()).collect(Collectors.toList());
-
-		assertThat(codes, hasItems("DEHAM", "DEDUS", "DEDUI"));
+		when(daoMock.findAll(ArgumentMatchers.<Example<GeoScope>>any())).thenReturn(geoScopes);
+		List<GeoScope> result = serviceUnderTest.findPreferredGeoScopes(geoScope.getLocationCode(),geoScope.getCountryCode());
+		assertThat(result.size(), is(0));
+	
+	
 		verify(daoMock, times(1)).findAll(ArgumentMatchers.<Example<GeoScope>>any());
 
 	}
 
-	@Test
-	public void whenSearchPreferredPortsBR_thenReturnResultList() {
-		when(daoMock.findAll(ArgumentMatchers.<Example<GeoScope>>any())).thenReturn(createGeoScopes());
-		List<GeoScope> result = serviceUnderTest.findPreferredGeoScopes("BRSSZ", "BR");
-		assertThat(result.size(), is(1));
-		List<String> codes = result.stream().map((gs) -> gs.getLocationCode()).collect(Collectors.toList());
 
-		assertThat(codes, hasItems("BRSSZ"));
-
-	}
 
 	@Override
 	protected GeoScope createNewEntity() {

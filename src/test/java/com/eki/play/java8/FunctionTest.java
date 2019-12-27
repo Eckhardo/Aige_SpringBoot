@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableMap;
  * @author ekirschning
  *
  */
-@RunWith(SpringRunner.class)
+
 public class FunctionTest {
 	Logger logger = LoggerFactory.getLogger(FunctionTest.class);
 

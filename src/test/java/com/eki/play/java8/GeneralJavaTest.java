@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author ekirschning
  *
  */
-@RunWith(SpringRunner.class)
+
 public class GeneralJavaTest {
 	Logger logger = LoggerFactory.getLogger(GeneralJavaTest.class);
 

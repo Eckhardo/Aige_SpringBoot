@@ -27,6 +27,7 @@ import com.eki.shipment.util.IDUtil;
 import data.GeoScopeData;
 import data.KeyFigureData;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public class KeyFigureServiceUnitTest extends AbstractServiceUnitTest<KeyFigure>{
 
@@ -75,12 +76,12 @@ public class KeyFigureServiceUnitTest extends AbstractServiceUnitTest<KeyFigure>
 
 	@Override
 	protected KeyFigure createNewEntity() {
-	return	KeyFigureData.getData().get(0);
+	return	KeyFigureData.getSingle();
 	}
 
 	@Override
 	protected void changeEntity(KeyFigure entity) {
-		// TODO Auto-generated method stub
+		entity.setTransportMode(randomAlphabetic(4));
 		
 	}
 

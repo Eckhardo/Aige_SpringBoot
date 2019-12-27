@@ -1,6 +1,7 @@
 package com.eki.shipment.service;
 
 import static com.eki.shipment.util.EntityFactory.createOceanRoutes;
+import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.times;
@@ -14,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import  static org.mockito.Mockito.*;
 import org.mockito.MockitoAnnotations;
 
 import com.eki.shipment.dao.OceanRouteDynamicQueryDao;
@@ -42,7 +44,7 @@ public final class OceanRouteServiceUnitTest extends AbstractServiceUnitTest<Oce
 		when(dynamicDaoMock.findRoutes("BRSSZ", "HKHKG", null, null, null, false)).thenReturn(createNewEntities());
 		List<OceanRoute> result = serviceUnderTest.searchOceanRoutes(false, false, "1", "BRSSZ", "HKHKG", null, null,
 				null, null, null, null);
-		assertThat(result.size(), is(2));
+		assertThat(result.size(), is(1));
 		verify(dynamicDaoMock, times(1)).findRoutes("BRSSZ", "HKHKG", null, null, null, false);
 	}
 

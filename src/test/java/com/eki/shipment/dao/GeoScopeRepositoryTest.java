@@ -21,9 +21,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import com.eki.shipment.model.GeoScope;
 
-public class GeoScopeRepositoryTest extends AbstractRepositoryTest{
+import com.eki.shipment.model.GeoScope;
+import com.eki.shipment.util.EntityFactory;
+
+public class GeoScopeRepositoryTest extends AbstractRepositoryTest<GeoScope,Long>{
 	Logger logger = LoggerFactory.getLogger(GeoScopeRepositoryTest.class);
 
 	@Autowired
@@ -191,5 +193,15 @@ public class GeoScopeRepositoryTest extends AbstractRepositoryTest{
 		assertTrue(found.stream().anyMatch(p1));
 		assertFalse(found.stream().allMatch(p1));
 		assertTrue(found.stream().noneMatch(p2));
+	}
+
+	@Override
+	protected GeoScope createNewEntity() {
+	return EntityFactory.createGeoScope();
+	}
+
+	@Override
+	protected GeoScopeRepository getApi() {
+		return repository;
 	}
 }

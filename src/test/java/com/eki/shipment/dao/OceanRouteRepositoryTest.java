@@ -19,15 +19,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
+import com.eki.common.interfaces.IEntity;
 import com.eki.shipment.model.OceanRoute;
+import com.eki.shipment.util.EntityFactory;
 
 /**
  * @author eckhard kirschning
  *
  */
 
-public class OceanRouteRepositoryTest extends AbstractRepositoryTest{
+public class OceanRouteRepositoryTest extends AbstractRepositoryTest<OceanRoute,Long>{
 	Logger logger = LoggerFactory.getLogger(OceanRouteRepositoryTest.class);
 
 	@Autowired
@@ -55,9 +58,7 @@ public class OceanRouteRepositoryTest extends AbstractRepositoryTest{
 		assertThat(found.isEmpty(), is(false));
 
 
-			Consumer<String> action = logger::trace;
-		found.stream().map(oc -> oc.getPol()).forEach(action);
-	}
+			}
 	
 	@Test
 	public void whenFindByExample_thenReturnOceanRoutes() {
@@ -76,5 +77,18 @@ public class OceanRouteRepositoryTest extends AbstractRepositoryTest{
 
 			Consumer<String> action =  logger::trace;
 		found.stream().map(oc -> oc.getPod()).forEach(action);
+	}
+
+
+	@Override
+	protected OceanRoute createNewEntity() {
+		return EntityFactory.createOceanRoute();
+	}
+
+
+	@Override
+	protected OceanRouteRepository getApi() {
+		
+		return oceanRouteRepository;
 	}
 }

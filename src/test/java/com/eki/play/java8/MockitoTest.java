@@ -34,11 +34,6 @@ import com.eki.shipment.service.GeoScopeService;
  * <li> {@link org.mockito.ArgumentMatchers#argThat(org.mockito.ArgumentMatcher)}</li>
  * <li> {@link org.mockito.ArgumentCaptor)}</li>
  *  
- *  that use Java 8 features like Lambda expressions and {@link java.util.Optional}.
- * 
- * 
- * 
- * 
  * @author ekirschning
  *
  */

@@ -4,21 +4,18 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
-import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import com.eki.shipment.dao.AbstractRepositoryTest;
-import com.eki.shipment.dao.KeyFigureDynamicQueryDao;
 import com.eki.shipment.model.GeoScope;
-import com.eki.shipment.model.KeyFigure;
-import com.eki.shipment.service.GeoScopeService;
+import com.eki.shipment.util.EntityFactory;
 import com.google.common.collect.Ordering;
 
 /**
@@ -35,77 +32,56 @@ import com.google.common.collect.Ordering;
  *
  */
 
-public class ComparatorTest extends AbstractRepositoryTest {
+public class ComparatorTest {
 	Logger logger = LoggerFactory.getLogger(ComparatorTest.class);
 
-	@Autowired
-	private KeyFigureDynamicQueryDao keyFigureDynamicQueryDao;
+	List<GeoScope> preferredGeoScopes;
 
-	@Autowired
-	private GeoScopeService geoScopeService;
-
-	List<KeyFigure> keyFiguresWithDifferentRates;
-
-	List<KeyFigure> keyFiguresWithEqualRates;
-
-	private final String inlandLocation = "DUSSELDORF";
-	private String countryCode = "DE";
-	private String geoScopeType = "T";
 
 	@Before
 	public void init() {
-		List<GeoScope> preferredGeoScopes = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
+	 preferredGeoScopes = EntityFactory.createGeoScopes();
 		assertThat(preferredGeoScopes.size(), is(4));
-		List<String> preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScopes);
-		assertThat(preferredPorts.size(), is(4));
-		keyFiguresWithDifferentRates = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode,
-				geoScopeType, preferredPorts, true, true, "TRUCK", null);
-
-		assertThat(keyFiguresWithDifferentRates.size(), is(8));
-
-		keyFiguresWithEqualRates = keyFigureDynamicQueryDao.searchKeyFigures(inlandLocation, countryCode, geoScopeType,
-				preferredPorts, true, true, null, null);
-
-		assertThat(keyFiguresWithEqualRates.size(), is(16));
+	
 
 	}
 
 	@Test
 	public void compareWithComparator() {
 		// given
-		assertThat(keyFiguresWithDifferentRates.size(), is(8));
+		assertThat(preferredGeoScopes.size(), is(4));
 
 		// test
-		Comparator<KeyFigure> rateComparator = (kf1, kf2) -> (kf1.getRate().compareTo(kf2.getRate()));
+		Comparator<GeoScope> rateComparator = (kf1, kf2) -> (kf1.getName().compareTo(kf2.getName()));
 
-		keyFiguresWithDifferentRates.sort(rateComparator);
+		preferredGeoScopes.sort(rateComparator);
 
-		assertCorrectSorting(keyFiguresWithDifferentRates);
+		assertCorrectSorting(preferredGeoScopes);
 	}
 
 	@Test
 	public void compareWithComparing() {
 		// given
-		assertThat(keyFiguresWithDifferentRates.size(), is(8));
+		assertThat(preferredGeoScopes.size(), is(4));
 
 		// test
-		Comparator<KeyFigure> rateComparator = Comparator.comparing((KeyFigure kf) -> kf.getRate());
+		// test
+		Comparator<GeoScope> rateComparator = (kf1, kf2) -> (kf1.getName().compareTo(kf2.getName()));
 
-		keyFiguresWithDifferentRates.sort(rateComparator);
+		preferredGeoScopes.sort(rateComparator);
 
-		assertCorrectSorting(keyFiguresWithDifferentRates);
+		assertCorrectSorting(preferredGeoScopes);
 
 	}
 
 	@Test
 	public void compareWithComparingNullsFirst() {
 		// given
-		assertThat(keyFiguresWithEqualRates.size(), is(16));
-
+		assertThat(preferredGeoScopes.size(), is(4));
 		// test
-		Comparator<KeyFigure> rateComparator = Comparator.comparing((KeyFigure kf) -> kf.getTransportMode());
+		Comparator<GeoScope> rateComparator = (gs1, gs2) -> (gs1.getName().compareTo(gs2.getName()));
 
-		keyFiguresWithDifferentRates.sort(rateComparator);
+		preferredGeoScopes.sort(rateComparator);
 
 	
 	}
@@ -115,28 +91,28 @@ public class ComparatorTest extends AbstractRepositoryTest {
 	@Test
 	public void compareWithComparingNullsLast() {
 		// given
-		assertThat(keyFiguresWithEqualRates.size(), is(16));
+		assertThat(preferredGeoScopes.size(), is(4));
 
 		// test
-		Comparator<KeyFigure> rateComparator = Comparator.comparing(KeyFigure::getRate,
-				Comparator.nullsLast(BigDecimal::compareTo));
+		Comparator<GeoScope> rateComparator = Comparator.comparing(GeoScope::getCountryCode,
+				Comparator.nullsLast(String::compareTo));
 
-		keyFiguresWithEqualRates.sort(rateComparator);
+		preferredGeoScopes.sort(rateComparator);
 
 	}
 
 	/**
 	 * sorted values are either ascending or arre equal.
 	 * 
-	 * @param kfs A collection of key figures.
+	 * @param gs A collection of key figures.
 	 */
-	private void assertCorrectSorting(List<KeyFigure> kfs) {
-		KeyFigure latestKf = null;
-		for (KeyFigure keyFigure : kfs) {
-			if (latestKf != null) {
-				assertThat(keyFigure.getRate().compareTo(latestKf.getRate()), not(-1));
+	private void assertCorrectSorting(List<GeoScope> gs) {
+		GeoScope latestGs = null;
+		for (GeoScope g : gs) {
+			if (latestGs != null) {
+				assertThat(g.getName().compareTo(latestGs.getName()), not(-1));
 			}
-			latestKf = keyFigure;
+			latestGs = g;
 
 		}
 	}

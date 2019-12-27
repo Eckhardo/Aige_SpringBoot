@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import com.eki.common.interfaces.IDto;
 import com.eki.common.interfaces.IEntity;
@@ -22,7 +23,6 @@ import com.eki.common.interfaces.IEntity;
 @Table(name = "keyfigure")
 
 public class KeyFigure implements IEntity, IDto {
-
 
 	/**
 	 * 
@@ -33,60 +33,60 @@ public class KeyFigure implements IEntity, IDto {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "from_id")
-	private  GeoScope from;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "from_id")
+	private GeoScope from;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "via_id")
-	private  GeoScope via;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "via_id")
+	private GeoScope via;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "to_id")
-	private  GeoScope to;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "to_id")
+	private GeoScope to;
 
 	@Column(name = "im_route")
-	private  long imRouteKey;
+	private long imRouteKey;
 
+	@NotNull
 	@Column(name = "tpmode")
-	private  String transportMode;
+	private String transportMode;
 
 	@Column(name = "preferred")
 
-	private  boolean isPreferred;
+	private boolean isPreferred;
 
 	@Column(name = "eq_size")
-	private  String equipmentSize;
+	private String equipmentSize;
 
 	@Column(name = "eq_group")
-	private  String equipmentGroup;
+	private String equipmentGroup;
 
-	@Column(name="rate", columnDefinition="Decimal(10,2) default '0.00'")
-	private  BigDecimal rate;
+	@Column(name = "rate", columnDefinition = "Decimal(10,2) default '0.00'")
+	private BigDecimal rate;
 
 	@Column(name = "currency")
-	private  String currency; // nullable
+	private String currency; // nullable
 
 	@Column(name = "weight_class")
-	private  int hsWeightClass;
+	private int hsWeightClass;
 
 	@Column(name = "def_eq_size")
-	private  String defaultEquipmentSize;
+	private String defaultEquipmentSize;
 
 	@Column(name = "start_date")
 	@Temporal(TemporalType.DATE)
-	private  Date startDate;
+	private Date startDate;
 //---------------------- contrcutor ------
-	
+
 	public KeyFigure() {
-	
-}
-	
-	public KeyFigure(long id, GeoScope from, GeoScope via, GeoScope to, long imRouteKey, String transportMode,
+
+	}
+
+	public KeyFigure(GeoScope from, GeoScope via, GeoScope to, long imRouteKey, String transportMode,
 			boolean isPreferred, String equipmentSize, String equipmentGroup, BigDecimal rate, String currency,
 			int hsWeightClass, String defaultEquipmentSize, Date startDate) {
-		this.id = id;
-			this.from = from;
+		this.from = from;
 		this.via = via;
 		this.to = to;
 		this.imRouteKey = imRouteKey;
@@ -101,16 +101,15 @@ public class KeyFigure implements IEntity, IDto {
 		this.startDate = startDate;
 	}
 
-
 	@Override
 	public Long getId() {
-	return id;
+		return id;
 	}
 
 	@Override
 	public void setId(Long id) {
-	this.id=id;
-		
+		this.id = id;
+
 	}
 
 	public GeoScope getFrom() {
@@ -169,6 +168,9 @@ public class KeyFigure implements IEntity, IDto {
 		return serialVersionUID;
 	}
 
+	public void setTransportMode(String transportMode) {
+		this.transportMode = transportMode;
+	}
 
 	@Override
 	public String toString() {
@@ -261,9 +263,14 @@ public class KeyFigure implements IEntity, IDto {
 		return true;
 	}
 
-	
+	public void setFrom(GeoScope from) {
+		this.from = from;
 
+	}
 
-	
-	
+	public void setTo(GeoScope to) {
+		this.to = to;
+
+	}
+
 }
