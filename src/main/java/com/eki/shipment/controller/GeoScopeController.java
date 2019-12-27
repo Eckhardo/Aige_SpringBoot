@@ -17,7 +17,8 @@ import com.eki.shipment.service.GeoScopeService;
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders="*")
 @RestController
 public class GeoScopeController {
-	Logger logger = LoggerFactory.getLogger(GeoScopeController.class);
+
+	Logger logger = LoggerFactory.getLogger(getClass());
 	 
 
 	@Autowired

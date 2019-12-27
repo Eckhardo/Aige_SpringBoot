@@ -2,8 +2,6 @@ package com.eki.shipment.service;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-
 public interface IServiceOperations<T> {
 
     // find - one

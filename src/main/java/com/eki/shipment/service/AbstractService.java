@@ -22,7 +22,7 @@ public abstract class AbstractService<T extends IEntity> implements IServiceOper
 
 	public AbstractService(final Class<T> clazzToSet) {
 		super();
-		clazz = clazzToSet;
+		this.clazz = clazzToSet;
 	}
 
 	// API

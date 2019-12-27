@@ -1,37 +1,149 @@
 package com.eki.shipment.controller;
 
 import java.util.Collection;
+import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.util.UriComponentsBuilder;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
+import com.eki.common.util.QueryConstants;
+import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.service.CountryService;
-import com.eki.shipment.service.GeoScopeService;
 
+/**
+ * @RestController is a convenience annotation for creating Restful controllers.
+ *                 It is a specialization of @Component and is autodetected
+ *                 through classpath scanning. It adds the @Controller
+ *                 and @ResponseBody annotations. It converts the response to
+ *                 JSON or XML. It does not work with the view technology, so
+ *                 the methods cannot return ModelAndView. It is typically used
+ *                 in combination with annotated handler methods based on
+ *                 the @RequestMapping annotation.
+ * 
+ *                 The @Controller annotation is used with the view technology.
+ *                 Because @PathVariable is extracting values from the URI path,
+ *                 it’s not encoded. On the other hand, @RequestParam is
+ *                 encoded. When to use @PathVariable?
+ * 
+ *                 The Most Important point to understand is when to
+ *                 use @PathVariable?
+ * 
+ * @PathVariable is used when we have to implicate mandatory parameter and we
+ *               want to pass as a URI only When we want the API to be
+ *               self-explanatory for the external interface to understand it Ex
+ *               – /customer/1/address = this is showing that this API will
+ *               return the address of the customer having id 1
+ *               <p>
+ * 
+ *               What is @RequestParam?
+ * @RequestParam is used to handle one or more dynamic value passed by API and
+ *               which need to be required by the controller method to do
+ *               specific tasks.
+ * 
+ *               We can consider @RequestParam as a query param we passed in
+ *               Servelet .
+ * 
+ *               Example – “/customer?customerId=1
+ * 
+ * @author eckha
+ *
+ */
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 @RestController
-@EnableJpaAuditing
-public class CountryController {
-	Logger logger = LoggerFactory.getLogger(CountryController.class);
+@RequestMapping(value = ShipmentMappings.COUNTRY)
+public class CountryController extends AbstractController<Country, Country> {
+
+	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private CountryService countryService;
+
+	public CountryController() {
+		super(Country.class);
+	}
+
+	/**
+	 * Get the country detail based on the id passed by the client API.
+	 * 
+	 * @param id
+	 * @return country detail
+	 */
+	@GetMapping(value = "{id}")
+	public Country findOne(@PathVariable Long id) {
+		return findOneInternal(id);
+	}
+
+	/**
+	 * Get all the countres available in the underlying system
+	 * 
+	 * @return list of counties
+	 */
+	@GetMapping
+	public List<Country>getCountries() {
+		return countryService.findAll();
+	}
+
 //curl -X GET "localhost:8086/nre/country/find?country_code=DE"
-	@GetMapping("/country/filter")
-	public Collection<Country> searchByCode(@RequestParam(value = "country_code", required = true) String countryCode) {
+	@GetMapping("filter")
+	public Collection<Country> searchByCode(@RequestParam(value = "country_code") String countryCode) {
 		return countryService.searchCountries(countryCode);
 	}
 
-	@GetMapping("/country/find")
-	public Country findByCode(@RequestParam(value = "country_code", required = true) String countryCode) {
+	@GetMapping("find")
+	public Country findByCode(@RequestParam(value = "country_code") String countryCode) {
 		return countryService.findCountry(countryCode);
+	}
+
+	@Override
+	@GetMapping("sorted")
+	public List<Country> findAllSorted(@RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "DESC") String sortOrder) {
+		return findAllSortedInternal(sortBy, sortOrder);
+	}
+
+	@Override
+	@GetMapping("paged")
+	protected List<Country> findAllPaginated(@RequestParam(defaultValue = "0") int pageNo,
+			@RequestParam(defaultValue = "10") int pageSize) {
+		return countryService.findAllPaginated(pageNo, pageSize);
+	}
+
+	@Override
+	@GetMapping("sortedPaged")
+	protected List<Country> findAllPaginatedAndSorted(@RequestParam(defaultValue = "0") int pageNo,
+			@RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "ASC") String sortOrder) {
+		return countryService.findAllPaginatedAndSorted(pageNo, pageSize, sortBy, sortOrder);
+
+	}
+
+	@GetMapping("/countries/{id}")
+	Resource<Country> one(@PathVariable Long id) {
+		Country country = findOneInternal(id);
+		return new Resource<>(country, linkTo(methodOn(CountryController.class).one(id)).withSelfRel());
+	}
+
+	@Override
+	protected CountryService getService() {
+		return countryService;
 	}
 
 }

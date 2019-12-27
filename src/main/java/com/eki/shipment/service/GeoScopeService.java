@@ -2,9 +2,7 @@ package com.eki.shipment.service;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.slf4j.Logger;
@@ -12,14 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.eki.shipment.dao.CountryRepository;
 import com.eki.shipment.dao.GeoScopeRepository;
-import com.eki.shipment.model.Country;
 import com.eki.shipment.model.GeoScope;
 
 @Service

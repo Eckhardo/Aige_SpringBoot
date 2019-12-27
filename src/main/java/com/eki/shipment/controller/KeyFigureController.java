@@ -22,7 +22,8 @@ import com.google.common.collect.Lists;
 @RestController
 public class KeyFigureController {
 
-	private static final Logger logger = LoggerFactory.getLogger(KeyFigureController.class);
+
+	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private KeyFigureService kfService;

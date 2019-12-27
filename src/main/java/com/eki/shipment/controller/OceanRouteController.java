@@ -26,7 +26,8 @@ import com.eki.shipment.service.OceanRouteService;
 @RestController
 public class OceanRouteController {
 
-	private static final Logger logger = LoggerFactory.getLogger(OceanRouteController.class);
+
+	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private OceanRouteService oceanRouteService;
