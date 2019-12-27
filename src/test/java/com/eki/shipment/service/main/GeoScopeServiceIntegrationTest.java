@@ -40,7 +40,7 @@ public class GeoScopeServiceIntegrationTest extends AbstractServiceIntegrationTe
 
 	@Override
 	protected void invalidate(GeoScope invalidResource) {
-		invalidResource.setCountryCode(randomAlphabetic(10));
+		invalidResource.setCountryCode(null);
 
 	}
 

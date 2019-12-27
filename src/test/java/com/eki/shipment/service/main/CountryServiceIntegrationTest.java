@@ -29,7 +29,7 @@ public class CountryServiceIntegrationTest extends AbstractServiceIntegrationTes
 
 	@Override
 	protected void invalidate(Country invalidResource) {
-		invalidResource.setCode(randomAlphabetic(3));
+		invalidResource.setCode(randomAlphabetic(30));
 
 	}
 

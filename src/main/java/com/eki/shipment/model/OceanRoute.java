@@ -18,6 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.eki.common.interfaces.IDto;
 import com.eki.common.interfaces.IEntity;
@@ -79,10 +80,12 @@ public class OceanRoute implements IEntity, IDto {
 	@Column(name = "tt")
 	private int transitTime;
 
+	@NotNull
 	@Column(name = "pol")
 	private String pol;
 	@Column(name = "pol_fac")
 	private String polFac;
+	@NotNull
 	private String pod;
 	@Column(name = "pod_fac")
 	private String podFac;
@@ -202,7 +205,10 @@ public class OceanRoute implements IEntity, IDto {
 
 	public boolean isShunting() {
 
-		return this.ts1.equals(ts2);
+		if (ts1 != null && ts2 != null) {
+			return ts1.equals(ts2);
+		}
+		return false;
 	}
 
 	@Override

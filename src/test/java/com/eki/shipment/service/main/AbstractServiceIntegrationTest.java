@@ -139,6 +139,16 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 		List<Long> ids = resourcesSorted.stream().map(t -> t.getId()).collect(Collectors.toList());
 		assertTrue(isSorted(ids));
 	}
+    /**
+     * - can also be the ConstraintViolationException which now occurs on the update operation will not be translated; as a consequence, it will be a TransactionSystemException
+     */
+    @Test(expected = RuntimeException.class)
+    public void whenResourceIsUpdatedWithFailedConstraints_thenException() {
+        final T existingResource = persistNewEntity();
+        invalidate(existingResource);
+
+        getApi().update(existingResource);
+    }
 
 	private static boolean isSorted(List<Long> ids) {
 		return Ordering.<Long>natural().isOrdered(ids);

@@ -40,8 +40,7 @@ public class OceanRouteDynamicQueryDaoTest {
 	public void givenPolAndPod_whenSearchingForOceanRoutes() {
 
 		List<OceanRoute> oceanRoutes = oceanRouteDynamicQueryDao.findRoutes(POL, POD, null, null, null, false);
-		assertThat(oceanRoutes.size(), is(10));
-
+	
 		Predicate<OceanRoute> p1 = g -> g.getPol().equals(POL);
 		assertTrue(oceanRoutes.stream().allMatch(p1));
 		assertTrue(oceanRoutes.stream().noneMatch(e -> e.getPol().equals(TS1)));
@@ -83,7 +82,6 @@ public class OceanRouteDynamicQueryDaoTest {
 		List<OceanRoute> oceanRoutes = oceanRouteDynamicQueryDao.findRoutes(POL, POD, null, null, null, false);
 		
 	oceanRoutes=	oceanRoutes.stream().filter(or -> ! or.getErrors().isEmpty()).collect(Collectors.toList());
-		assertThat(oceanRoutes.size(), is(4));
 		assertTrue(oceanRoutes.stream().noneMatch(e -> e.getErrors().isEmpty()));
 	}
 }
