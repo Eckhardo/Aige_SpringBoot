@@ -3,27 +3,22 @@ package com.eki.shipment.controller;
 import java.util.Collection;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
-import com.eki.common.util.QueryConstants;
+
 import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.service.CountryService;
@@ -59,7 +54,7 @@ import com.eki.shipment.service.CountryService;
  *               specific tasks.
  * 
  *               We can consider @RequestParam as a query param we passed in
- *               Servelet .
+ *               Servlet .
  * 
  *               Example – “/customer?customerId=1
  * 
@@ -97,7 +92,7 @@ public class CountryController extends AbstractController<Country, Country> {
 	 * @return list of counties
 	 */
 	@GetMapping
-	public List<Country>getCountries() {
+	public List<Country> getCountries() {
 		return countryService.findAll();
 	}
 
@@ -135,10 +130,27 @@ public class CountryController extends AbstractController<Country, Country> {
 
 	}
 
-	@GetMapping("/countries/{id}")
-	Resource<Country> one(@PathVariable Long id) {
-		Country country = findOneInternal(id);
-		return new Resource<>(country, linkTo(methodOn(CountryController.class).one(id)).withSelfRel());
+	@PostMapping()
+	protected ResponseEntity<Country> newCountry(@RequestBody Country newCountry) {
+	Country country=	 createInternal(newCountry);
+		 return new ResponseEntity < Country>(country,null,HttpStatus.CREATED);
+	}
+
+	@PutMapping(value = "{id}")
+	protected ResponseEntity updateCountry(@RequestBody Country country, @PathVariable Long id) {
+		updateInternal(id, country);
+		 return new ResponseEntity < >(HttpStatus.OK);
+	}
+	 /**
+     * Deleted the country from the system. Client will pass the ID for the country and this 
+     * end point will remove country from the system if found.
+     * @param id
+     * @return
+     */
+	@DeleteMapping(value = "{id}")
+	protected ResponseEntity delete(@PathVariable("id") final Long id) {
+		deleteByIdInternal(id);
+		return new ResponseEntity < >(HttpStatus.NO_CONTENT);
 	}
 
 	@Override

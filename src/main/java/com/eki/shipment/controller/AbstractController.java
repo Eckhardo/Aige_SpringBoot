@@ -88,10 +88,11 @@ public abstract class AbstractController<D extends IDto, E extends IEntity> {
     }
     // save/create/persist
 
-    protected final void createInternal(final E resource, final UriComponentsBuilder uriBuilder, final HttpServletResponse response) {
+    protected final E createInternal(final E resource) {
         RestPreconditions.checkRequestElementNotNull(resource);
         RestPreconditions.checkRequestState(resource.getId() == null);
         final E existingResource = getService().create(resource);
+        return existingResource;
  }
 
     // update
