@@ -1,5 +1,6 @@
 package com.eki.shipment.controller;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import static com.eki.common.util.QueryConstants.*;
 import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.service.CountryService;
@@ -87,7 +90,7 @@ public class CountryController extends AbstractController<Country, Country> {
 	}
 
 	/**
-	 * Get all the countres available in the underlying system
+	 * Get all the countries available in the underlying system
 	 * 
 	 * @return list of counties
 	 */
@@ -96,7 +99,73 @@ public class CountryController extends AbstractController<Country, Country> {
 		return countryService.findAll();
 	}
 
-//curl -X GET "localhost:8086/nre/country/find?country_code=DE"
+	/**
+	 * Create a new Country.
+	 * 
+	 * @return HttpRespnseHeader ( HttpStatusCode=CREATED and LOCATION uri of newly
+	 *         created resource)
+	 */
+	@PostMapping()
+	protected ResponseEntity<Object> newCountry(@RequestBody Country newCountry) {
+		final Country country = createInternal(newCountry);
+		// Create resource location
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(country.getId())
+				.toUri();
+		// Send location in response
+		return ResponseEntity.created(location).build();
+	}
+
+	/**
+	 * Update Country.
+	 * 
+	 * @return HttpResponseHeader ( HttpStatusCode=OK)
+	 */
+
+	@PutMapping(value = "{id}")
+	protected ResponseEntity updateCountry(@RequestBody Country country, @PathVariable Long id) {
+		updateInternal(id, country);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	/**
+	 * Deleted the country from the system. Client will pass the ID for the country
+	 * and this end point will remove country from the system if found.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@DeleteMapping(value = "{id}")
+	protected ResponseEntity delete(@PathVariable("id") final Long id) {
+		deleteByIdInternal(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@Override
+	@GetMapping(params = { SORT_BY, SORT_ORDER })
+	public List<Country> findAllSorted(@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
+			@RequestParam(value = SORT_ORDER, defaultValue = DESC) final String sortOrder) {
+		 List<Country> countries=  findAllSortedInternal(sortBy, sortOrder);
+		 return countries;
+	}
+
+	@Override
+	@GetMapping(params = { PAGE_NO, PAGE_SIZE })
+	protected List<Country> findAllPaginated(@RequestParam(value = PAGE_NO) final int pageNo,
+			@RequestParam(value = PAGE_SIZE, defaultValue = "5", required=false) final int pageSize) {
+		 List<Country> countries=findPaginatedInternal(pageNo, pageSize);
+		 return countries;
+	}
+
+	@Override
+	@GetMapping(params = { PAGE_NO, PAGE_SIZE, SORT_BY, SORT_ORDER })
+	protected List<Country> findAllPaginatedAndSorted(@RequestParam(value = PAGE_NO) final int pageNo,
+			@RequestParam(value = PAGE_SIZE) final int pageSize,
+			@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
+			@RequestParam(value = SORT_ORDER, defaultValue = DESC) final String sortOrder) {
+		return this.findAllPaginatedAndSorted(pageNo, pageSize, sortBy, sortOrder);
+
+	}
+
 	@GetMapping("filter")
 	public Collection<Country> searchByCode(@RequestParam(value = "country_code") String countryCode) {
 		return countryService.searchCountries(countryCode);
@@ -105,52 +174,6 @@ public class CountryController extends AbstractController<Country, Country> {
 	@GetMapping("find")
 	public Country findByCode(@RequestParam(value = "country_code") String countryCode) {
 		return countryService.findCountry(countryCode);
-	}
-
-	@Override
-	@GetMapping("sorted")
-	public List<Country> findAllSorted(@RequestParam(defaultValue = "id") String sortBy,
-			@RequestParam(defaultValue = "DESC") String sortOrder) {
-		return findAllSortedInternal(sortBy, sortOrder);
-	}
-
-	@Override
-	@GetMapping("paged")
-	protected List<Country> findAllPaginated(@RequestParam(defaultValue = "0") int pageNo,
-			@RequestParam(defaultValue = "10") int pageSize) {
-		return countryService.findAllPaginated(pageNo, pageSize);
-	}
-
-	@Override
-	@GetMapping("sortedPaged")
-	protected List<Country> findAllPaginatedAndSorted(@RequestParam(defaultValue = "0") int pageNo,
-			@RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "id") String sortBy,
-			@RequestParam(defaultValue = "ASC") String sortOrder) {
-		return countryService.findAllPaginatedAndSorted(pageNo, pageSize, sortBy, sortOrder);
-
-	}
-
-	@PostMapping()
-	protected ResponseEntity<Country> newCountry(@RequestBody Country newCountry) {
-	Country country=	 createInternal(newCountry);
-		 return new ResponseEntity < Country>(country,null,HttpStatus.CREATED);
-	}
-
-	@PutMapping(value = "{id}")
-	protected ResponseEntity updateCountry(@RequestBody Country country, @PathVariable Long id) {
-		updateInternal(id, country);
-		 return new ResponseEntity < >(HttpStatus.OK);
-	}
-	 /**
-     * Deleted the country from the system. Client will pass the ID for the country and this 
-     * end point will remove country from the system if found.
-     * @param id
-     * @return
-     */
-	@DeleteMapping(value = "{id}")
-	protected ResponseEntity delete(@PathVariable("id") final Long id) {
-		deleteByIdInternal(id);
-		return new ResponseEntity < >(HttpStatus.NO_CONTENT);
 	}
 
 	@Override

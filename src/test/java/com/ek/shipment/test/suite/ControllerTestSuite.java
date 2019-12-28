@@ -4,10 +4,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.eki.shipment.controller.CountryControllerTest;
-import com.eki.shipment.controller.GeoScopeControllerTest;
-import com.eki.shipment.controller.KeyFigureControllerTest;
-import com.eki.shipment.controller.OceanRouteControllerTest;
+import com.eki.shipment.controller.resttemplate.CountryControllerTest;
+import com.eki.shipment.controller.resttemplate.GeoScopeControllerTest;
+import com.eki.shipment.controller.resttemplate.KeyFigureControllerTest;
+import com.eki.shipment.controller.resttemplate.OceanRouteControllerTest;
 /**
  * 
  * 

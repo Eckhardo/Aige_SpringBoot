@@ -149,6 +149,11 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 
         getApi().update(existingResource);
     }
+	protected T persistNewEntity() {
+		T entity = getApi().create(createNewEntity());
+		return entity;
+	}
+
 
 	private static boolean isSorted(List<Long> ids) {
 		return Ordering.<Long>natural().isOrdered(ids);
@@ -163,9 +168,5 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 
 	protected abstract IServiceOperations<T> getApi();
 
-	protected T persistNewEntity() {
-		T entity = getApi().create(createNewEntity());
-		return entity;
-	}
 
 }

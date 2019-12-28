@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
  */
 @SpringBootApplication
-@EnableJpaAuditing
+
 // Needed, otherwise some tests fail!
 @ComponentScan("com.eki")
 public class MysqlBootApplication implements CommandLineRunner {
