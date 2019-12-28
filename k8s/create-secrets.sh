@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 echo "Enter MySQL username: "
 read -r username
 echo "Enter MySQL password: "
