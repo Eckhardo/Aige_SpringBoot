@@ -40,7 +40,9 @@ import com.eki.shipment.run.MysqlBootApplication;
 /**
  * TestRestTemplate is only auto-configured when @SpringBootTest has been
  * configured with a webEnvironment that means it starts the web container and
- * listens for HTTP requests. For example:
+ * listens for HTTP requests. 
+ 
+ For example:
  * 
  * @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT) @author eckha
  *
