@@ -13,8 +13,11 @@ public final class QueryConstants {
 	public static final String DESC = "DESC"; // is constant because it's used for the controller mapping
 	public static final String SLASH = "/";
 	public static final String AMPERSAND = "&";
-	
+	public static final String SEPARATOR = ",";
+
+	public static final String OP = "=";
 	public static final String QUESTION_MARK = "?";
+
 	private QueryConstants() {
 		throw new AssertionError();
 	}

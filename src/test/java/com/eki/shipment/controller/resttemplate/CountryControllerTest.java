@@ -112,10 +112,29 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 		assertThat(responseEntity.getStatusCode(), is(HttpStatus.NO_CONTENT));
 
 	}
-
 	@Test
 	public void realWebEnvironmentTestFindAllPaged() throws Exception {
-		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(QUESTION_MARK+PAGE_NO+"=1"), HttpMethod.GET, null,new ParameterizedTypeReference<List<Country>>() {});
+
+		ResponseEntity<List<Country>> response = restTemplate.exchange(createURL(QUESTION_MARK + PAGE_NO + "=1"),
+				HttpMethod.GET, null, new ParameterizedTypeReference<List<Country>>() {
+				});
+		assertFalse(response.getBody().isEmpty());
+
+	}
+
+	@Test
+	public void realWebEnvironmentTestFindAllSortedParameterized() throws Exception {
+
+		ResponseEntity<List<Country>> responseEntity = restTemplate.exchange(
+				createURL(QUESTION_MARK + " sortBy=code&sortOrder=DESC"), HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<Country>>() {
+				});
+		assertFalse(responseEntity.getBody().isEmpty());
+	}
+
+	@Test
+	public void  whenFindAllPaged_thenResourceIsPaged() throws Exception {
+		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(QUESTION_MARK+"pageNo=1&pageSize=5"), HttpMethod.GET, null,new ParameterizedTypeReference<List<Country>>() {});
 		
 		List<Country> resources= responseEntity.getBody();
 		assertThat(resources.size(), is(5));

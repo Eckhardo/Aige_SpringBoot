@@ -95,7 +95,7 @@ public class CountryController extends AbstractController<Country, Country> {
 	 * @return list of counties
 	 */
 	@GetMapping
-	public List<Country> getCountries() {
+	public List<Country> findAll() {
 		return countryService.findAll();
 	}
 
@@ -106,7 +106,7 @@ public class CountryController extends AbstractController<Country, Country> {
 	 *         created resource)
 	 */
 	@PostMapping()
-	protected ResponseEntity<Object> newCountry(@RequestBody Country newCountry) {
+	protected ResponseEntity<Object> createResource(@RequestBody Country newCountry) {
 		final Country country = createInternal(newCountry);
 		// Create resource location
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(country.getId())
@@ -122,7 +122,7 @@ public class CountryController extends AbstractController<Country, Country> {
 	 */
 
 	@PutMapping(value = "{id}")
-	protected ResponseEntity updateCountry(@RequestBody Country country, @PathVariable Long id) {
+	protected ResponseEntity updateResource(@RequestBody Country country, @PathVariable Long id) {
 		updateInternal(id, country);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -135,7 +135,7 @@ public class CountryController extends AbstractController<Country, Country> {
 	 * @return
 	 */
 	@DeleteMapping(value = "{id}")
-	protected ResponseEntity delete(@PathVariable("id") final Long id) {
+	protected ResponseEntity deleteResource(@PathVariable("id") final Long id) {
 		deleteByIdInternal(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -151,7 +151,7 @@ public class CountryController extends AbstractController<Country, Country> {
 	@Override
 	@GetMapping(params = { PAGE_NO, PAGE_SIZE })
 	protected List<Country> findAllPaginated(@RequestParam(value = PAGE_NO) final int pageNo,
-			@RequestParam(value = PAGE_SIZE, defaultValue = "5", required=false) final int pageSize) {
+			@RequestParam(value = PAGE_SIZE) final int pageSize) {
 		 List<Country> countries=findPaginatedInternal(pageNo, pageSize);
 		 return countries;
 	}
