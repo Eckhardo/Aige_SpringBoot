@@ -3,6 +3,7 @@ package com.eki.shipment.dao;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
+
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
@@ -46,8 +47,7 @@ public class GeoScopeRepositoryTest extends AbstractRepositoryTest<GeoScope,Long
 
 		// then
 		assertThat(found.isEmpty(), is(false));
-		assertThat(found.size(), is(4));
-		Predicate<GeoScope> p1 = g -> g.getLocationCode().equals("DEHAM");
+			Predicate<GeoScope> p1 = g -> g.getLocationCode().equals("DEHAM");
 		assertTrue(found.stream().anyMatch(p1));
 		assertFalse(found.stream().allMatch(p1));
 	}
@@ -89,7 +89,6 @@ public class GeoScopeRepositoryTest extends AbstractRepositoryTest<GeoScope,Long
 		names.forEach(logger::trace);
 		// then
 		assertThat(found.isEmpty(), is(false));
-		assertThat(found.size(), is(9));
 		Predicate<GeoScope> p1 = g -> g.getLocationCode().equals("DEHAM");
 		assertTrue(found.stream().anyMatch(p1));
 		assertFalse(found.stream().allMatch(p1));
@@ -172,8 +171,7 @@ public class GeoScopeRepositoryTest extends AbstractRepositoryTest<GeoScope,Long
 
 		// then
 		assertThat(found.isEmpty(), is(false));
-		assertThat(found.size(), is(4));
-		assertTrue(found.stream().anyMatch(p1));
+			assertTrue(found.stream().anyMatch(p1));
 		assertFalse(found.stream().allMatch(p1));
 		assertTrue(found.stream().noneMatch(p2));
 	}
@@ -189,7 +187,6 @@ public class GeoScopeRepositoryTest extends AbstractRepositoryTest<GeoScope,Long
 
 		// then
 		assertThat(found.isEmpty(), is(false));
-		assertThat(found.size(), is(2));
 		assertTrue(found.stream().anyMatch(p1));
 		assertFalse(found.stream().allMatch(p1));
 		assertTrue(found.stream().noneMatch(p2));

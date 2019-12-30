@@ -1,16 +1,34 @@
 package com.eki.shipment.controller;
 
+import static com.eki.common.util.QueryConstants.DESC;
+import static com.eki.common.util.QueryConstants.ID;
+import static com.eki.common.util.QueryConstants.PAGE_NO;
+import static com.eki.common.util.QueryConstants.PAGE_SIZE;
+import static com.eki.common.util.QueryConstants.SORT_BY;
+import static com.eki.common.util.QueryConstants.SORT_ORDER;
+
+import java.net.URI;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.model.RESTDateParam;
@@ -20,7 +38,8 @@ import com.google.common.collect.Lists;
 
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 @RestController
-public class IntermodalRouteController {
+@RequestMapping(value = ShipmentMappings.INTERMODAL_ROUTE)
+public class IntermodalRouteController extends AbstractController<KeyFigure, KeyFigure> {
 
 
 	Logger logger = LoggerFactory.getLogger(getClass());
@@ -29,14 +48,74 @@ public class IntermodalRouteController {
 	private IntermodalRouteService kfService;
 	@Autowired
 	private GeoScopeService geoScopeService;
+	
+	public IntermodalRouteController() {
+		super(KeyFigure.class);
+	}
 
+	/**
+	 * Get the KeyFigure detail based on the id passed by the client API.
+	 * 
+	 * @param id
+	 * @return KeyFigure detail
+	 */
+	@GetMapping(value = "{id}")
+	public KeyFigure findOne(@PathVariable Long id) {
+		return findOneInternal(id);
+	}
+
+	/**
+	 * Get all the KeyFigures available in the underlying system
+	 * 
+	 * @return list of counties
+	 */
+	@GetMapping
+	public List<KeyFigure> getKeyFigures() {
+		return kfService.findAll();
+	}
+
+	/**
+	 * Create a new KeyFigure
+	 * 
+	 * @return HttpStausCode=CREATED
+	 */
+	@PostMapping()
+	protected ResponseEntity<Object> newResource(@RequestBody KeyFigure kf) {
+	final KeyFigure kfNew=	 createInternal(kf);
+	 //Create resource location
+	URI location = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(kfNew.getId())
+            .toUri();
+	 //Send location in response
+    return ResponseEntity.created(location).build();
+	}
+
+	@PutMapping(value = "{id}")
+	protected ResponseEntity<Object> updateResource(@RequestBody KeyFigure kf, @PathVariable Long id) {
+		updateInternal(id, kf);
+		 return new ResponseEntity < >(HttpStatus.OK);
+	}
+	 /**
+     * Deleted the KeyFigure from the system. Client will pass the ID for the KeyFigure and this 
+     * end point will remove KeyFigure from the system if found.
+     * @param id
+     * @return
+     */
+	@DeleteMapping(value = "{id}")
+	protected ResponseEntity delete(@PathVariable("id") final Long id) {
+		deleteByIdInternal(id);
+		return new ResponseEntity < >(HttpStatus.NO_CONTENT);
+	}
+	
 	@GetMapping({ "/keyfigure/filter" })
 	public List<KeyFigure> searchKeyFigures(
 			@RequestParam(value = "includeImTariff", defaultValue = "false") boolean includeIt,
 			@RequestParam(value = "includeImSchedule", defaultValue = "false") boolean includeIs,
 			@RequestParam(value = "isPreCarriage", defaultValue = "true") boolean isPreCarriage,
 			@RequestParam(value = "inlandLocation") String inlandLocation,
-			@RequestParam(value = "inlandGeoScopeType") String inlandGeoScopeType,
+			@RequestParam(value = "inlandKeyFigureType") String inlandKeyFigureType,
 			@RequestParam(value = "countryCode") String countryCode,
 			@RequestParam(value = "portLocation") String portLocation,
 			@RequestParam(value = "includeAllPrefPorts", defaultValue = "true") boolean includeAllPrefPorts,
@@ -69,10 +148,10 @@ public class IntermodalRouteController {
 		}
 		List<String> preferredPorts = Lists.newArrayList();
 		if (includeAllPrefPorts) {
-			List<GeoScope> preferredGeoScopes = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
-			preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScopes);
+			List<GeoScope> preferredGeoScope = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
+			preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScope);
 		}
-		List<KeyFigure> kfs = kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode, preferredPorts,
+		List<KeyFigure> kfs = kfService.searchKeyFigures(inlandLocation, inlandKeyFigureType, countryCode, preferredPorts,
 				transportMode, eq20, eq40, eqGroup, PageRequest.of(page, 5));
 		if (kfs.isEmpty())
 			throw new IntermodalRouteNotFoundException();
@@ -81,7 +160,7 @@ public class IntermodalRouteController {
 
 	@GetMapping({ "/keyfigure/find" })
 	public List<KeyFigure> searchSimple(@RequestParam(value = "inlandLocation") String inlandLocation,
-			@RequestParam(value = "inlandGeoScopeType") String inlandGeoScopeType,
+			@RequestParam(value = "inlandKeyFigureType") String inlandKeyFigureType,
 			@RequestParam(value = "countryCode") String countryCode,
 			@RequestParam(value = "portLocation") String portLocation,
 			@RequestParam(value = "includeAllPrefPorts", defaultValue = "true") boolean includeAllPrefPorts) {
@@ -94,14 +173,46 @@ public class IntermodalRouteController {
 		}
 		List<String> preferredPorts = Lists.newArrayList();
 		if (includeAllPrefPorts) {
-			List<GeoScope> preferredGeoScopes = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
-			preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScopes);
-		}
+			List<GeoScope> preferredGeoScope = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
+			preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScope);
+	}
 
-		List<KeyFigure> kfs = kfService.searchKeyFiguresSimple(inlandLocation, inlandGeoScopeType, countryCode,
+		List<KeyFigure> kfs = kfService.searchKeyFiguresSimple(inlandLocation, inlandKeyFigureType, countryCode,
 				preferredPorts);
 		if (kfs.isEmpty())
 			throw new IntermodalRouteNotFoundException();
 		return kfs;
 	}
+
+	@Override
+	protected  IntermodalRouteService getService() {
+		return kfService;
+	}
+
+
+	@Override
+	@GetMapping(params = { SORT_BY, SORT_ORDER })
+	public List<KeyFigure> findAllSorted(@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
+			@RequestParam(value = SORT_ORDER, defaultValue = DESC) final String sortOrder) {
+		 List<KeyFigure> countries=  findAllSortedInternal(sortBy, sortOrder);
+		 return countries;
+	}
+
+	@Override
+	@GetMapping(params = { PAGE_NO, PAGE_SIZE })
+	protected List<KeyFigure> findAllPaginated(@RequestParam(value = PAGE_NO) final int pageNo,
+			@RequestParam(value = PAGE_SIZE) final int pageSize) {
+		return findPaginatedInternal(pageNo, pageSize);
+	}
+
+	@Override
+	@GetMapping(params = { PAGE_NO, PAGE_SIZE, SORT_BY, SORT_ORDER })
+	protected List<KeyFigure> findAllPaginatedAndSorted(@RequestParam(value = PAGE_NO) final int pageNo,
+			@RequestParam(value = PAGE_SIZE) final int pageSize,
+			@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
+			@RequestParam(value = SORT_ORDER, defaultValue = DESC) final String sortOrder) {
+		return this.findAllPaginatedAndSorted(pageNo, pageSize, sortBy, sortOrder);
+
+	}
+
 }

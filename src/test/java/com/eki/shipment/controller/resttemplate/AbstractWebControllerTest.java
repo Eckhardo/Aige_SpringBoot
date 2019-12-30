@@ -30,11 +30,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eki.common.interfaces.IDto;
 import com.eki.common.interfaces.IEntity;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.model.GeoScope;
+import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.model.OceanRoute;
 import com.eki.shipment.run.MysqlBootApplication;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -54,7 +56,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @TestPropertySource(locations = "classpath:application-test.properties")
 
 public abstract class AbstractWebControllerTest<T extends IEntity> {
+	
+	
+	Class<T> clazz;
 
+	public AbstractWebControllerTest(Class clazz) {
+		super();
+		this.clazz=clazz;
+	}
 	@Autowired
 	TestRestTemplate restTemplate;
 
@@ -68,6 +77,25 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 	HttpHeaders headers = new HttpHeaders();
 	HttpEntity<String> defaultHttpEntity = new HttpEntity<String>(null, headers);
 
+	
+
+	@Test
+	public void whenFindAllWithTypeRef_thenResourcesAreRetrieved() throws Exception {
+	
+		ResponseEntity<List<T>> responseEntity =  getAll(createURL(SLASH),getParamTypeRef());
+		assertFalse(responseEntity.getBody().isEmpty());
+	}
+
+	@Test
+	public void whenFindOne_ThenResourceIsRetrieved() {
+		T entity =createNewEntityAndPersist();
+		ResponseEntity<T> responseEntity = getOne(entity, clazz, createURL(SLASH + entity.getId()));
+
+		assertThat(responseEntity.getBody().getId(), is(entity.getId()));
+
+	}
+
+	
 	public ResponseEntity<T> getOne(Object content, Class<T> returnType, String url) {
 		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(returnType);
 		HttpEntity<Object> requestEntity = new HttpEntity<>(content);
@@ -84,6 +112,8 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 		ResponseEntity<List<T>> response = restTemplate.exchange(url, HttpMethod.GET, null, parameterizedTypeReference);
 		return response;
 	}
+
+
 
 	public ResponseEntity<T> post(Object content, Class<T> returnType, String url) {
 		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(returnType);
@@ -106,10 +136,7 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 		return response;
 	}
 
-	@Test
-	public void testDummy() {
 
-	}
 
 	protected StringBuilder createBaseUri(String uriPart) {
 		return new StringBuilder().append(HOST).append(port).append(SLASH).append(APP_ROOT).append(SLASH);
@@ -132,6 +159,12 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 		}
 		return true;
 	}
+	protected T createNewEntity(String uriString) {
+		ResponseEntity<List<T>> responseEntity = 	 restTemplate.exchange(createURL(uriString), HttpMethod.GET, null,getParamTypeRef());
+		assertFalse(responseEntity.getBody().isEmpty());
+		return responseEntity.getBody().get(0);
+
+	}
 
 	protected String createURL(String uriPart) {
 		StringBuilder uri = createBaseUri(uriPart);
@@ -141,10 +174,23 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 		}
 		return uri.toString();
 	}
+	
+	protected T createNewEntityAndPersist() {
+		T entity = createEntity();
+		ResponseEntity<T> result = post(entity, clazz, createURL(SLASH));
+		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
+		HttpHeaders headers = result.getHeaders();
+		List<String> location = headers.get(HttpHeaders.LOCATION);
+		assertNotNull(location);
+		ResponseEntity<T> responseEntity = restTemplate.exchange(location.get(0), HttpMethod.GET,
+				defaultHttpEntity, clazz);
+		return responseEntity.getBody();
 
+	
+	}
 	protected abstract String getApiName();
-
 	protected abstract T createEntity();
 	protected abstract ParameterizedTypeReference<List<T>> getParamTypeRef();
 	protected abstract TypeReference<List<T>> getTypeRef();
+	
 }

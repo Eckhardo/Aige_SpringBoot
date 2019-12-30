@@ -36,34 +36,20 @@ import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.GeoScope;
+import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.util.EntityFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> {
 
-	@Test
-	public void whenFindOne_ThenResourceIsRetrieved() {
-		GeoScope entity = retrieveFirstEntity(SLASH);
-		ResponseEntity<GeoScope> responseEntity = getOne(entity, GeoScope.class, createURL(SLASH + entity.getId()));
 
-		assertThat(responseEntity.getBody().getId(), is(entity.getId()));
-
+	
+	public GeoScopeControllerTest() {
+		super(GeoScope.class);
 	}
 
-	@Test
-	public void whenFindAll_thenResourcesAreRetrieved() throws Exception {
 
-		ResponseEntity<List<GeoScope>> responseEntity = restTemplate.exchange(createURL(SLASH), HttpMethod.GET, null,
-				getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
-	}
 
-	@Test
-	public void findAllGeneric() throws Exception {
-
-		ResponseEntity<List<GeoScope>> responseEntity = getAll(createURL(SLASH), getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
-	}
 
 	@Test
 	public void whenCreateNew_thenTheNewResourceIsRetrievableByLocationHeader() {
@@ -82,7 +68,7 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> 
 
 	@Test
 	public void whenUpdateResource_thenStatusCodeIsOk() {
-		GeoScope entity = retrieveFirstEntity(SLASH);
+		GeoScope entity = createNewEntityAndPersist();
 		entity.setName("");
 
 		Map<String, String> params = new HashMap<String, String>();
@@ -95,7 +81,7 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> 
 
 	@Test
 	public void whenDeleteResourse_thenStatusCodeIsNoContent() {
-		GeoScope entity = retrieveFirstEntity(SLASH);
+		GeoScope entity =createNewEntityAndPersist();
 
 		ResponseEntity<GeoScope> responseEntity = delete(entity, GeoScope.class,
 				createURL(SLASH + entity.getId().toString()));

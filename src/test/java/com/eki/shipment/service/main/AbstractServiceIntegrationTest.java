@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eki.common.interfaces.IEntity;
 import com.eki.shipment.run.MysqlBootApplication;
@@ -115,7 +116,7 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 
 	// delete
 
-	@Test
+@Test
 	public final void givenResourceExists_whenResourceIsDeleted_thenResourceNoLongerExists() {
 		// Given
 		final T existingResource = persistNewEntity();

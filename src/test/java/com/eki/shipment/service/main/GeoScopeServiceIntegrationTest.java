@@ -9,9 +9,11 @@ import java.util.function.Predicate;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.service.GeoScopeService;
+
 
 public class GeoScopeServiceIntegrationTest extends AbstractServiceIntegrationTest<GeoScope> {
 

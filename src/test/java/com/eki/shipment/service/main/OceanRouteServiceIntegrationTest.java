@@ -1,6 +1,7 @@
 package com.eki.shipment.service.main;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eki.shipment.dao.OceanRouteDynamicQueryDao;
 import com.eki.shipment.model.OceanRoute;
@@ -12,6 +13,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import java.util.List;
 
 import org.junit.Test;
+
 
 public class OceanRouteServiceIntegrationTest extends AbstractServiceIntegrationTest<OceanRoute> {
 

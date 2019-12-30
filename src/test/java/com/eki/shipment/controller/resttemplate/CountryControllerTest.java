@@ -23,33 +23,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-
 import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.model.Country;
+import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.util.EntityFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 
-
-
-
-
-
-	@Test
-	public void whenFindAll_thenResourcesAreRetrieved() throws Exception {
-
-		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(SLASH), HttpMethod.GET, null,getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
+	public CountryControllerTest() {
+		super(Country.class);
 	}
-	@Test
-	public void whenFindAllWithTypeRef_thenResourcesAreRetrieved() throws Exception {
-	
-		ResponseEntity<List<Country>> responseEntity =  getAll(createURL(SLASH),getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
-	}
-
-
 
 	@Test
 	public void whenCreateNew_thenTheNewResourceIsRetrievableByLocationHeader() {
@@ -67,8 +51,6 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 
 	}
 
-
-
 	@Test
 	public void whenUpdateResource_thenStatusCodeIsOk() {
 		Country entity = retrieveFirstEntity(SLASH);
@@ -83,23 +65,22 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 
 	}
 
-
-
 	@Test
 	public void whenDeleteResourse_thenStatusCodeIsNoContent() {
 		Country entity = retrieveFirstEntity(SLASH);
 
-	    ResponseEntity<Country> responseEntity = delete(entity, Country.class,
+		ResponseEntity<Country> responseEntity = delete(entity, Country.class,
 				createURL(SLASH + entity.getId().toString()));
 
 		assertThat(responseEntity.getStatusCode(), is(HttpStatus.NO_CONTENT));
 
 	}
+
 	@Test
 	public void whenFindAllPaged_thenResourcesArePaged() throws Exception {
 
 		ResponseEntity<List<Country>> response = restTemplate.exchange(createURL(QUESTION_MARK + PAGE_NO + "=1"),
-				HttpMethod.GET, null,getParamTypeRef());
+				HttpMethod.GET, null, getParamTypeRef());
 		assertFalse(response.getBody().isEmpty());
 
 	}
@@ -107,30 +88,31 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 	@Test
 	public void whenFindAllSorted_thenResourceIsSorted_2() throws Exception {
 
-		ResponseEntity<List<Country>> responseEntity = restTemplate.exchange(
-				createURL(COMPLETE_SORT_ORDER), HttpMethod.GET, null,getParamTypeRef());
+		ResponseEntity<List<Country>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
+				HttpMethod.GET, null, getParamTypeRef());
 		assertFalse(responseEntity.getBody().isEmpty());
 	}
 
 	@Test
-	public void  whenFindAllPaged_thenResourceIsPaged() throws Exception {
-		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST), HttpMethod.GET, null,getParamTypeRef());
-		
-		List<Country> resources= responseEntity.getBody();
+	public void whenFindAllPaged_thenResourceIsPaged() throws Exception {
+		ResponseEntity<List<Country>> responseEntity = restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST),
+				HttpMethod.GET, null, getParamTypeRef());
+
+		List<Country> resources = responseEntity.getBody();
 		assertThat(resources.size(), is(5));
 
 	}
 
 	@Test
 	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
-		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(COMPLETE_SORT_ORDER), HttpMethod.GET, null,getParamTypeRef());
-			
-		List<Country> resources= responseEntity.getBody();
-		Comparator<Country> comparator = (o1, o2)->o1.getId().compareTo(o2.getId());
-		assertThat(isSorted(resources, comparator), is(true));
-		
-	}
+		ResponseEntity<List<Country>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
+				HttpMethod.GET, null, getParamTypeRef());
 
+		List<Country> resources = responseEntity.getBody();
+		Comparator<Country> comparator = (o1, o2) -> o1.getId().compareTo(o2.getId());
+		assertThat(isSorted(resources, comparator), is(true));
+
+	}
 
 	@Test
 	public void whenFindByCode_thenResourcesListIsReturned() throws Exception {
@@ -142,12 +124,13 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 	}
 
 	protected Country retrieveFirstEntity(String uriString) {
-		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(uriString), HttpMethod.GET, null,getParamTypeRef());
+		ResponseEntity<List<Country>> responseEntity = restTemplate.exchange(createURL(uriString), HttpMethod.GET, null,
+				getParamTypeRef());
 		assertFalse(responseEntity.getBody().isEmpty());
 		return responseEntity.getBody().get(0);
 
 	}
-
+	
 
 	@Override
 	protected Country createEntity() {
@@ -158,11 +141,13 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 	protected String getApiName() {
 		return ShipmentMappings.COUNTRY;
 	}
+
 	@Override
 	protected ParameterizedTypeReference<List<Country>> getParamTypeRef() {
-	return new ParameterizedTypeReference<List<Country>>() {
-	};
+		return new ParameterizedTypeReference<List<Country>>() {
+		};
 	}
+
 	@Override
 	protected TypeReference<List<Country>> getTypeRef() {
 		return new TypeReference<List<Country>>() {

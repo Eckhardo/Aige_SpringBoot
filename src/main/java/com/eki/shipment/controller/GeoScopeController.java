@@ -90,7 +90,7 @@ public class GeoScopeController extends AbstractController<GeoScope, GeoScope> {
 	}
 
 	@PutMapping(value = "{id}")
-	protected ResponseEntity updateGeoScope(@RequestBody GeoScope GeoScope, @PathVariable Long id) {
+	protected ResponseEntity update(@RequestBody GeoScope GeoScope, @PathVariable Long id) {
 		updateInternal(id, GeoScope);
 		 return new ResponseEntity < >(HttpStatus.OK);
 	}

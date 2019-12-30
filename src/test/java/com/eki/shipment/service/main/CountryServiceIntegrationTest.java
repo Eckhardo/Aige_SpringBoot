@@ -5,9 +5,11 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eki.shipment.model.Country;
 import com.eki.shipment.service.CountryService;
+
 
 public class CountryServiceIntegrationTest extends AbstractServiceIntegrationTest<Country> {
 

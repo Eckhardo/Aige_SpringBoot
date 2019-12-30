@@ -8,6 +8,7 @@ import static com.eki.common.util.QueryConstants.QUESTION_MARK;
 import static com.eki.common.util.QueryConstants.SLASH;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -36,6 +37,8 @@ import org.springframework.http.ResponseEntity;
 import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.model.OceanRoute;
+import com.eki.shipment.model.KeyFigure;
+import com.eki.shipment.model.OceanRoute;
 import com.eki.shipment.util.EntityFactory;
 import com.eki.shipment.model.OceanRoute;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -44,38 +47,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRoute> {
 	Logger logger = LoggerFactory.getLogger(OceanRouteControllerTest.class);
 
-	
 	@Autowired
 	private ObjectMapper jsonObjectMapper;
 
-
-	@Test
-	public void whenFindOne_ThenResourceIsRetrieved() {
-		OceanRoute entity = retrieveFirstEntity(SLASH);
-		ResponseEntity<OceanRoute> responseEntity = getOne(entity, OceanRoute.class, createURL(SLASH + entity.getId()));
-		
-	    assertThat(responseEntity.getBody().getId(), is(entity.getId()));
-
+	public OceanRouteControllerTest() {
+		super(OceanRoute.class);
 	}
-
-	@Test
-	public void whenFindAll_thenResourcesAreRetrieved() throws Exception {
-
-		ResponseEntity<List<OceanRoute>> responseEntity = 	 restTemplate.exchange(createURL(SLASH), HttpMethod.GET, null,getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
-	}
-	@Test
-	public void findAllGeneric() throws Exception {
-	
-		ResponseEntity<List<OceanRoute>> responseEntity =  getAll(createURL(SLASH),getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
-	}
-
-
 
 	@Test
 	public void whenCreateNew_thenTheNewResourceIsRetrievableByLocationHeader() {
-		OceanRoute entity = createEntity();
+		OceanRoute entity = createNewEntityAndPersist();
 		ResponseEntity<OceanRoute> result = post(entity, OceanRoute.class, createURL(SLASH));
 		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
 		HttpHeaders headers = result.getHeaders();
@@ -89,36 +70,30 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 
 	}
 
-
-
 	@Test
 	public void whenUpdateResource_thenStatusCodeIsOk() {
-		OceanRoute entity = retrieveFirstEntity(SLASH);
+		OceanRoute entity = createNewEntityAndPersist();
 		entity.setPol("");
 
 		HttpEntity<OceanRoute> request = new HttpEntity<>(entity, headers);
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(ID, entity.getId().toString());
-		ResponseEntity<OceanRoute> result = put(entity, OceanRoute.class, createURL(SLASH + entity.getId()), params);
-
-		ResponseEntity<OceanRoute> responseEntity = restTemplate.exchange(createURL(SLASH + entity.getId()),
-				HttpMethod.PUT, request, OceanRoute.class, params);
-		assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+		ResponseEntity<OceanRoute> responseEntity = put(entity, OceanRoute.class, createURL(SLASH + entity.getId()), params);
+	assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
 
 	}
 
-
-
 	@Test
 	public void whenDeleteResourse_thenStatusCodeIsNoContent() {
-		OceanRoute entity = retrieveFirstEntity(SLASH);
+		OceanRoute entity = createNewEntityAndPersist();
 
-	    ResponseEntity<OceanRoute> responseEntity = delete(entity, OceanRoute.class,
+		ResponseEntity<OceanRoute> responseEntity = delete(entity, OceanRoute.class,
 				createURL(SLASH + entity.getId().toString()));
 
 		assertThat(responseEntity.getStatusCode(), is(HttpStatus.NO_CONTENT));
 
 	}
+
 	@Test
 	public void whenFindAllPaged_thenResourcPaged() throws Exception {
 
@@ -132,31 +107,33 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 	@Test
 	public void whenFindAllSorted_thenResourceIsSorted_2() throws Exception {
 
-		ResponseEntity<List<OceanRoute>> responseEntity = restTemplate.exchange(
-				createURL(COMPLETE_SORT_ORDER), HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<OceanRoute>>() {
+		ResponseEntity<List<OceanRoute>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
+				HttpMethod.GET, null, new ParameterizedTypeReference<List<OceanRoute>>() {
 				});
 		assertFalse(responseEntity.getBody().isEmpty());
 	}
 
 	@Test
-	public void  whenFindAllPaged_thenResourceIsPaged() throws Exception {
-		ResponseEntity<List<OceanRoute>> responseEntity = 	 restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST), HttpMethod.GET, null,getParamTypeRef());
-		
-		List<OceanRoute> resources= responseEntity.getBody();
-		assertThat(resources.size(), is(5));
+	public void whenFindAllPaged_thenResourceIsPaged() throws Exception {
+		ResponseEntity<List<OceanRoute>> responseEntity = restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST),
+				HttpMethod.GET, null, getParamTypeRef());
+
+		List<OceanRoute> resources = responseEntity.getBody();
+		assertThat(resources, is(not((empty()))));
 
 	}
 
 	@Test
 	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
-		ResponseEntity<List<OceanRoute>> responseEntity = 	 restTemplate.exchange(createURL(COMPLETE_SORT_ORDER), HttpMethod.GET, null,getParamTypeRef());
-			
-		List<OceanRoute> resources= responseEntity.getBody();
-		Comparator<OceanRoute> comparator = (o1, o2)->o1.getId().compareTo(o2.getId());
+		ResponseEntity<List<OceanRoute>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
+				HttpMethod.GET, null, getParamTypeRef());
+
+		List<OceanRoute> resources = responseEntity.getBody();
+		Comparator<OceanRoute> comparator = (o1, o2) -> o1.getId().compareTo(o2.getId());
 		assertThat(isSorted(resources, comparator), is(true));
-		
+
 	}
+
 	@Test
 	public void whenSearchForValidRoutes_onlyValidResourcesAreReturned() {
 		OceanRoute[] body = this.restTemplate.getForObject(
@@ -184,28 +161,26 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
-		ResponseEntity<String> response = restTemplate.exchange(createURL(
-				"/filter?includeInvalid=true&includeShunting=false&numberTs=1&pol=BRSSZ&pod=HKHKG&ts1=COCTG"),
+		ResponseEntity<String> response = restTemplate.exchange(
+				createURL("/filter?includeInvalid=true&includeShunting=false&numberTs=1&pol=BRSSZ&pod=HKHKG&ts1=COCTG"),
 				HttpMethod.GET, entity, String.class);
 		TypeReference<List<OceanRoute>> typeRef = getTypeRef();
 
 		List<OceanRoute> routes = jsonObjectMapper.readValue(response.getBody(), typeRef);
 
-
 		assertNotNull(routes);
 
 	}
-
 
 	@Test
 	public void whenSearchForRoutesWithTypeRef_matchingResourcesAreReturned() throws Exception {
 
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
-		ResponseEntity<String> response = restTemplate.exchange(createURL(
-				"/filter?includeInvalid=true&includeShunting=false&numberTs=1&pol=BRSSZ&pod=HKHKG&ts1=COCTG"),
+		ResponseEntity<String> response = restTemplate.exchange(
+				createURL("/filter?includeInvalid=true&includeShunting=false&numberTs=1&pol=BRSSZ&pod=HKHKG&ts1=COCTG"),
 				HttpMethod.GET, entity, String.class);
-	
+
 		List<OceanRoute> route = jsonObjectMapper.readValue(response.getBody(), getTypeRef());
 
 		assertEquals(route.get(0).getPol(), "BRSSZ");
@@ -213,33 +188,36 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 	}
 
 	protected OceanRoute retrieveFirstEntity(String uriString) {
-		ResponseEntity<List<OceanRoute>> responseEntity = 	 restTemplate.exchange(createURL(uriString), HttpMethod.GET, null,getParamTypeRef());
+		ResponseEntity<List<OceanRoute>> responseEntity = restTemplate.exchange(createURL(uriString), HttpMethod.GET,
+				null, getParamTypeRef());
 		assertFalse(responseEntity.getBody().isEmpty());
 		return responseEntity.getBody().get(0);
 
 	}
+
 	@Override
 	protected TypeReference<List<OceanRoute>> getTypeRef() {
-		return new TypeReference<List<OceanRoute>>() {};
-		
+		return new TypeReference<List<OceanRoute>>() {
+		};
+
 	}
 
+	
 
 	@Override
 	protected ParameterizedTypeReference<List<OceanRoute>> getParamTypeRef() {
-		return new ParameterizedTypeReference<List<OceanRoute>>() {};
+		return new ParameterizedTypeReference<List<OceanRoute>>() {
+		};
 	}
 
 	@Override
 	protected OceanRoute createEntity() {
-		return EntityFactory.createNewOceanRoute();
+		return EntityFactory.createOceanRoute();
 	}
 
 	@Override
 	protected String getApiName() {
 		return ShipmentMappings.OCEAN_ROUTE;
 	}
-
-
 
 }

@@ -12,7 +12,7 @@ import com.eki.shipment.dao.CountryRepository;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.util.EntityFactory;
 import com.google.common.collect.Lists;
-
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 public class CountryServiceUnitTest extends AbstractServiceUnitTest<Country> {
 
 	private CountryService serviceUnderTest;
@@ -38,7 +38,7 @@ public class CountryServiceUnitTest extends AbstractServiceUnitTest<Country> {
 
 	@Override
 	protected void changeEntity(Country entity) {
-		entity.setName("France");
+		entity.setName(randomAlphabetic(7));
 
 	}
 

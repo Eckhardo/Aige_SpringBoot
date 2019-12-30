@@ -32,6 +32,7 @@ import org.springframework.http.ResponseEntity;
 import com.eki.common.interfaces.IEntity;
 import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.model.KeyFigure;
+import com.eki.shipment.model.Country;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.service.GeoScopeService;
@@ -39,64 +40,37 @@ import com.eki.shipment.service.IntermodalRouteService;
 import com.eki.shipment.util.EntityFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import data.IntermodalRouteFigureData;
+
 public class IntermodalRouteControllerTest extends AbstractWebControllerTest<KeyFigure>{
 
-	@Autowired
-	IntermodalRouteService intermodalRouteService;
 	
-	@Autowired
-	GeoScopeService geoScopeService;
-
-	@Test
-	public void whenFindOne_ThenResourceIsRetrieved() {
-		KeyFigure entity = retrieveFirstEntity(SLASH);
-		ResponseEntity<KeyFigure> responseEntity = getOne(entity, KeyFigure.class, createURL(SLASH + entity.getId()));
-		
-		
-		assertThat(responseEntity.getBody().getId(), is(entity.getId()));
-
-	}
-
-	@Test
-	public void whenFindAll_thenResourcesAreRetrieved() throws Exception {
-
-		ResponseEntity<List<KeyFigure>> responseEntity = 	 restTemplate.exchange(createURL(SLASH), HttpMethod.GET, null,getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
-	}
-	@Test
-	public void whenFindAllWithTypeRef_thenResourcesAreRetrieved() throws Exception {
 	
-		
-		ResponseEntity<List<KeyFigure>> responseEntity =  getAll(createURL(SLASH),getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
+	public IntermodalRouteControllerTest() {
+		super(KeyFigure.class);
 	}
+	
+	
 
 
 
 	@Test
 	public void whenCreateNew_thenTheNewResourceIsRetrievableByLocationHeader() {
-		KeyFigure entity = createEntity();
-		ResponseEntity<KeyFigure> result = post(entity, KeyFigure.class, createURL(SLASH));
-		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
-		HttpHeaders headers = result.getHeaders();
-		List<String> location = headers.get(HttpHeaders.LOCATION);
-		assertNotNull(location);
-		ResponseEntity<KeyFigure> responseEntity = restTemplate.exchange(location.get(0), HttpMethod.GET,
-				defaultHttpEntity, KeyFigure.class);
-		KeyFigure retrievedKeyFigure = responseEntity.getBody();
-
-		assertEquals(entity.getFrom(), retrievedKeyFigure.getFrom());
+		createNewEntityAndPersist();
 
 	}
 
 
 
+
+
+	
+
 	@Test
 	public void whenUpdateResource_thenStatusCodeIsOk() {
-		KeyFigure entity = retrieveFirstEntity(SLASH);
+		KeyFigure entity = createNewEntityAndPersist();
 		entity.setTransportMode("");
 
-		HttpEntity<KeyFigure> request = new HttpEntity<>(entity, headers);
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(ID, entity.getId().toString());
 		ResponseEntity<KeyFigure> result = put(entity, KeyFigure.class, createURL(SLASH + entity.getId()), params);
@@ -110,7 +84,7 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 
 	@Test
 	public void whenDeleteResourse_thenStatusCodeIsNoContent() {
-		KeyFigure entity = retrieveFirstEntity(SLASH);
+		KeyFigure entity = createNewEntityAndPersist();
 
 	    ResponseEntity<KeyFigure> responseEntity = delete(entity, KeyFigure.class,
 				createURL(SLASH + entity.getId().toString()));
@@ -121,9 +95,17 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 	@Test
 	public void whenFindAllPaged_thenResourcesArePaged() throws Exception {
 
-		ResponseEntity<List<KeyFigure>> response = restTemplate.exchange(createURL(QUESTION_MARK + PAGE_NO + "=1"),
+		ResponseEntity<List<KeyFigure>> response = restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST),
 				HttpMethod.GET, null, getParamTypeRef());
 		assertFalse(response.getBody().isEmpty());
+
+	}
+	@Test
+	public void  whenFindAllPaged_thenResourceIsPaged() throws Exception {
+		ResponseEntity<List<KeyFigure>> responseEntity = 	 restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST), HttpMethod.GET, null,getParamTypeRef());
+		
+		List<KeyFigure> resources= responseEntity.getBody();
+		assertThat(resources.size(), is(5));
 
 	}
 
@@ -136,14 +118,7 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 		assertFalse(responseEntity.getBody().isEmpty());
 	}
 
-	@Test
-	public void  whenFindAllPaged_thenResourceIsPaged() throws Exception {
-		ResponseEntity<List<KeyFigure>> responseEntity = 	 restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST), HttpMethod.GET, null,getParamTypeRef());
-		
-		List<KeyFigure> resources= responseEntity.getBody();
-		assertThat(resources.size(), is(5));
 
-	}
 
 	@Test
 	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
@@ -165,30 +140,15 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 		}
 	}
 
-	protected KeyFigure retrieveFirstEntity(String uriString) {
-		ResponseEntity<List<KeyFigure>> responseEntity = 	 restTemplate.exchange(createURL(uriString), HttpMethod.GET, null,getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
-		return responseEntity.getBody().get(0);
-
-	}
 
 	@Override
 	protected String getApiName() {
 		return ShipmentMappings.INTERMODAL_ROUTE;
 	}
 	
-	final GeoScopeService getAssociationService() {
-		return geoScopeService;
-	}
-
 	@Override
 	protected KeyFigure createEntity() {
-		GeoScope from = getAssociationService().create(new GeoScope(randomAlphabetic(2), randomAlphabetic(2),
-				randomAlphabetic(2), randomAlphabetic(10), true));
-		GeoScope to = getAssociationService().create(new GeoScope(randomAlphabetic(2), randomAlphabetic(2),
-				randomAlphabetic(2), randomAlphabetic(10), true));
-	
-		return EntityFactory.createIntermodalRoute(from,to);
+		return IntermodalRouteFigureData.getSingle();
 	}
 
 	@Override

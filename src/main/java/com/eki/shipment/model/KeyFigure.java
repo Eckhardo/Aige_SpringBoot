@@ -27,7 +27,7 @@ public class KeyFigure implements IEntity, IDto {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -690482985342171659L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
