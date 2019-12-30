@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * @author eckhard kirschning
  *
  */
-public class KeyFigureExceptionController {
-	   @ExceptionHandler(value = KeyFigureNotFoundException.class)
-	   public ResponseEntity<Object> exception(KeyFigureNotFoundException exception) {
+public class IntermodalRouteExceptionController {
+	   @ExceptionHandler(value = IntermodalRouteNotFoundException.class)
+	   public ResponseEntity<Object> exception(IntermodalRouteNotFoundException exception) {
 	      return new ResponseEntity<>("Key Figure not found", HttpStatus.NOT_FOUND);
 	   }
 }

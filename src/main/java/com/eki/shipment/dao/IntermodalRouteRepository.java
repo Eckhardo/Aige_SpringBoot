@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.eki.shipment.model.KeyFigure;
 
 @Repository
-public interface KeyFigureRepository extends JpaRepository<KeyFigure, Long>, JpaSpecificationExecutor<KeyFigure> {
+public interface IntermodalRouteRepository extends JpaRepository<KeyFigure, Long>, JpaSpecificationExecutor<KeyFigure> {
 
 	List<KeyFigure> findAllByFromLocationCodeAndFromCountryCodeAndFromGeoScopeType(String location, String country,
 			String type);

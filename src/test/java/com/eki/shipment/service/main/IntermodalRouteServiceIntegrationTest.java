@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.service.GeoScopeService;
-import com.eki.shipment.service.KeyFigureService;
+import com.eki.shipment.service.IntermodalRouteService;
 import com.eki.shipment.util.IDUtil;
 
-public class KeyFigureServiceIntegrationTest extends AbstractServiceIntegrationTest<KeyFigure> {
+public class IntermodalRouteServiceIntegrationTest extends AbstractServiceIntegrationTest<KeyFigure> {
 
 	@Autowired
-	KeyFigureService serviceUnderTest;
+	IntermodalRouteService serviceUnderTest;
 
 	@Autowired
 	GeoScopeService geoScopeService;
@@ -50,7 +50,7 @@ public class KeyFigureServiceIntegrationTest extends AbstractServiceIntegrationT
 	}
 
 	@Override
-	protected KeyFigureService getApi() {
+	protected IntermodalRouteService getApi() {
 		return serviceUnderTest;
 	}
 

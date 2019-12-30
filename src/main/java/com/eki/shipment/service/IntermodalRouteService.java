@@ -8,24 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.eki.shipment.dao.KeyFigureDynamicQueryDao;
-import com.eki.shipment.dao.KeyFigureRepository;
+import com.eki.shipment.dao.IntermodalRouteDynamicQueryDao;
+import com.eki.shipment.dao.IntermodalRouteRepository;
 import com.eki.shipment.model.KeyFigure;
 
 @Service
-public class KeyFigureService extends AbstractService<KeyFigure>{
+public class IntermodalRouteService extends AbstractService<KeyFigure>{
 	
 	@Autowired
-	private KeyFigureRepository dao;
+	private IntermodalRouteRepository dao;
 
 	@Autowired
-	private KeyFigureDynamicQueryDao dynamicQueryDao;
+	private IntermodalRouteDynamicQueryDao dynamicQueryDao;
 
-	public KeyFigureService() {
+	public IntermodalRouteService() {
 		super(KeyFigure.class);
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(KeyFigureService.class);
+	private static final Logger logger = LoggerFactory.getLogger(IntermodalRouteService.class);
 
 
 	public List<KeyFigure> searchKeyFigures(String inlandLocation, String geoScopeType, String countryCode,
@@ -44,11 +44,11 @@ public class KeyFigureService extends AbstractService<KeyFigure>{
 	}
 
 	@Override
-	protected KeyFigureRepository getDao() {
+	protected IntermodalRouteRepository getDao() {
 		return dao;
 	}
 	
-	protected KeyFigureDynamicQueryDao getDynamicQueryDao() {
+	protected IntermodalRouteDynamicQueryDao getDynamicQueryDao() {
 		return dynamicQueryDao;
 	}
 }

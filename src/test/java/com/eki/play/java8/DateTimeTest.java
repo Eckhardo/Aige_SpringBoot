@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.shipment.dao.AbstractRepositoryTest;
 import com.eki.shipment.dao.GeoScopeRepository;
-import com.eki.shipment.dao.KeyFigureDynamicQueryDao;
+import com.eki.shipment.dao.IntermodalRouteDynamicQueryDao;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.service.GeoScopeService;

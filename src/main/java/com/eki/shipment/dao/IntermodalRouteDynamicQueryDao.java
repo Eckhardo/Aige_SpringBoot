@@ -29,9 +29,9 @@ import com.eki.shipment.model.KeyFigure;
 
 @Repository
 @Transactional
-public class KeyFigureDynamicQueryDao {
+public class IntermodalRouteDynamicQueryDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(KeyFigureDynamicQueryDao.class);
+	private static final Logger logger = LoggerFactory.getLogger(IntermodalRouteDynamicQueryDao.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;

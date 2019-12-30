@@ -13,7 +13,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import com.eki.common.interfaces.IEntity;
 import com.eki.shipment.model.KeyFigure;
 
-public class KeyFigureControllerTest extends AbstractWebControllerTest<KeyFigure>{
+public class IntermodalRouteControllerTest extends AbstractWebControllerTest<KeyFigure>{
 
 	
 	@Autowired

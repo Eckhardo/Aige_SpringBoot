@@ -36,11 +36,11 @@ import com.eki.shipment.service.GeoScopeService;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @TestPropertySource(locations="classpath:application-test.properties")
-public class KeyFigureDynamicQueryDaoTest {
-	Logger logger = LoggerFactory.getLogger(KeyFigureDynamicQueryDaoTest.class);
+public class IntermodalRouteDynamicQueryDaoTest {
+	Logger logger = LoggerFactory.getLogger(IntermodalRouteDynamicQueryDaoTest.class);
 
 	@Autowired
-	private KeyFigureDynamicQueryDao keyFigureDynamicQueryDao;
+	private IntermodalRouteDynamicQueryDao keyFigureDynamicQueryDao;
 
 	@Autowired
 	private GeoScopeService geoScopeService;

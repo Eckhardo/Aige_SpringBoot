@@ -15,18 +15,18 @@ import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.model.RESTDateParam;
 import com.eki.shipment.service.GeoScopeService;
-import com.eki.shipment.service.KeyFigureService;
+import com.eki.shipment.service.IntermodalRouteService;
 import com.google.common.collect.Lists;
 
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 @RestController
-public class KeyFigureController {
+public class IntermodalRouteController {
 
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
-	private KeyFigureService kfService;
+	private IntermodalRouteService kfService;
 	@Autowired
 	private GeoScopeService geoScopeService;
 
@@ -75,7 +75,7 @@ public class KeyFigureController {
 		List<KeyFigure> kfs = kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode, preferredPorts,
 				transportMode, eq20, eq40, eqGroup, PageRequest.of(page, 5));
 		if (kfs.isEmpty())
-			throw new KeyFigureNotFoundException();
+			throw new IntermodalRouteNotFoundException();
 		return kfs;
 	}
 
@@ -101,7 +101,7 @@ public class KeyFigureController {
 		List<KeyFigure> kfs = kfService.searchKeyFiguresSimple(inlandLocation, inlandGeoScopeType, countryCode,
 				preferredPorts);
 		if (kfs.isEmpty())
-			throw new KeyFigureNotFoundException();
+			throw new IntermodalRouteNotFoundException();
 		return kfs;
 	}
 }

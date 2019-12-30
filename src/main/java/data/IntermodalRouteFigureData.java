@@ -8,7 +8,7 @@ import java.util.List;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 
-public class KeyFigureData {
+public class IntermodalRouteFigureData {
 
 	static String transportMode = "TRUCK";
 	static String eqGroup = "GP";

@@ -6,7 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.eki.shipment.controller.resttemplate.CountryControllerTest;
 import com.eki.shipment.controller.resttemplate.GeoScopeControllerTest;
-import com.eki.shipment.controller.resttemplate.KeyFigureControllerTest;
+import com.eki.shipment.controller.resttemplate.IntermodalRouteControllerTest;
 import com.eki.shipment.controller.resttemplate.OceanRouteControllerTest;
 /**
  * 
@@ -19,7 +19,7 @@ import com.eki.shipment.controller.resttemplate.OceanRouteControllerTest;
 	CountryControllerTest.class,
 	GeoScopeControllerTest.class,
 	OceanRouteControllerTest.class,
-	KeyFigureControllerTest.class
+	IntermodalRouteControllerTest.class
 })
 public final class ControllerTestSuite {
 

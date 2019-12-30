@@ -18,25 +18,25 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.eki.shipment.dao.KeyFigureDynamicQueryDao;
-import com.eki.shipment.dao.KeyFigureRepository;
+import com.eki.shipment.dao.IntermodalRouteDynamicQueryDao;
+import com.eki.shipment.dao.IntermodalRouteRepository;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.util.IDUtil;
 
 import data.GeoScopeData;
-import data.KeyFigureData;
+import data.IntermodalRouteFigureData;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
-public class KeyFigureServiceUnitTest extends AbstractServiceUnitTest<KeyFigure>{
+public class IntermodalRouteServiceUnitTest extends AbstractServiceUnitTest<KeyFigure>{
 
 	@Mock
-	KeyFigureRepository daoMock;
+	IntermodalRouteRepository daoMock;
 	@Mock
-	KeyFigureDynamicQueryDao dynamicDao;
+	IntermodalRouteDynamicQueryDao dynamicDao;
 	@InjectMocks
-	KeyFigureService serviceUnderTest;
+	IntermodalRouteService serviceUnderTest;
 
 	List<KeyFigure> kfList;
 	List<GeoScope> gsList;
@@ -46,7 +46,7 @@ public class KeyFigureServiceUnitTest extends AbstractServiceUnitTest<KeyFigure>
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		kfList = KeyFigureData.getData();
+		kfList = IntermodalRouteFigureData.getData();
 		gsList = GeoScopeData.getData();
 
 		portList = gsList.stream().filter(gs -> gs.isPort()).collect(Collectors.toList());
@@ -76,7 +76,7 @@ public class KeyFigureServiceUnitTest extends AbstractServiceUnitTest<KeyFigure>
 
 	@Override
 	protected KeyFigure createNewEntity() {
-	return	KeyFigureData.getSingle();
+	return	IntermodalRouteFigureData.getSingle();
 	}
 
 	@Override
@@ -94,12 +94,12 @@ public class KeyFigureServiceUnitTest extends AbstractServiceUnitTest<KeyFigure>
 	}
 
 	@Override
-	protected KeyFigureService getApi() {
+	protected IntermodalRouteService getApi() {
 		return serviceUnderTest;
 	}
 
 	@Override
-	protected KeyFigureRepository getDAO() {
+	protected IntermodalRouteRepository getDAO() {
 	return daoMock;
 	}
 
