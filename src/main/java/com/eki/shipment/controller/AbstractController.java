@@ -36,23 +36,23 @@ public abstract class AbstractController<D extends IDto, E extends IEntity> {
 
 	// find - one
 
-	protected final D findOneInternal(final Long id) {
-		return (D) RestPreconditions.checkNotNull(getService().findOne(id));
+	protected final E findOneInternal(final Long id) {
+		return (E) RestPreconditions.checkNotNull(getService().findOne(id));
 	}
 
 	// find - all
 
-	protected final List<D> findAllInternal(final HttpServletRequest request) {
+	protected final List<E> findAllInternal(final HttpServletRequest request) {
 		if (request.getParameterNames().hasMoreElements()) {
 			throw new MyResourceNotFoundException();
 		}
 
-		return (List<D>) getService().findAll();
+		return  getService().findAll();
 	}
 
-	protected final List<D> findPaginatedAndSortedInternal(final int page, final int size, final String sortBy,
+	protected final List<E> findPaginatedAndSortedInternal(final int page, final int size, final String sortBy,
 			final String sortOrder) {
-		final Page<D> resultPage = (Page<D>) getService().findAllPaginatedAndSorted(page, size, sortBy, sortOrder);
+		final Page<E> resultPage =getService().findAllPaginatedAndSorted(page, size, sortBy, sortOrder);
 		if (page > resultPage.getTotalPages()) {
 			throw new MyResourceNotFoundException();
 		}
@@ -60,16 +60,16 @@ public abstract class AbstractController<D extends IDto, E extends IEntity> {
 		return Lists.newArrayList(resultPage.getContent());
 	}
 
-	protected final List<D> findPaginatedInternal(final int page, final int size) {
-		final Page<D> resultPage = (Page<D>) getService().findAllPaginated(page, size);
+	protected final List<E> findPaginatedInternal(final int page, final int size) {
+		final Page< E > resultPage =getService().findAllPaginated(page, size);
 		if (page > resultPage.getTotalPages()) {
 			throw new MyResourceNotFoundException();
 		}
 		return Lists.newArrayList(resultPage.getContent());
 	}
 
-	protected final List<D> findAllSortedInternal(final String sortBy, final String sortOrder) {
-		final List<D> resultPage = (List<D>) getService().findAllSorted(sortBy, sortOrder);
+	protected final List< E > findAllSortedInternal(final String sortBy, final String sortOrder) {
+		final List< E > resultPage = (List< E >) getService().findAllSorted(sortBy, sortOrder);
 		return resultPage;
 	}
 	// save/create/persist
@@ -127,11 +127,11 @@ public abstract class AbstractController<D extends IDto, E extends IEntity> {
 
 	protected abstract IServiceOperations<E> getService();
 
-	protected abstract List<D> findAllPaginatedAndSorted(final int page, final int size, final String sortBy,
+	protected abstract List< E > findAllPaginatedAndSorted(final int page, final int size, final String sortBy,
 			final String sortOrder);
 
-	protected abstract List<D> findAllPaginated(final int page, final int size);
+	protected abstract List< E > findAllPaginated(final int page, final int size);
 
-	protected abstract List<D> findAllSorted(final String sortBy, final String sortOrder);
+	protected abstract List< E > findAllSorted(final String sortBy, final String sortOrder);
 
 }

@@ -1,5 +1,7 @@
 package com.eki.shipment.controller.resttemplate;
 
+import static com.eki.common.util.QueryConstants.COMPLETE_PAGE_REQUEST;
+import static com.eki.common.util.QueryConstants.COMPLETE_SORT_ORDER;
 import static com.eki.common.util.QueryConstants.ID;
 import static com.eki.common.util.QueryConstants.PAGE_NO;
 import static com.eki.common.util.QueryConstants.QUESTION_MARK;
@@ -31,86 +33,79 @@ import org.springframework.http.ResponseEntity;
 
 import com.eki.common.interfaces.IEntity;
 import com.eki.common.util.ShipmentMappings;
-import com.eki.shipment.model.Country;
+import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.util.EntityFactory;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> {
 
-	@Autowired()
-	private TestRestTemplate restTemplate;
-    
 	@Test
-	public void realWebEnvironmentTestFindOne() throws Exception {
-		ResponseEntity<GeoScope> xy;
+	public void whenFindOne_ThenResourceIsRetrieved() {
 		GeoScope entity = retrieveFirstEntity(SLASH);
-		ResponseEntity<GeoScope> responseEntity = restTemplate.exchange(createURL(SLASH + entity.getId()),
-				HttpMethod.GET, defaultHttpEntity, GeoScope.class);
-		assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-		assertThat(responseEntity.getHeaders().getContentType(), is(MediaType.APPLICATION_JSON_UTF8));
+		ResponseEntity<GeoScope> responseEntity = getOne(entity, GeoScope.class, createURL(SLASH + entity.getId()));
 
-		GeoScope GeoScope = responseEntity.getBody();
-		assertNotNull(GeoScope);
-		assertThat(GeoScope.getId(), is(entity.getId()));
+		assertThat(responseEntity.getBody().getId(), is(entity.getId()));
 
 	}
 
 	@Test
-	public void realWebEnvironmentTestFindAll() throws Exception {
+	public void whenFindAll_thenResourcesAreRetrieved() throws Exception {
 
 		ResponseEntity<List<GeoScope>> responseEntity = restTemplate.exchange(createURL(SLASH), HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<GeoScope>>() {
-				});
+				getParamTypeRef());
 		assertFalse(responseEntity.getBody().isEmpty());
 	}
 
 	@Test
-	public void realWebEnvironmentTestPost() {
+	public void findAllGeneric() throws Exception {
+
+		ResponseEntity<List<GeoScope>> responseEntity = getAll(createURL(SLASH), getParamTypeRef());
+		assertFalse(responseEntity.getBody().isEmpty());
+	}
+
+	@Test
+	public void whenCreateNew_thenTheNewResourceIsRetrievableByLocationHeader() {
 		GeoScope entity = createEntity();
-		HttpEntity<GeoScope> request = new HttpEntity<>(entity, headers);
-		ResponseEntity<String> result = this.restTemplate.postForEntity(createURL(SLASH), request, String.class);
+		ResponseEntity<GeoScope> result = post(entity, GeoScope.class, createURL(SLASH));
 		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
 		HttpHeaders headers = result.getHeaders();
 		List<String> location = headers.get(HttpHeaders.LOCATION);
 		assertNotNull(location);
 		ResponseEntity<GeoScope> responseEntity = restTemplate.exchange(location.get(0), HttpMethod.GET,
 				defaultHttpEntity, GeoScope.class);
-		GeoScope retrievedGeoScope = responseEntity.getBody();
 
-		assertEquals(entity.getName(), retrievedGeoScope.getName());
+		assertEquals(entity.getName(), responseEntity.getBody().getName());
 
 	}
 
 	@Test
-	public void realWebEnvironmentTestPutWithExchange() {
+	public void whenUpdateResource_thenStatusCodeIsOk() {
 		GeoScope entity = retrieveFirstEntity(SLASH);
 		entity.setName("");
 
-		HttpEntity<GeoScope> request = new HttpEntity<>(entity, headers);
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(ID, entity.getId().toString());
-		ResponseEntity<GeoScope> responseEntity = restTemplate.exchange(createURL(SLASH + entity.getId()),
-				HttpMethod.PUT, request, GeoScope.class, params);
-		assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+		ResponseEntity<GeoScope> result = put(entity, GeoScope.class, createURL(SLASH + entity.getId()), params);
+
+		assertThat(result.getStatusCode(), is(HttpStatus.OK));
 
 	}
 
 	@Test
-	public void realWebEnvironmentTestDeleteWithExchange() {
-		GeoScope GeoScope = retrieveFirstEntity(SLASH);
+	public void whenDeleteResourse_thenStatusCodeIsNoContent() {
+		GeoScope entity = retrieveFirstEntity(SLASH);
 
-		HttpEntity<GeoScope> request = new HttpEntity<>(null, headers);
-		Map<String, String> params = new HashMap<String, String>();
-		params.put(ID, "8");
-		ResponseEntity<String> responseEntity = restTemplate.exchange(createURL(SLASH + GeoScope.getId().toString()),
-				HttpMethod.DELETE, request, String.class);
+		ResponseEntity<GeoScope> responseEntity = delete(entity, GeoScope.class,
+				createURL(SLASH + entity.getId().toString()));
+
 		assertThat(responseEntity.getStatusCode(), is(HttpStatus.NO_CONTENT));
 
 	}
 
 	@Test
-	public void realWebEnvironmentTestFindAllPaged() throws Exception {
+	public void whenFindAllPaged_thenResourcesArePaged() throws Exception {
 
 		ResponseEntity<List<GeoScope>> response = restTemplate.exchange(createURL(QUESTION_MARK + PAGE_NO + "=1"),
 				HttpMethod.GET, null, new ParameterizedTypeReference<List<GeoScope>>() {
@@ -120,13 +115,31 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> 
 	}
 
 	@Test
-	public void realWebEnvironmentTestFindAllSortedParameterized() throws Exception {
+	public void whenFindAllSorted_thenResourceIsSorted_2() throws Exception {
 
-		ResponseEntity<List<GeoScope>> responseEntity = restTemplate.exchange(
-				createURL(QUESTION_MARK + " sortBy=code&sortOrder=DESC"), HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<GeoScope>>() {
-				});
+		ResponseEntity<List<GeoScope>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
+				HttpMethod.GET, null, getParamTypeRef());
 		assertFalse(responseEntity.getBody().isEmpty());
+	}
+
+	@Test
+	public void whenFindAllPaged_thenResourceIsPaged() throws Exception {
+		ResponseEntity<List<GeoScope>> responseEntity = restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST),
+				HttpMethod.GET, null, getParamTypeRef());
+
+		List<GeoScope> resources = responseEntity.getBody();
+		assertThat(resources.size(), is(5));
+
+	}
+
+	@Test
+	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
+		ResponseEntity<List<GeoScope>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
+				HttpMethod.GET, null, getParamTypeRef());
+
+		Comparator<GeoScope> comparator = (o1, o2) -> o1.getId().compareTo(o2.getId());
+		assertThat(isSorted(responseEntity.getBody(), comparator), is(true));
+
 	}
 
 	@Test
@@ -153,9 +166,8 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> 
 
 	@Test
 	public void whenSearchPreferredPorts_thenReturnPorts() {
-		GeoScope[] body = this.restTemplate
-				.getForObject("/geoscope/preferredPort?location_code=DUS&geo_scope_type=T&country_code=DE", GeoScope[].class);
-		assertThat(body.length, is(equalTo(4)));
+		GeoScope[] body = this.restTemplate.getForObject(
+				"/geoscope/preferredPort?location_code=DUS&geo_scope_type=T&country_code=DE", GeoScope[].class);
 
 		for (int i = 0; i < body.length; i++) {
 			assertThat(body[i].isPort(), is(true));
@@ -175,8 +187,7 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> 
 	protected GeoScope retrieveFirstEntity(String uriString) {
 
 		ResponseEntity<List<GeoScope>> responseEntityAll = restTemplate.exchange(createURL(uriString), HttpMethod.GET,
-				null, new ParameterizedTypeReference<List<GeoScope>>() {
-				});
+				null, getParamTypeRef());
 		assertFalse(responseEntityAll.getBody().isEmpty());
 		return responseEntityAll.getBody().get(0);
 
@@ -188,35 +199,21 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> 
 	}
 
 	@Override
-	protected String createURL(String uriPart) {
-		StringBuilder uri = createBaseUri(uriPart);
-		uri.append(getApiName());
-		if (!uriPart.isEmpty()) {
-			uri.append(uriPart);
-		}
-		return uri.toString();
-	}
-
-	@Override
-	public boolean isSorted(List<GeoScope> resources, Comparator<GeoScope> comparator) {
-		   if (resources.isEmpty() || resources.size() == 1) {
-		        return true;
-		    }
-		 
-		    Iterator<GeoScope> iter = resources.iterator();
-		    GeoScope current, previous = iter.next();
-		    while (iter.hasNext()) {
-		        current = iter.next();
-		        if (comparator.compare(previous, current) < 0) {
-		            return false;
-		        }
-		        previous = current;
-		    }
-		    return true;
-	}
-
-	@Override
 	protected String getApiName() {
 		return ShipmentMappings.GEOSCOPE;
+	}
+
+	@Override
+	protected ParameterizedTypeReference<List<GeoScope>> getParamTypeRef() {
+
+		return new ParameterizedTypeReference<List<GeoScope>>() {
+		};
+	}
+
+	@Override
+	protected TypeReference<List<GeoScope>> getTypeRef() {
+
+		return new TypeReference<List<GeoScope>>() {
+		};
 	}
 }

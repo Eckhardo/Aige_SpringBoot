@@ -9,6 +9,7 @@ import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.service.GeoScopeService;
 import com.eki.shipment.service.IntermodalRouteService;
+import com.eki.shipment.util.EntityFactory;
 import com.eki.shipment.util.IDUtil;
 
 public class IntermodalRouteServiceIntegrationTest extends AbstractServiceIntegrationTest<KeyFigure> {
@@ -39,14 +40,12 @@ public class IntermodalRouteServiceIntegrationTest extends AbstractServiceIntegr
 	@Override
 	protected KeyFigure createNewEntity() {
 
-		GeoScope pol = getAssociationService().create(new GeoScope(randomAlphabetic(2), randomAlphabetic(2),
+		GeoScope from = getAssociationService().create(new GeoScope(randomAlphabetic(2), randomAlphabetic(2),
 				randomAlphabetic(2), randomAlphabetic(10), true));
-		GeoScope pod = getAssociationService().create(new GeoScope(randomAlphabetic(2), randomAlphabetic(2),
+		GeoScope to = getAssociationService().create(new GeoScope(randomAlphabetic(2), randomAlphabetic(2),
 				randomAlphabetic(2), randomAlphabetic(10), true));
-		KeyFigure kf = new KeyFigure(pol, null, pod, IDUtil.randomPositiveLong(), randomAlphabetic(2), true,
-				randomAlphabetic(2), randomAlphabetic(2), null, randomAlphabetic(3), 1, randomAlphabetic(1), null);
+		return EntityFactory.createIntermodalRoute(from, to);
 
-		return kf;
 	}
 
 	@Override

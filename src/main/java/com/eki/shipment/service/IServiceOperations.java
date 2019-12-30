@@ -2,6 +2,8 @@ package com.eki.shipment.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 public interface IServiceOperations<T> {
 
     // find - one
@@ -21,12 +23,12 @@ public interface IServiceOperations<T> {
     /**
      * - contract: if nothing is found, an empty list will be returned to the calling client <br>
      */
-    List<T> findAllPaginated(final int page, final int size);
+    Page<T> findAllPaginated(final int page, final int size);
 
     /**
      * - contract: if nothing is found, an empty list will be returned to the calling client <br>
      */
-    List<T> findAllPaginatedAndSorted(final int page, final int size, final String sortBy, final String sortOrder);
+    Page<T> findAllPaginatedAndSorted(final int page, final int size, final String sortBy, final String sortOrder);
 
  
 

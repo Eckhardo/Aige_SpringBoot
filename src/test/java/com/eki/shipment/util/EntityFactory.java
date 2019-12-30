@@ -2,12 +2,15 @@ package com.eki.shipment.util;
 
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import com.eki.shipment.model.Country;
 import com.eki.shipment.model.GeoScope;
+import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.model.OceanRoute;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -56,5 +59,16 @@ public class EntityFactory {
 	return    new OceanRoute(39, "BRSSZ", "565151", "HKHKG", "564077", "SGSIN", "568079", "", "", "", "", "41020SIM1763", "71010SIM1884", "", Arrays.asList("MIN_TRANSIT_RATIO"));
 	 
 	
+	}
+
+	public static OceanRoute createNewOceanRoute() {
+		return   new OceanRoute(randomAlphabetic(3), randomAlphabetic(3), randomAlphabetic(3), Arrays.asList(randomAlphabetic(10)));
+	}
+
+	public static KeyFigure createIntermodalRoute(GeoScope from, GeoScope pod) {
+		KeyFigure kf = new KeyFigure(from, null, pod, IDUtil.randomPositiveLong(), randomAlphabetic(2), true,
+				randomAlphabetic(2), randomAlphabetic(2), null, randomAlphabetic(3), 1, randomAlphabetic(1), null);
+
+		return kf;
 	}
 }

@@ -104,4 +104,6 @@ public class IntermodalRouteFigureData {
 				kf115, kf11, kf12, kf13, kf14, kf15, kf16, kf17, kf18, kf19, kf20, kf210, kf211, kf212, kf213, kf214,
 				kf215);
 	}
+	
+	
 }

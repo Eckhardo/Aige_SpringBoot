@@ -49,16 +49,17 @@ public abstract class AbstractService<T extends IEntity> implements IServiceOper
 	}
 
 	@Override
-	public List<T> findAllPaginated(int page, int size) {
-		Page<T> findAllPaginated= getDao().findAll(	PageRequest.of(page, size));
-		return findAllPaginated.getContent();
+	public Page<T> findAllPaginated(int pageNo, int pageSize) {
+		PageRequest page=	PageRequest.of(pageNo,pageSize);
+		Page<T> findAllPaginated= getDao().findAll(	page);
+		return findAllPaginated;
 	}
 
 	@Override
-	public List<T> findAllPaginatedAndSorted(int page, int size, String sortBy, String sortOrder) {
+	public Page<T> findAllPaginatedAndSorted(int page, int size, String sortBy, String sortOrder) {
 		final Sort sortInfo= constructSort(sortBy, sortOrder);
 		Page<T> findAllSortedAnPaginated=getDao().findAll(PageRequest.of(page, size, sortInfo));
-		return findAllSortedAnPaginated.getContent();
+		return findAllSortedAnPaginated;
 	}
 
 	@Override

@@ -1,9 +1,6 @@
 package com.eki.shipment.controller.resttemplate;
 
-import static com.eki.common.util.QueryConstants.ID;
-import static com.eki.common.util.QueryConstants.PAGE_NO;
-import static com.eki.common.util.QueryConstants.QUESTION_MARK;
-import static com.eki.common.util.QueryConstants.SLASH;
+import static com.eki.common.util.QueryConstants.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,41 +23,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+
 import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.util.EntityFactory;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 
-	@LocalServerPort
-	private int port;
 
 
 
-	@Test
-	public void whenFindOne_ThenResourceIsRetrieved() {
-		Country entity = retrieveFirstEntity(SLASH);
-		ResponseEntity<Country> responseEntity = getOne(entity, Country.class, createURL(SLASH + entity.getId()));
-		
-		assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-		assertThat(responseEntity.getHeaders().getContentType(), is(MediaType.APPLICATION_JSON_UTF8));
-		Country country = responseEntity.getBody();
-		assertNotNull(country);
-		assertThat(country.getId(), is(entity.getId()));
 
-	}
 
 	@Test
 	public void whenFindAll_thenResourcesAreRetrieved() throws Exception {
 
-		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(SLASH), HttpMethod.GET, null,new ParameterizedTypeReference<List<Country>>() {});
+		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(SLASH), HttpMethod.GET, null,getParamTypeRef());
 		assertFalse(responseEntity.getBody().isEmpty());
 	}
 	@Test
-	public void findAllGeneric() throws Exception {
+	public void whenFindAllWithTypeRef_thenResourcesAreRetrieved() throws Exception {
 	
-		ParameterizedTypeReference<List<Country>> parameterizedTypeReference = new ParameterizedTypeReference<List<Country>>() {};
-		ResponseEntity<List<Country>> responseEntity =  getAll(createURL(SLASH),parameterizedTypeReference);
+		ResponseEntity<List<Country>> responseEntity =  getAll(createURL(SLASH),getParamTypeRef());
 		assertFalse(responseEntity.getBody().isEmpty());
 	}
 
@@ -92,10 +77,8 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 		HttpEntity<Country> request = new HttpEntity<>(entity, headers);
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(ID, entity.getId().toString());
-		ResponseEntity<Country> result = put(entity, Country.class, createURL(SLASH + entity.getId()), params);
+		ResponseEntity<Country> responseEntity = put(entity, Country.class, createURL(SLASH + entity.getId()), params);
 
-		ResponseEntity<Country> responseEntity = restTemplate.exchange(createURL(SLASH + entity.getId()),
-				HttpMethod.PUT, request, Country.class, params);
 		assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
 
 	}
@@ -113,28 +96,25 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 
 	}
 	@Test
-	public void realWebEnvironmentTestFindAllPaged() throws Exception {
+	public void whenFindAllPaged_thenResourcesArePaged() throws Exception {
 
 		ResponseEntity<List<Country>> response = restTemplate.exchange(createURL(QUESTION_MARK + PAGE_NO + "=1"),
-				HttpMethod.GET, null, new ParameterizedTypeReference<List<Country>>() {
-				});
+				HttpMethod.GET, null,getParamTypeRef());
 		assertFalse(response.getBody().isEmpty());
 
 	}
 
 	@Test
-	public void realWebEnvironmentTestFindAllSortedParameterized() throws Exception {
+	public void whenFindAllSorted_thenResourceIsSorted_2() throws Exception {
 
 		ResponseEntity<List<Country>> responseEntity = restTemplate.exchange(
-				createURL(QUESTION_MARK + " sortBy=code&sortOrder=DESC"), HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<Country>>() {
-				});
+				createURL(COMPLETE_SORT_ORDER), HttpMethod.GET, null,getParamTypeRef());
 		assertFalse(responseEntity.getBody().isEmpty());
 	}
 
 	@Test
 	public void  whenFindAllPaged_thenResourceIsPaged() throws Exception {
-		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(QUESTION_MARK+"pageNo=1&pageSize=5"), HttpMethod.GET, null,new ParameterizedTypeReference<List<Country>>() {});
+		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST), HttpMethod.GET, null,getParamTypeRef());
 		
 		List<Country> resources= responseEntity.getBody();
 		assertThat(resources.size(), is(5));
@@ -143,23 +123,17 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 
 	@Test
 	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
-		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(QUESTION_MARK+"sortBy=code&sortOrder=DESC"), HttpMethod.GET, null,new ParameterizedTypeReference<List<Country>>() {});
+		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(COMPLETE_SORT_ORDER), HttpMethod.GET, null,getParamTypeRef());
 			
 		List<Country> resources= responseEntity.getBody();
-		Comparator<Country> comparator = (o1, o2)->o1.getCode().compareTo(o2.getCode());
+		Comparator<Country> comparator = (o1, o2)->o1.getId().compareTo(o2.getId());
 		assertThat(isSorted(resources, comparator), is(true));
 		
 	}
 
-	@Test
-	public void singleCountryTest() {
-		Country country = retrieveFirstEntity(SLASH);
-		Country body = this.restTemplate.getForObject("/country/find?country_code=" + country.getCode(), Country.class);
-		assertThat(body.getName(), is(country.getName()));
-	}
 
 	@Test
-	public void realWebEnvironmentTestFind() throws Exception {
+	public void whenFindByCode_thenResourcesListIsReturned() throws Exception {
 		Country country = retrieveFirstEntity(SLASH);
 		ResponseEntity<Country> response = restTemplate.exchange(createURL("/find?country_code=" + country.getCode()),
 				HttpMethod.GET, defaultHttpEntity, Country.class);
@@ -168,38 +142,12 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 	}
 
 	protected Country retrieveFirstEntity(String uriString) {
-		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(uriString), HttpMethod.GET, null,new ParameterizedTypeReference<List<Country>>() {});
+		ResponseEntity<List<Country>> responseEntity = 	 restTemplate.exchange(createURL(uriString), HttpMethod.GET, null,getParamTypeRef());
 		assertFalse(responseEntity.getBody().isEmpty());
 		return responseEntity.getBody().get(0);
 
 	}
-	@Override
-	public  boolean isSorted(List<Country> resources, Comparator<Country> comparator) {
-	    if (resources.isEmpty() || resources.size() == 1) {
-	        return true;
-	    }
-	 
-	    Iterator<Country> iter = resources.iterator();
-	    Country current, previous = iter.next();
-	    while (iter.hasNext()) {
-	        current = iter.next();
-	        if (comparator.compare(previous, current) < 0) {
-	            return false;
-	        }
-	        previous = current;
-	    }
-	    return true;
-	}
 
-	@Override
-	protected String createURL(String uriPart) {
-		StringBuilder uri = createBaseUri(uriPart);
-		uri.append(getApiName());
-		if (!uriPart.isEmpty()) {
-			uri.append(uriPart);
-		}
-		return uri.toString();
-	}
 
 	@Override
 	protected Country createEntity() {
@@ -209,6 +157,16 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 	@Override
 	protected String getApiName() {
 		return ShipmentMappings.COUNTRY;
+	}
+	@Override
+	protected ParameterizedTypeReference<List<Country>> getParamTypeRef() {
+	return new ParameterizedTypeReference<List<Country>>() {
+	};
+	}
+	@Override
+	protected TypeReference<List<Country>> getTypeRef() {
+		return new TypeReference<List<Country>>() {
+		};
 	}
 
 }

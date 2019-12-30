@@ -1,5 +1,7 @@
 package com.eki.common.util;
 
+import static com.eki.common.util.QueryConstants.QUESTION_MARK;
+
 public final class QueryConstants {
 
 	public static final String QUESTIONMARK = "?";
@@ -17,6 +19,12 @@ public final class QueryConstants {
 
 	public static final String OP = "=";
 	public static final String QUESTION_MARK = "?";
+	public static final String ONE = "1";
+	public static final String FIVE = "5";
+	public static final String COMPLETE_SORT_ORDER = QUESTION_MARK + SORT_BY + OP + ID + AMPERSAND + SORT_ORDER + OP
+			+ DESC;
+	public static final String COMPLETE_PAGE_REQUEST = QUESTION_MARK + PAGE_NO + OP + ONE + AMPERSAND + PAGE_SIZE+OP
+			+ FIVE;
 
 	private QueryConstants() {
 		throw new AssertionError();
