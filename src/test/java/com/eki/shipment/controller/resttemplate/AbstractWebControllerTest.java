@@ -44,8 +44,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
  * configured with a webEnvironment that means it starts the web container and
  * listens for HTTP requests.
  * 
- * For example:
- * 
  * @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT) @author eckha
  *
  */
