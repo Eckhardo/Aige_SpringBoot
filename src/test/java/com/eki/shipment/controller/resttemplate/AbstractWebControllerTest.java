@@ -46,7 +46,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
  * configured with a webEnvironment that means it starts the web container and
  * listens for HTTP requests.
  * 
- * @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT) @author eckha
+ * @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT) is mandatory
+ * @author eckha
  *
  */
 @SpringBootTest(classes = MysqlBootApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
