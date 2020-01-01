@@ -76,43 +76,6 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country> {
 
 	}
 
-	@Test
-	public void whenFindAllPaged_thenResourcesArePaged() throws Exception {
-
-		ResponseEntity<List<Country>> response = restTemplate.exchange(createURL(QUESTION_MARK + PAGE_NO + "=1"),
-				HttpMethod.GET, null, getParamTypeRef());
-		assertFalse(response.getBody().isEmpty());
-
-	}
-
-	@Test
-	public void whenFindAllSorted_thenResourceIsSorted_2() throws Exception {
-
-		ResponseEntity<List<Country>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
-				HttpMethod.GET, null, getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
-	}
-
-	@Test
-	public void whenFindAllPaged_thenResourceIsPaged() throws Exception {
-		ResponseEntity<List<Country>> responseEntity = restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST),
-				HttpMethod.GET, null, getParamTypeRef());
-
-		List<Country> resources = responseEntity.getBody();
-		assertThat(resources.size(), is(5));
-
-	}
-
-	@Test
-	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
-		ResponseEntity<List<Country>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
-				HttpMethod.GET, null, getParamTypeRef());
-
-		List<Country> resources = responseEntity.getBody();
-		Comparator<Country> comparator = (o1, o2) -> o1.getId().compareTo(o2.getId());
-		assertThat(isSorted(resources, comparator), is(true));
-
-	}
 
 	@Test
 	public void whenFindByCode_thenResourcesListIsReturned() throws Exception {

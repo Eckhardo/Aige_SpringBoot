@@ -92,45 +92,6 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 
 	}
 
-	@Test
-	public void whenFindAllPaged_thenResourcPaged() throws Exception {
-
-		ResponseEntity<List<OceanRoute>> response = restTemplate.exchange(createURL(QUESTION_MARK + PAGE_NO + "=1"),
-				HttpMethod.GET, null, new ParameterizedTypeReference<List<OceanRoute>>() {
-				});
-		assertFalse(response.getBody().isEmpty());
-
-	}
-
-	@Test
-	public void whenFindAllSorted_thenResourceIsSorted_2() throws Exception {
-
-		ResponseEntity<List<OceanRoute>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
-				HttpMethod.GET, null, new ParameterizedTypeReference<List<OceanRoute>>() {
-				});
-		assertFalse(responseEntity.getBody().isEmpty());
-	}
-
-	@Test
-	public void whenFindAllPaged_thenResourceIsPaged() throws Exception {
-		ResponseEntity<List<OceanRoute>> responseEntity = restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST),
-				HttpMethod.GET, null, getParamTypeRef());
-
-		List<OceanRoute> resources = responseEntity.getBody();
-		assertThat(resources, is(not((empty()))));
-
-	}
-
-	@Test
-	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
-		ResponseEntity<List<OceanRoute>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
-				HttpMethod.GET, null, getParamTypeRef());
-
-		List<OceanRoute> resources = responseEntity.getBody();
-		Comparator<OceanRoute> comparator = (o1, o2) -> o1.getId().compareTo(o2.getId());
-		assertThat(isSorted(resources, comparator), is(true));
-
-	}
 
 	@Test
 	public void whenSearchForValidRoutes_onlyValidResourcesAreReturned() {

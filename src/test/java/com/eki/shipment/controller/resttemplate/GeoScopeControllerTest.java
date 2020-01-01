@@ -92,43 +92,7 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> 
 
 	}
 
-	@Test
-	public void whenFindAllPaged_thenResourcesArePaged() throws Exception {
 
-		ResponseEntity<List<GeoScope>> response = restTemplate.exchange(createURL(QUESTION_MARK + PAGE_NO + "=1"),
-				HttpMethod.GET, null, new ParameterizedTypeReference<List<GeoScope>>() {
-				});
-		assertFalse(response.getBody().isEmpty());
-
-	}
-
-	@Test
-	public void whenFindAllSorted_thenResourceIsSorted_2() throws Exception {
-
-		ResponseEntity<List<GeoScope>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
-				HttpMethod.GET, null, getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
-	}
-
-	@Test
-	public void whenFindAllPaged_thenResourceIsPaged() throws Exception {
-		ResponseEntity<List<GeoScope>> responseEntity = restTemplate.exchange(createURL(COMPLETE_PAGE_REQUEST),
-				HttpMethod.GET, null, getParamTypeRef());
-
-		List<GeoScope> resources = responseEntity.getBody();
-		assertThat(resources.size(), is(5));
-
-	}
-
-	@Test
-	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
-		ResponseEntity<List<GeoScope>> responseEntity = restTemplate.exchange(createURL(COMPLETE_SORT_ORDER),
-				HttpMethod.GET, null, getParamTypeRef());
-
-		Comparator<GeoScope> comparator = (o1, o2) -> o1.getId().compareTo(o2.getId());
-		assertThat(isSorted(responseEntity.getBody(), comparator), is(true));
-
-	}
 
 	@Test
 	public void whenSearchGeoScopesLikeDED_thenReturnLocations() {

@@ -1,5 +1,8 @@
 package com.eki.shipment.controller.resttemplate;
 
+import static com.eki.common.util.QueryConstants.COMPLETE_SORT_ORDER;
+import static com.eki.common.util.QueryConstants.PAGE_NO;
+import static com.eki.common.util.QueryConstants.QUESTION_MARK;
 import static com.eki.common.util.QueryConstants.SLASH;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
@@ -83,7 +86,7 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 	
 
 	@Test
-	public void whenFindAllWithTypeRef_thenResourcesAreRetrieved() throws Exception {
+	public void whenFindAll_thenResourcesAreRetrieved() throws Exception {
 	
 		ResponseEntity<List<T>> responseEntity =  getAll(createURL(SLASH),getParamTypeRef());
 		assertFalse(responseEntity.getBody().isEmpty());
@@ -96,6 +99,19 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 
 		assertThat(responseEntity.getBody().getId(), is(entity.getId()));
 
+	}
+	@Test
+	public void whenFindAllPaged_thenResourcesArePaged() throws Exception {
+
+		ResponseEntity<List<T>> response = getAll(createURL(QUESTION_MARK + PAGE_NO + "=1"), getParamTypeRef());
+		assertFalse(response.getBody().isEmpty());
+
+	}
+
+	@Test
+	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
+		ResponseEntity<List<T>> responseEntity = getAll(createURL(COMPLETE_SORT_ORDER), getParamTypeRef());
+		assertFalse(responseEntity.getBody().isEmpty());
 	}
 
 	
