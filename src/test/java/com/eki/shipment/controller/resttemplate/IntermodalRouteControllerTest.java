@@ -32,6 +32,7 @@ import org.springframework.http.ResponseEntity;
 import com.eki.common.interfaces.IEntity;
 import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.model.KeyFigure;
+import com.eki.shipment.model.OceanRoute;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
@@ -56,7 +57,18 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 
 	@Test
 	public void whenCreateNew_thenTheNewResourceIsRetrievableByLocationHeader() {
-		createNewEntityAndPersist();
+		KeyFigure entity = createEntity();
+		ResponseEntity<KeyFigure> result = post(entity, KeyFigure.class, createURL(SLASH));
+		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
+		HttpHeaders headers = result.getHeaders();
+		List<String> location = headers.get(HttpHeaders.LOCATION);
+		assertNotNull(location);
+		ResponseEntity<KeyFigure> responseEntity = restTemplate.exchange(location.get(0), HttpMethod.GET,
+				defaultHttpEntity, KeyFigure.class);
+		KeyFigure retrievedReosurce = responseEntity.getBody();
+
+		assertEquals(entity.getRate(), retrievedReosurce.getRate());
+
 
 	}
 
@@ -130,15 +142,7 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 		
 	}
 
-	@Test
-	public void whenCompleySearch_thenMatchingResourcesAreRetrieved() {
-		KeyFigure[] body =  this.restTemplate.getForObject("/keyfigure/find?inlandLocation=DUSSELDORF&inlandGeoScopeType=T&countryCode=DE&portLocation=DEHAM&includeAllPrefPorts=true", KeyFigure[].class);
-		assertThat(body.length, is(16));
-		for (int i = 0; i < body.length; i++) {
-			KeyFigure kf=body[i];
-			assertThat(kf.getFrom().getLocationCode(), is("DUSSELDORF"));
-		}
-	}
+
 
 
 	@Override

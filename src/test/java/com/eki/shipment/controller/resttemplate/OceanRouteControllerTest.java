@@ -56,7 +56,7 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 
 	@Test
 	public void whenCreateNew_thenTheNewResourceIsRetrievableByLocationHeader() {
-		OceanRoute entity = createNewEntityAndPersist();
+		OceanRoute entity = createEntity();
 		ResponseEntity<OceanRoute> result = post(entity, OceanRoute.class, createURL(SLASH));
 		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
 		HttpHeaders headers = result.getHeaders();
@@ -74,8 +74,6 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 	public void whenUpdateResource_thenStatusCodeIsOk() {
 		OceanRoute entity = createNewEntityAndPersist();
 		entity.setPol("");
-
-		HttpEntity<OceanRoute> request = new HttpEntity<>(entity, headers);
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(ID, entity.getId().toString());
 		ResponseEntity<OceanRoute> responseEntity = put(entity, OceanRoute.class, createURL(SLASH + entity.getId()), params);

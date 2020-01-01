@@ -27,6 +27,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -55,7 +56,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @TestPropertySource(locations = "classpath:application-test.properties")
-
+@Transactional
+@Rollback
 public abstract class AbstractWebControllerTest<T extends IEntity> {
 	
 	

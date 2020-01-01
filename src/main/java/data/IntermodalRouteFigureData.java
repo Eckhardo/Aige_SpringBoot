@@ -18,7 +18,9 @@ public class IntermodalRouteFigureData {
 
 	public static KeyFigure getSingle() {
 		GeoScope deham = new GeoScope("DE", "DEHAM", "L", "Hamburg", true);
+		deham.setId(2L);
 		GeoScope beanr = new GeoScope("BE", "BEANR", "L", "Antwerp", true);
+		beanr.setId(4L);
 		KeyFigure kf1 = new KeyFigure(deham, null, beanr, 0, transportMode, false, eq20, "RF", new BigDecimal("200.00"),
 				euro, 0, eq40, new Date());
 		return kf1;

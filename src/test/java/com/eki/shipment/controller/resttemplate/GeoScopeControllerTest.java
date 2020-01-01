@@ -30,6 +30,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eki.common.interfaces.IEntity;
 import com.eki.common.util.ShipmentMappings;
@@ -39,6 +40,7 @@ import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.util.EntityFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
+
 
 public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> {
 
