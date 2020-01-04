@@ -33,7 +33,6 @@ public abstract class AbstractRestClient<T extends IEntity> implements IRestClie
 	TestRestTemplate restTemplate;
 
 	final String HOST = "http://localhost:";
-
 	final String APP_ROOT = "nre";
 
 	public AbstractRestClient(final Class<T> clazz) {
