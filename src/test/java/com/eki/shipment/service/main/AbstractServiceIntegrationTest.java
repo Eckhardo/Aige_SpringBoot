@@ -116,7 +116,7 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 
 	// delete
 
-@Test
+	@Test
 	public final void givenResourceExists_whenResourceIsDeleted_thenResourceNoLongerExists() {
 		// Given
 		final T existingResource = persistNewEntity();
@@ -140,21 +140,24 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 		List<Long> ids = resourcesSorted.stream().map(t -> t.getId()).collect(Collectors.toList());
 		assertTrue(isSorted(ids));
 	}
-    /**
-     * - can also be the ConstraintViolationException which now occurs on the update operation will not be translated; as a consequence, it will be a TransactionSystemException
-     */
-    @Test(expected = RuntimeException.class)
-    public void whenResourceIsUpdatedWithFailedConstraints_thenException() {
-        final T existingResource = persistNewEntity();
-        invalidate(existingResource);
 
-        getApi().update(existingResource);
-    }
+	/**
+	 * - can also be the ConstraintViolationException which now occurs on the update
+	 * operation will not be translated; as a consequence, it will be a
+	 * TransactionSystemException
+	 */
+	@Test(expected = RuntimeException.class)
+	public void whenResourceIsUpdatedWithFailedConstraints_thenException() {
+		final T existingResource = persistNewEntity();
+		invalidate(existingResource);
+
+		getApi().update(existingResource);
+	}
+
 	protected T persistNewEntity() {
 		T entity = getApi().create(createNewEntity());
 		return entity;
 	}
-
 
 	private static boolean isSorted(List<Long> ids) {
 		return Ordering.<Long>natural().isOrdered(ids);
@@ -168,6 +171,5 @@ public abstract class AbstractServiceIntegrationTest<T extends IEntity> {
 	protected abstract T createNewEntity();
 
 	protected abstract IServiceOperations<T> getApi();
-
 
 }

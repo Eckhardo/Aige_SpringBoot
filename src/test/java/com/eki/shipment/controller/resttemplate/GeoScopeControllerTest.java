@@ -1,62 +1,40 @@
 package com.eki.shipment.controller.resttemplate;
 
-import static com.eki.common.util.QueryConstants.COMPLETE_PAGE_REQUEST;
-import static com.eki.common.util.QueryConstants.COMPLETE_SORT_ORDER;
 import static com.eki.common.util.QueryConstants.ID;
-import static com.eki.common.util.QueryConstants.PAGE_NO;
-import static com.eki.common.util.QueryConstants.QUESTION_MARK;
 import static com.eki.common.util.QueryConstants.SLASH;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.eki.common.interfaces.IEntity;
 import com.eki.common.util.ShipmentMappings;
-import com.eki.shipment.model.GeoScope;
-import com.eki.shipment.model.GeoScope;
-import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.util.EntityFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 
-
 public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> {
 
-
-	
 	public GeoScopeControllerTest() {
 		super(GeoScope.class);
 	}
 
-
-
-
 	@Test
 	public void whenCreateNew_thenTheNewResourceIsRetrievableByLocationHeader() {
 		GeoScope entity = createEntity();
-		ResponseEntity<GeoScope> result = post(entity, GeoScope.class, createURL(SLASH));
+		ResponseEntity<GeoScope> result = post(entity, createURL(SLASH));
 		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
 		HttpHeaders headers = result.getHeaders();
 		List<String> location = headers.get(HttpHeaders.LOCATION);
@@ -75,7 +53,7 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> 
 
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(ID, entity.getId().toString());
-		ResponseEntity<GeoScope> result = put(entity, GeoScope.class, createURL(SLASH + entity.getId()), params);
+		ResponseEntity<GeoScope> result = put(entity, createURL(SLASH + entity.getId()), params);
 
 		assertThat(result.getStatusCode(), is(HttpStatus.OK));
 
@@ -83,16 +61,13 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> 
 
 	@Test
 	public void whenDeleteResourse_thenStatusCodeIsNoContent() {
-		GeoScope entity =createNewEntityAndPersist();
+		GeoScope entity = createNewEntityAndPersist();
 
-		ResponseEntity<GeoScope> responseEntity = delete(entity, GeoScope.class,
-				createURL(SLASH + entity.getId().toString()));
+		ResponseEntity<GeoScope> responseEntity = delete(entity, createURL(SLASH + entity.getId().toString()));
 
 		assertThat(responseEntity.getStatusCode(), is(HttpStatus.NO_CONTENT));
 
 	}
-
-
 
 	@Test
 	public void whenSearchGeoScopesLikeDED_thenReturnLocations() {
@@ -136,15 +111,6 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> 
 		}
 	}
 
-	protected GeoScope retrieveFirstEntity(String uriString) {
-
-		ResponseEntity<List<GeoScope>> responseEntityAll = restTemplate.exchange(createURL(uriString), HttpMethod.GET,
-				null, getParamTypeRef());
-		assertFalse(responseEntityAll.getBody().isEmpty());
-		return responseEntityAll.getBody().get(0);
-
-	}
-
 	@Override
 	protected GeoScope createEntity() {
 		return EntityFactory.createGeoScope();
@@ -156,7 +122,7 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope> 
 	}
 
 	@Override
-	protected ParameterizedTypeReference<List<GeoScope>> getParamTypeRef() {
+	protected ParameterizedTypeReference<List<GeoScope>> getResponseType() {
 
 		return new ParameterizedTypeReference<List<GeoScope>>() {
 		};

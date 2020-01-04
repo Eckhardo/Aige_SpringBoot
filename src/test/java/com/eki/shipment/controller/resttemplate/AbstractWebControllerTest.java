@@ -9,6 +9,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -36,12 +37,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.eki.common.interfaces.IDto;
 import com.eki.common.interfaces.IEntity;
-import com.eki.shipment.model.Country;
-import com.eki.shipment.model.GeoScope;
-import com.eki.shipment.model.KeyFigure;
-import com.eki.shipment.model.OceanRoute;
 import com.eki.shipment.run.MysqlBootApplication;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -59,17 +55,16 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @TestPropertySource(locations = "classpath:application-test.properties")
-@Transactional
-@Rollback
+
 public abstract class AbstractWebControllerTest<T extends IEntity> {
-	
-	
+
 	Class<T> clazz;
 
 	public AbstractWebControllerTest(Class clazz) {
 		super();
-		this.clazz=clazz;
+		this.clazz = clazz;
 	}
+
 	@Autowired
 	TestRestTemplate restTemplate;
 
@@ -83,79 +78,77 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 	HttpHeaders headers = new HttpHeaders();
 	HttpEntity<String> defaultHttpEntity = new HttpEntity<String>(null, headers);
 
-	
-
 	@Test
 	public void whenFindAll_thenResourcesAreRetrieved() throws Exception {
-	
-		ResponseEntity<List<T>> responseEntity =  getAll(createURL(SLASH),getParamTypeRef());
+
+		ResponseEntity<List<T>> responseEntity = getAll(createURL(SLASH));
 		assertFalse(responseEntity.getBody().isEmpty());
 	}
 
 	@Test
 	public void whenFindOne_ThenResourceIsRetrieved() {
-		T entity =createNewEntityAndPersist();
-		ResponseEntity<T> responseEntity = getOne(entity, clazz, createURL(SLASH + entity.getId()));
+		T entity = createNewEntityAndPersist();
+		ResponseEntity<T> responseEntity = getOne(createURL(SLASH + entity.getId()));
 
 		assertThat(responseEntity.getBody().getId(), is(entity.getId()));
 
 	}
+
 	@Test
 	public void whenFindAllPaged_thenResourcesArePaged() throws Exception {
 
-		ResponseEntity<List<T>> response = getAll(createURL(QUESTION_MARK + PAGE_NO + "=1"), getParamTypeRef());
+		ResponseEntity<List<T>> response = getAll(createURL(QUESTION_MARK + PAGE_NO + "=1"));
 		assertFalse(response.getBody().isEmpty());
 
 	}
 
 	@Test
 	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
-		ResponseEntity<List<T>> responseEntity = getAll(createURL(COMPLETE_SORT_ORDER), getParamTypeRef());
+		ResponseEntity<List<T>> responseEntity = getAll(createURL(COMPLETE_SORT_ORDER));
 		assertFalse(responseEntity.getBody().isEmpty());
 	}
 
-	
-	public ResponseEntity<T> getOne(Object content, Class<T> returnType, String url) {
-		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(returnType);
-		HttpEntity<Object> requestEntity = new HttpEntity<>(content);
-		ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, typeRef);
-		
+	protected ResponseEntity<T> getOne(String url) {
+		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(clazz);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
+		// Request to return JSON format
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> entity = new HttpEntity<String>(headers);
+		ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.GET, entity, typeRef);
+
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
 		assertThat(response.getHeaders().getContentType(), is(MediaType.APPLICATION_JSON_UTF8));
-	
+
 		return response;
 	}
 
-	public ResponseEntity<List<T>> getAll(String url, ParameterizedTypeReference<List<T>> parameterizedTypeReference) {
+	protected ResponseEntity<List<T>> getAll(String url) {
 
-		ResponseEntity<List<T>> response = restTemplate.exchange(url, HttpMethod.GET, null, parameterizedTypeReference);
+		ResponseEntity<List<T>> response = restTemplate.exchange(url, HttpMethod.GET, null, getResponseType());
 		return response;
 	}
 
-
-
-	public ResponseEntity<T> post(Object content, Class<T> returnType, String url) {
-		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(returnType);
+	protected ResponseEntity<T> post(Object content, String url) {
+		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(clazz);
 		HttpEntity<Object> requestEntity = new HttpEntity<>(content);
 		ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, typeRef);
 		return response;
 	}
 
-	public ResponseEntity<T> put(Object content, Class<T> returnType, String url, Map<String, String> params) {
-		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(returnType);
+	protected ResponseEntity<T> put(Object content, String url, Map<String, String> params) {
+		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(clazz);
 		HttpEntity<Object> requestEntity = new HttpEntity<>(content);
 		ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, typeRef, params);
 		return response;
 	}
 
-	public ResponseEntity<T> delete(Object content, Class<T> returnType, String url) {
-		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(returnType);
+	protected ResponseEntity<T> delete(Object content, String url) {
+		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(clazz);
 		HttpEntity<Object> requestEntity = new HttpEntity<>(content);
 		ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, typeRef);
 		return response;
 	}
-
-
 
 	protected StringBuilder createBaseUri(String uriPart) {
 		return new StringBuilder().append(HOST).append(port).append(SLASH).append(APP_ROOT).append(SLASH);
@@ -178,12 +171,6 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 		}
 		return true;
 	}
-	protected T createNewEntity(String uriString) {
-		ResponseEntity<List<T>> responseEntity = 	 restTemplate.exchange(createURL(uriString), HttpMethod.GET, null,getParamTypeRef());
-		assertFalse(responseEntity.getBody().isEmpty());
-		return responseEntity.getBody().get(0);
-
-	}
 
 	protected String createURL(String uriPart) {
 		StringBuilder uri = createBaseUri(uriPart);
@@ -193,23 +180,26 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 		}
 		return uri.toString();
 	}
-	
+
 	protected T createNewEntityAndPersist() {
 		T entity = createEntity();
-		ResponseEntity<T> result = post(entity, clazz, createURL(SLASH));
+		ResponseEntity<T> result = post(entity, createURL(SLASH));
 		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
 		HttpHeaders headers = result.getHeaders();
 		List<String> location = headers.get(HttpHeaders.LOCATION);
 		assertNotNull(location);
-		ResponseEntity<T> responseEntity = restTemplate.exchange(location.get(0), HttpMethod.GET,
-				defaultHttpEntity, clazz);
+		ResponseEntity<T> responseEntity = restTemplate.exchange(location.get(0), HttpMethod.GET, defaultHttpEntity,
+				clazz);
 		return responseEntity.getBody();
 
-	
 	}
+
 	protected abstract String getApiName();
+
 	protected abstract T createEntity();
-	protected abstract ParameterizedTypeReference<List<T>> getParamTypeRef();
+
+	protected abstract ParameterizedTypeReference<List<T>> getResponseType();
+
 	protected abstract TypeReference<List<T>> getTypeRef();
-	
+
 }
