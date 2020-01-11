@@ -34,20 +34,16 @@ public class CountryControllerLiveTest extends AbstractControllerLiveTest<Countr
 
 	public CountryControllerLiveTest() {
 		super(Country.class);
-
 	}
 
 	@Test
 	public void whenFindOne_ThenResourceIsRetrieved() {
 		Country entity = this.getApi().findOne(4L);
-
 		assertThat(entity, is(4L));
-
 	}
 
 	@Override
 	protected final CountryRestClient getApi() {
 		return restClient;
 	}
-
 }
