@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -52,10 +53,10 @@ public class ComparatorTest {
 		assertThat(preferredGeoScopes.size(), is(4));
 
 		// test
-		Comparator<GeoScope> rateComparator = (kf1, kf2) -> (kf1.getName().compareTo(kf2.getName()));
-
+		Comparator<GeoScope> rateComparator = (g1, g2) -> (g1.getName().compareTo(g2.getName()));
+		 Comparator<GeoScope> comparatorObj=Comparator.comparing( g -> g.getCountryCode());
 		preferredGeoScopes.sort(rateComparator);
-
+           Collections.sort(preferredGeoScopes, comparatorObj);
 		assertCorrectSorting(preferredGeoScopes);
 	}
 
@@ -66,7 +67,7 @@ public class ComparatorTest {
 
 		// test
 		// test
-		Comparator<GeoScope> rateComparator = (kf1, kf2) -> (kf1.getName().compareTo(kf2.getName()));
+		Comparator<GeoScope> rateComparator = Comparator.comparing( g-> g.getLocationCode());
 
 		preferredGeoScopes.sort(rateComparator);
 

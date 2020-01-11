@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -21,26 +23,21 @@ import com.eki.shipment.run.MysqlBootApplication;
 
 @SpringBootTest(classes = MysqlBootApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
-@ActiveProfiles("test")
+
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @TestPropertySource(locations = "classpath:application-test.properties")
-@EntityScan(basePackages = "com.eki")
+@ComponentScan("com.ek.shipment.test.restclient")
 public class CountryControllerLiveTest extends AbstractControllerLiveTest<Country> {
 
-//	@Autowired
-//	private CountryRestClient api;
+	@Autowired(required=true)
+	private CountryRestClient restClient;
 
 	public CountryControllerLiveTest() {
 		super(Country.class);
 
 	}
-	
-	@Test
-	public void testDummy() {
-		
-	}
 
-//	@Test
+	@Test
 	public void whenFindOne_ThenResourceIsRetrieved() {
 		Country entity = this.getApi().findOne(4L);
 
@@ -50,7 +47,7 @@ public class CountryControllerLiveTest extends AbstractControllerLiveTest<Countr
 
 	@Override
 	protected final CountryRestClient getApi() {
-		return null;
+		return restClient;
 	}
 
 }

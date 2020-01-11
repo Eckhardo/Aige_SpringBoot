@@ -15,7 +15,7 @@ import com.eki.shipment.exception.MyEntityNotFoundException;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
-@Transactional
+
 public abstract class AbstractService<T extends IEntity> implements IServiceOperations<T> {
 
 	private Class<T> clazz;

@@ -7,12 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eki.shipment.dao.IntermodalRouteDynamicQueryDao;
 import com.eki.shipment.dao.IntermodalRouteRepository;
 import com.eki.shipment.model.KeyFigure;
 
 @Service
+@Transactional
 public class IntermodalRouteService extends AbstractService<KeyFigure>{
 	
 	@Autowired
