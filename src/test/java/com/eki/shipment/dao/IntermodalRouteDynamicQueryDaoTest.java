@@ -46,8 +46,6 @@ public class IntermodalRouteDynamicQueryDaoTest {
 
 	@Autowired
 	private GeoScopeService geoScopeService;
-
-
 	
 	static String DUSSELDORF = "DUSSELDORF";
 	static String DE = "DE";
@@ -220,7 +218,6 @@ public class IntermodalRouteDynamicQueryDaoTest {
 	}
 	@Test
 	public void searchKeyFiguresByJpa() {
-		// given
 	
 		List<KeyFigure> kfs = keyFigureDynamicQueryDao.searchKeyFiguresJpa(DUSSELDORF, DE, geoScopeType,
 				Arrays.asList("DEHAM"));
@@ -231,7 +228,6 @@ public class IntermodalRouteDynamicQueryDaoTest {
 	}
 	@Test
 	public void searchKeyFiguresByNamedJpa() {
-		// given
 	
 		List<KeyFigure> kfs = keyFigureDynamicQueryDao.searchKeyFiguresNamedJpa(DUSSELDORF, 
 				Arrays.asList("DEHAM"));
