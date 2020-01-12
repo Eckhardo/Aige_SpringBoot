@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import com.ek.shipment.test.restclient.CountryRestClient;
 import com.eki.common.interfaces.IEntity;
 import com.eki.shipment.service.IServiceOperations;
+
 import com.google.common.base.Preconditions;
 
 public abstract class AbstractControllerLiveTest<T extends IEntity> implements IServiceOperations<T> {
@@ -80,5 +80,5 @@ public abstract class AbstractControllerLiveTest<T extends IEntity> implements I
 		return 0;
 	}
 
-	protected abstract CountryRestClient getApi();
+	
 }

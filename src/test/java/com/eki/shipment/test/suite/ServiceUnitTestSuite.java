@@ -1,4 +1,4 @@
-package com.ek.shipment.test.suite;
+package com.eki.shipment.test.suite;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

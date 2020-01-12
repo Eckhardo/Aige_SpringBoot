@@ -1,4 +1,4 @@
-package com.ek.shipment.test.restclient;
+package com.eki.shipment.test.restclient;
 
 import static com.eki.common.util.QueryConstants.SLASH;
 import static org.hamcrest.CoreMatchers.is;

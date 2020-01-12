@@ -1,4 +1,4 @@
-package com.ek.shipment.test.restclient;
+package com.eki.shipment.test.restclient;
 
 import com.eki.common.interfaces.IEntity;
 
