@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -216,9 +217,30 @@ public class IntermodalRouteDynamicQueryDaoTest {
 		assertTrue(page.getContent().stream().allMatch(p1));
 		logResult(page);
 
+	}
+	@Test
+	public void searchKeyFiguresByJpa() {
+		// given
+	
+		List<KeyFigure> kfs = keyFigureDynamicQueryDao.searchKeyFiguresJpa(DUSSELDORF, DE, geoScopeType,
+				Arrays.asList("DEHAM"));
+
+		assertThat(kfs, is(not((empty()))));
 	
 
 	}
+	@Test
+	public void searchKeyFiguresByNamedJpa() {
+		// given
+	
+		List<KeyFigure> kfs = keyFigureDynamicQueryDao.searchKeyFiguresNamedJpa(DUSSELDORF, 
+				Arrays.asList("DEHAM"));
+
+		assertThat(kfs, is(not((empty()))));
+	
+
+	}
+
 	private void logPageDetails(Page<KeyFigure> page) {
 		int number = page.getNumber();
 		int numberOfElements = page.getNumberOfElements();

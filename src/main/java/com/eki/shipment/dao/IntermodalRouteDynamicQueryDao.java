@@ -1,6 +1,7 @@
 package com.eki.shipment.dao;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.hibernate.annotations.NamedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -29,6 +31,7 @@ import com.eki.shipment.model.KeyFigure;
 
 @Repository
 @Transactional
+
 public class IntermodalRouteDynamicQueryDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(IntermodalRouteDynamicQueryDao.class);
@@ -113,9 +116,6 @@ public class IntermodalRouteDynamicQueryDao {
 	public Page<KeyFigure> searchPageableKeyFigures(String inlandLocation, String countryCode, String geoScopeType,
 			List<String> preferredPorts, boolean eq20, boolean eq40, String tpMode, String eqGroup,
 			PageRequest pageRequest) {
-		preferredPorts.stream().forEach((myPojo) -> {
-			logger.warn(myPojo.toString());
-		});
 
 		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		final CriteriaQuery<KeyFigure> cq = builder.createQuery(KeyFigure.class);
@@ -145,13 +145,12 @@ public class IntermodalRouteDynamicQueryDao {
 
 		}
 
-		Predicate preds = builder.and(predicates.toArray(new Predicate[predicates.size()]));
-		cq.where(preds);
+		Predicate finalPredicate = builder.and(predicates.toArray(new Predicate[predicates.size()]));
+		cq.where(finalPredicate);
 
 		TypedQuery<KeyFigure> query = entityManager.createQuery(cq);
 		// Here you have to count the total size of the result
 		int totalRows = query.getResultList().size();
-		logger.warn("# of kfs: {}", totalRows);
 
 		// Paging you don't want to access all entities of a given query but rather only
 		// a page of them
@@ -164,20 +163,50 @@ public class IntermodalRouteDynamicQueryDao {
 
 		PageImpl<KeyFigure> page = new PageImpl<KeyFigure>(query.getResultList(), pageRequest, totalRows);
 
-		logger.warn("# of kfs in page: {}", page.getContent().size());
-
 		return page;
+
+	}
+
+	public List<KeyFigure> searchKeyFiguresJpa(String inlandLocation, String countryCode, String inlandGeoScopeType,
+			List<String> preferredPorts) {
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT kf FROM KeyFigure kf ");
+		builder.append("JOIN kf.from f ");
+		builder.append("JOIN kf.to t ");
+		builder.append("WHERE ");
+		builder.append("f.countryCode=(:countryCode) ");
+		builder.append("AND f.locationCode=(:inlandLocation) ");
+		builder.append("AND f.geoScopeType=(:inlandType) ");
+		builder.append("and t.locationCode IN(:prefPorts)");
+		TypedQuery<KeyFigure> query = entityManager.createQuery(builder.toString(), KeyFigure.class);
+
+		query.setParameter("inlandLocation", inlandLocation);
+		query.setParameter("countryCode", countryCode);
+		query.setParameter("inlandType", inlandGeoScopeType);
+		query.setParameter("prefPorts", preferredPorts);
+		return query.getResultList();
+
+	}
+
+	public List<KeyFigure> searchKeyFiguresNamedJpa(String inlandLocation, List<String> preferredPorts) {
+		TypedQuery<KeyFigure> query = entityManager.createNamedQuery("KeyFigure_findByInlandLocationAndPreferredPorts",
+				KeyFigure.class);
+
+		query.setParameter("inlandLocation", inlandLocation);
+		query.setParameter("prefPorts", preferredPorts);
+
+		return query.getResultList();
 
 	}
 
 	public List<KeyFigure> searchKeyFiguresSimple(String inlandLocation, String countryCode, String inlandGeoScopeType,
 			List<String> preferredPorts) {
 		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		final CriteriaQuery<KeyFigure> cq = builder.createQuery(KeyFigure.class);
-		final Root<KeyFigure> root = cq.from(KeyFigure.class);
+		final CriteriaQuery<KeyFigure> query = builder.createQuery(KeyFigure.class);
+		final Root<KeyFigure> root = query.from(KeyFigure.class);
 		Join<KeyFigure, GeoScope> from = root.join("from", JoinType.LEFT);
 		Join<KeyFigure, GeoScope> to = root.join("to", JoinType.LEFT);
-		cq.select(root);
 		List<Predicate> predicates = new ArrayList<>();
 		String country = countryCode;
 		if (StringUtils.isEmpty(countryCode)) {
@@ -189,11 +218,13 @@ public class IntermodalRouteDynamicQueryDao {
 				builder.equal(from.get("locationCode"), inlandLocation), to.get("locationCode").in(preferredPorts)));
 
 		Predicate preds = builder.and(predicates.toArray(new Predicate[predicates.size()]));
-		cq.where(preds);
+		query.select(root);
 
-		TypedQuery<KeyFigure> query = entityManager.createQuery(cq);
+		query.where(preds);
 
-		List<KeyFigure> kfs = query.getResultList();
+		TypedQuery<KeyFigure> typedQuery = entityManager.createQuery(query);
+
+		List<KeyFigure> kfs = typedQuery.getResultList();
 
 		logger.warn("# of kfs in page: {}", kfs.size());
 

@@ -16,8 +16,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.NamedQuery;
+
 import com.eki.common.interfaces.IDto;
 import com.eki.common.interfaces.IEntity;
+@NamedQuery(name = "KeyFigure_findByInlandLocationAndPreferredPorts", 
+query = "SELECT kf from KeyFigure kf JOIN kf.from f JOIN kf.to t where f.locationCode = :inlandLocation and t.locationCode IN(:prefPorts)")
 
 @Entity
 @Table(name = "keyfigure")
