@@ -1,16 +1,16 @@
 package com.eki.shipment.controller.resttemplate;
 
-import static com.eki.common.util.QueryConstants.COMPLETE_SORT_ORDER;
-import static com.eki.common.util.QueryConstants.PAGE_NO;
-import static com.eki.common.util.QueryConstants.QUESTION_MARK;
-import static com.eki.common.util.QueryConstants.SLASH;
+import static com.eki.common.util.QueryConstants.*;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +31,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.eki.common.interfaces.IEntity;
 import com.eki.shipment.run.MysqlBootApplication;
@@ -60,9 +58,15 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 
 	Class<T> clazz;
 
-	public AbstractWebControllerTest(Class clazz) {
+	Class<List<T>> clazzList;
+
+	@SuppressWarnings("unchecked")
+	public AbstractWebControllerTest(Class<T> clazz) {
 		super();
 		this.clazz = clazz;
+	
+		List<T> myList = new ArrayList<T>();
+		this.clazzList =  (Class<List<T>>)myList.getClass();
 	}
 
 	@Autowired
@@ -71,12 +75,6 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 	@LocalServerPort
 	private int port;
 
-	final String HOST = "http://localhost:";
-
-	final String APP_ROOT = "nre";
-
-	HttpHeaders headers = new HttpHeaders();
-	HttpEntity<String> defaultHttpEntity = new HttpEntity<String>(null, headers);
 
 	@Test
 	public void whenFindAll_thenResourcesAreRetrieved() throws Exception {
@@ -106,50 +104,77 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
 		ResponseEntity<List<T>> responseEntity = getAll(createURL(COMPLETE_SORT_ORDER));
 		assertFalse(responseEntity.getBody().isEmpty());
+	
+	
 	}
 
 	protected ResponseEntity<T> getOne(String url) {
-		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(clazz);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
-		// Request to return JSON format
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<String> entity = new HttpEntity<String>(headers);
-		ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.GET, entity, typeRef);
-
+		ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.GET, getHttpEntity(null), getResponseType());
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
 		assertThat(response.getHeaders().getContentType(), is(MediaType.APPLICATION_JSON_UTF8));
 
 		return response;
 	}
 
+
+
 	protected ResponseEntity<List<T>> getAll(String url) {
-
-		ResponseEntity<List<T>> response = restTemplate.exchange(url, HttpMethod.GET, null, getResponseType());
-		return response;
+		return restTemplate.exchange(url, HttpMethod.GET, null, getResponseTypeAsList());
+		
 	}
 
-	protected ResponseEntity<T> post(Object content, String url) {
-		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(clazz);
-		HttpEntity<Object> requestEntity = new HttpEntity<>(content);
-		ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, typeRef);
-		return response;
+	protected ResponseEntity<T> post(T content, String url) {
+	return restTemplate.exchange(url, HttpMethod.POST, getHttpEntity(content), getResponseType());
+	
+	}
+	@Test
+	public void whenCreateNew_thenTheNewResourceIsRetrievableByLocationHeader() {
+		T entity = createEntity();
+		ResponseEntity<T> result = post(entity, createURL(SLASH));
+		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
+		HttpHeaders headers = result.getHeaders();
+		List<String> locations = headers.get(HttpHeaders.LOCATION);
+		assertNotNull(locations);
+		String location=locations.get(0);
+		String id=location.substring(location.lastIndexOf(SLASH +1)).substring(1);
+		ResponseEntity<T> responseEntity = restTemplate.exchange(location, HttpMethod.GET,
+				getHttpEntity(null), clazz);
+		T retrievedEntity = (T) responseEntity.getBody();
+
+		assertEquals(id, retrievedEntity.getId().toString());
+
 	}
 
-	protected ResponseEntity<T> put(Object content, String url, Map<String, String> params) {
-		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(clazz);
-		HttpEntity<Object> requestEntity = new HttpEntity<>(content);
-		ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, typeRef, params);
-		return response;
+	protected ResponseEntity<T> put(T content, String url, Map<String, String> params) {
+	return restTemplate.exchange(url, HttpMethod.PUT, getHttpEntity(content), getResponseType());
+	
 	}
 
-	protected ResponseEntity<T> delete(Object content, String url) {
-		ParameterizedTypeReference<T> typeRef = ParameterizedTypeReference.forType(clazz);
-		HttpEntity<Object> requestEntity = new HttpEntity<>(content);
-		ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, typeRef);
-		return response;
+	@Test
+	public void whenUpdateResource_thenStatusCodeIsOk() {
+		T entity = createNewEntityAndPersist();
+	
+		Map<String, String> params = new HashMap<String, String>();
+		params.put(ID, entity.getId().toString());
+		ResponseEntity<T> result = put(entity, createURL(SLASH + entity.getId()), params);
+
+		assertThat(result.getStatusCode(), is(HttpStatus.OK));
+
+	}
+	protected ResponseEntity<T> delete(T content, String url) {
+		return restTemplate.exchange(url, HttpMethod.DELETE, getHttpEntity(content), getResponseType());
+	
 	}
 
+	@Test
+	public void whenDeleteResourse_thenStatusCodeIsNoContent() {
+		T entity = createNewEntityAndPersist();
+
+		ResponseEntity<T> responseEntity = delete(entity, createURL(SLASH + entity.getId().toString()));
+
+		assertThat(responseEntity.getStatusCode(), is(HttpStatus.NO_CONTENT));
+
+	}
 	protected StringBuilder createBaseUri(String uriPart) {
 		return new StringBuilder().append(HOST).append(port).append(SLASH).append(APP_ROOT).append(SLASH);
 
@@ -188,7 +213,7 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 		HttpHeaders headers = result.getHeaders();
 		List<String> location = headers.get(HttpHeaders.LOCATION);
 		assertNotNull(location);
-		ResponseEntity<T> responseEntity = restTemplate.exchange(location.get(0), HttpMethod.GET, defaultHttpEntity,
+		ResponseEntity<T> responseEntity = restTemplate.exchange(location.get(0), HttpMethod.GET, getHttpEntity(null),
 				clazz);
 		return responseEntity.getBody();
 
@@ -197,9 +222,23 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 	protected abstract String getApiName();
 
 	protected abstract T createEntity();
+	protected abstract  TypeReference<List<T>> getTypeRef();
+	
+	
+	protected  ParameterizedTypeReference<List<T>> getResponseTypeAsList(){
+		return	ParameterizedTypeReference.forType(clazzList);
+	}
 
-	protected abstract ParameterizedTypeReference<List<T>> getResponseType();
-
-	protected abstract TypeReference<List<T>> getTypeRef();
-
+	protected  ParameterizedTypeReference<T> getResponseType(){
+	return	ParameterizedTypeReference.forType(clazz);
+	}
+	
+	protected HttpEntity<T> getHttpEntity(T entity) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
+		// Request to return JSON format
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		return new HttpEntity<T>(entity,headers);
+		
+	}
 }

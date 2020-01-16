@@ -1,8 +1,11 @@
 package com.eki.common.util;
 
-import static com.eki.common.util.QueryConstants.QUESTION_MARK;
 
 public final class QueryConstants {
+
+	public static final String HOST = "http://localhost:";
+
+	public static final String APP_ROOT = "nre";
 
 	public static final String QUESTIONMARK = "?";
 

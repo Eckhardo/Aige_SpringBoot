@@ -179,12 +179,13 @@ public class IntermodalRouteDynamicQueryDao {
 		builder.append("AND f.locationCode=(:inlandLocation) ");
 		builder.append("AND f.geoScopeType=(:inlandType) ");
 		builder.append("and t.locationCode IN(:prefPorts)");
-		TypedQuery<KeyFigure> query = entityManager.createQuery(builder.toString(), KeyFigure.class);
 
+		TypedQuery<KeyFigure> query = entityManager.createQuery(builder.toString(), KeyFigure.class);
 		query.setParameter("inlandLocation", inlandLocation);
 		query.setParameter("countryCode", countryCode);
 		query.setParameter("inlandType", inlandGeoScopeType);
 		query.setParameter("prefPorts", preferredPorts);
+
 		return query.getResultList();
 
 	}
