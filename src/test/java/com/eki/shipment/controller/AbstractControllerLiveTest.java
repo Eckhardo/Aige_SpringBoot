@@ -15,7 +15,6 @@ public abstract class AbstractControllerLiveTest<T extends IEntity> implements I
 
 	public AbstractControllerLiveTest(final Class<T> clazzToSet) {
 		super();
-
 		Preconditions.checkNotNull(clazzToSet);
 		clazz = clazzToSet;
 	}
