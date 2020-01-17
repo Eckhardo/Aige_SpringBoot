@@ -5,12 +5,12 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.eki.common.interfaces.IEntity;
 import com.eki.shipment.util.IDUtil;
+import com.google.common.collect.Lists;
 
 public abstract class AbstractServiceUnitTest<T extends IEntity> {
 

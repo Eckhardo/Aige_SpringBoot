@@ -29,8 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
  */
 @SpringBootApplication
-
-// Needed, otherwise some tests fail!
+// Needed, otherwise tests will aLL fail!
 @ComponentScan("com.eki")
 public class MysqlBootApplication implements CommandLineRunner {
 	Logger logger = LoggerFactory.getLogger(MysqlBootApplication.class);

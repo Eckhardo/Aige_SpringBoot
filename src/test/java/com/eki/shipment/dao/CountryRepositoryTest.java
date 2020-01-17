@@ -1,9 +1,8 @@
 package com.eki.shipment.dao;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-
+import static org.junit.Assert.assertThat;
 import java.util.Collection;
 
 import org.junit.Test;
@@ -33,7 +32,7 @@ public class CountryRepositoryTest extends AbstractRepositoryTest<Country,Long>{
 	    Country found = countryRepository.findByName(newCountry.getName());
 	 
 	    // then
-	    assertThat(found.getName()).isEqualTo(newCountry.getName());
+	    assertThat(found.getName(), is(newCountry.getName()));
 	}
 	
 	@Test
