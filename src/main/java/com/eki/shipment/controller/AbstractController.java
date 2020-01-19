@@ -35,13 +35,11 @@ public abstract class AbstractController<D extends IDto, E extends IEntity> {
 	}
 
 	// find - one
-
 	protected final D findOneInternal(final Long id) {
 		return convertToDto(getService().findOne(id));
 	}
 
 	// find - all
-
 	protected final List<D> findAllInternal() {
 		return  getService().findAll().stream().map(this::convertToDto).collect(Collectors.toList());
 	}
@@ -131,8 +129,6 @@ public abstract class AbstractController<D extends IDto, E extends IEntity> {
 	// template method
 
 	protected abstract IServiceOperations<E> getService();
-
-
 	
 	protected abstract D convertToDto(E entity);
 	
