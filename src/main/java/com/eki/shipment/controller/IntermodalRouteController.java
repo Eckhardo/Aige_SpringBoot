@@ -159,8 +159,7 @@ public class IntermodalRouteController extends AbstractController<IntermodalRout
 		}
 		List<KeyFigure> kfs = kfService.searchKeyFigures(inlandLocation, inlandKeyFigureType, countryCode, preferredPorts,
 				transportMode, eq20, eq40, eqGroup, PageRequest.of(page, 5));
-		if (kfs.isEmpty())
-			throw new IntermodalRouteNotFoundException();
+	
 		return kfs;
 	}
 
@@ -185,8 +184,7 @@ public class IntermodalRouteController extends AbstractController<IntermodalRout
 
 		List<KeyFigure> kfs = kfService.searchKeyFiguresSimple(inlandLocation, inlandKeyFigureType, countryCode,
 				preferredPorts);
-		if (kfs.isEmpty())
-			throw new IntermodalRouteNotFoundException();
+	
 		return kfs;
 	}
 

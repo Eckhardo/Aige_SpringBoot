@@ -36,7 +36,10 @@ public abstract class AbstractController<D extends IDto, E extends IEntity> {
 
 	// find - one
 	protected final D findOneInternal(final Long id) {
-		return convertToDto(getService().findOne(id));
+		final E entity = getService().findOne(id);
+		RestPreconditions.checkNotNull(entity);
+		return	convertToDto(entity);
+		
 	}
 
 	// find - all

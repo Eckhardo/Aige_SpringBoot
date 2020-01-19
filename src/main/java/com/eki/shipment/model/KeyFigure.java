@@ -1,6 +1,7 @@
 package com.eki.shipment.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -79,8 +80,7 @@ public class KeyFigure implements IEntity, IDto {
 	private String defaultEquipmentSize;
 
 	@Column(name = "start_date")
-	@Temporal(TemporalType.DATE)
-	private Date startDate;
+	private LocalDate startDate;
 //---------------------- contrcutor ------
 
 	public KeyFigure() {
@@ -89,7 +89,7 @@ public class KeyFigure implements IEntity, IDto {
 
 	public KeyFigure(GeoScope from, GeoScope via, GeoScope to, long imRouteKey, String transportMode,
 			boolean isPreferred, String equipmentSize, String equipmentGroup, BigDecimal rate, String currency,
-			int hsWeightClass, String defaultEquipmentSize, Date startDate) {
+			int hsWeightClass, String defaultEquipmentSize, LocalDate startDate) {
 		this.from = from;
 		this.via = via;
 		this.to = to;
@@ -164,7 +164,7 @@ public class KeyFigure implements IEntity, IDto {
 		return defaultEquipmentSize;
 	}
 
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 

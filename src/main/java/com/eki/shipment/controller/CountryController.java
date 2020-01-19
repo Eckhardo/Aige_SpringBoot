@@ -109,6 +109,7 @@ public class CountryController extends AbstractController<CountryDto, Country> {
 	@GetMapping(value = "{id}")
 	public CountryDto findOne(@PathVariable Long id) {
 		return findOneInternal(id);
+		
 	}
 
 	/**

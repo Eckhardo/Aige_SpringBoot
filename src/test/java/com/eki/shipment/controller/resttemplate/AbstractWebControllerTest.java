@@ -1,6 +1,7 @@
 package com.eki.shipment.controller.resttemplate;
 
 import static com.eki.common.util.QueryConstants.*;
+import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.hamcrest.CoreMatchers.is;
 
 import static org.hamcrest.Matchers.notNullValue;
@@ -88,14 +89,14 @@ public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDt
 	@Test
 	public void whenFindAll_thenResourcesAreRetrieved() throws Exception {
 
-		ResponseEntity<List<D>> responseEntity = getAll(createURL(SLASH));
+		ResponseEntity<List<E>> responseEntity = getAll(createURL(SLASH));
 		assertFalse(responseEntity.getBody().isEmpty());
 	}
 
 	@Test
 	public void whenFindOne_ThenResourceIsRetrieved() {
 		E entity = createAndRetrieveEntity();
-		ResponseEntity<D> responseEntity = getOne(createURL(SLASH + entity.getId()));
+		ResponseEntity<E> responseEntity = getOne(createURL(SLASH + entity.getId()));
 
 		assertThat(responseEntity.getBody().getId(), is(entity.getId()));
 
@@ -104,14 +105,14 @@ public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDt
 	@Test
 	public void whenFindAllPaged_thenResourcesArePaged() throws Exception {
 
-		ResponseEntity<List<D>> response = getAll(createURL(QUESTION_MARK + PAGE_NO + "=1"));
+		ResponseEntity<List<E>> response = getAll(createURL(QUESTION_MARK + PAGE_NO + "=1"));
 		assertFalse(response.getBody().isEmpty());
 
 	}
 
 	@Test
 	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
-		ResponseEntity<List<D>> responseEntity = getAll(createURL(COMPLETE_SORT_ORDER));
+		ResponseEntity<List<E>> responseEntity = getAll(createURL(COMPLETE_SORT_ORDER));
 		assertFalse(responseEntity.getBody().isEmpty());
 
 	}
@@ -119,8 +120,8 @@ public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDt
 	@Test
 	public void whenCreateNew_thenTheNewResourceIsRetrievableByLocationHeader() {
 		String uri = createAsUri();
-		ResponseEntity<D> responseEntity = getOne(uri);
-		D retrievedEntity = (D) responseEntity.getBody();
+		ResponseEntity<E> responseEntity = getOne(uri);
+		E retrievedEntity = (E) responseEntity.getBody();
 		assertThat(retrievedEntity.getId(), notNullValue());
 
 	}
@@ -131,7 +132,7 @@ public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDt
 		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(ID, entity.getId().toString());
-		ResponseEntity<D> result = put(entity, createURL(SLASH + entity.getId()), params);
+		ResponseEntity<E> result = put(entity, createURL(SLASH + entity.getId()), params);
 
 		assertThat(result.getStatusCode(), is(HttpStatus.OK));
 
@@ -145,7 +146,7 @@ public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDt
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(ID, entity.getId().toString());
 		entity.setId(null);
-		ResponseEntity<D> result = put(entity, createURL(SLASH + entity.getId()), params);
+		ResponseEntity<E> result = put(entity, createURL(SLASH + entity.getId()), params);
 
 		// Then
 		assertThat(result.getStatusCode(), is(HttpStatus.BAD_REQUEST));
@@ -154,28 +155,32 @@ public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDt
 	@Test
 	public void whenDeleteResourse_thenStatusCodeIsNoContent() {
 		E entity = createAndRetrieveEntity();
-		
-		
-
-		ResponseEntity<D> responseEntity = delete(entity, createURL(SLASH + entity.getId().toString()));
-
+		ResponseEntity<E> responseEntity = delete(entity, createURL(SLASH + entity.getId().toString()));
 		assertThat(responseEntity.getStatusCode(), is(HttpStatus.NO_CONTENT));
 
 	}
 
 	@Test
-	/* code */public void givenResourceExistedAndWasDeleted_whenRetrievingResource_then404IsReceived() {
+	public void givenResourceExistedAndWasDeleted_whenRetrievingResource_then404IsReceived() {
 		// Given
 		E entity = createAndRetrieveEntity();
 		
 
-		delete(entity, createURL(SLASH + entity.getId().toString()));
-
+		ResponseEntity<E> responseEntity =	delete(entity, createURL(SLASH + entity.getId().toString()));
+		assertThat(responseEntity.getStatusCode(), is(HttpStatus.NO_CONTENT));
 		// When
-		ResponseEntity<D> responseEntity = getOne(createURL(SLASH + entity.getId()));
+		ResponseEntity<E> responseEntityRead = getOne(createURL(SLASH + entity.getId()));
 
 		// Then
+		assertThat(responseEntityRead.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
+	}
+	@Test
+	public void whenResourceIsDeletedByIncorrectNonNumericId_then400IsReceived() {
+		E entity = createAndRetrieveEntity();
+		entity.setId(Long.parseLong(randomNumeric(6)));
+		ResponseEntity<E> responseEntity = delete(entity, createURL(SLASH + entity.getId().toString()));
 		assertThat(responseEntity.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
+	
 	}
 
 	protected StringBuilder createBaseUri(String uriPart) {
@@ -209,34 +214,34 @@ public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDt
 		return uri.toString();
 	}
 
-	protected ResponseEntity<D> getOne(String url) {
+	protected ResponseEntity<E> getOne(String url) {
 		return restTemplate.exchange(url, HttpMethod.GET, getHttpEntity(null), getResponseType());
 
 	}
 
-	protected ResponseEntity<List<D>> getAll(String url) {
+	protected ResponseEntity<List<E>> getAll(String url) {
 		return restTemplate.exchange(url, HttpMethod.GET, null, getResponseTypeAsList());
 
 	}
 
-	protected ResponseEntity<D> post(E content, String url) {
+	protected ResponseEntity<E> post(E content, String url) {
 		return restTemplate.exchange(url, HttpMethod.POST, getHttpEntity(content), getResponseType());
 
 	}
 
-	protected ResponseEntity<D> put(E content, String url, Map<String, String> params) {
+	protected ResponseEntity<E> put(E content, String url, Map<String, String> params) {
 		return restTemplate.exchange(url, HttpMethod.PUT, getHttpEntity(content), getResponseType());
 
 	}
 
-	protected ResponseEntity<D> delete(E content, String url) {
+	protected ResponseEntity<E> delete(E content, String url) {
 		return restTemplate.exchange(url, HttpMethod.DELETE, getHttpEntity(content), getResponseType());
 
 	}
 
 	protected String createAsUri() {
 
-		final ResponseEntity<D> result = createAsResponse();
+		final ResponseEntity<E> result = createAsResponse();
 		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
 		final HttpHeaders headers = result.getHeaders();
 		final List<String> locations = headers.get(HttpHeaders.LOCATION);
@@ -245,10 +250,10 @@ public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDt
 
 	}
 
-	protected ResponseEntity<D> createAsResponse() {
+	protected ResponseEntity<E> createAsResponse() {
 
 		final E entity = createEntity();
-		ResponseEntity<D> result = post(entity, createURL(SLASH));
+		ResponseEntity<E> result = post(entity, createURL(SLASH));
 		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
 		return result;
 	}
@@ -256,18 +261,21 @@ public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDt
 	protected E createAndRetrieveEntity() {
 
 		String uri = createAsUri();
-		ResponseEntity<D> responseEntity = getOne(uri);
+		ResponseEntity<E> responseEntity = getOne(uri);
 		return (E) responseEntity.getBody();
 
 	}
 
-	protected ParameterizedTypeReference<List<D>> getResponseTypeAsList() {
+	protected ParameterizedTypeReference<List<E>> getResponseTypeAsList() {
 		return ParameterizedTypeReference.forType(clazzList);
 	}
 
-	protected ParameterizedTypeReference<D> getResponseType() {
+	protected ParameterizedTypeReference<E> getResponseType() {
 		return ParameterizedTypeReference.forType(clazz);
 	}
+
+	protected abstract TypeReference<List<E>> getTypeRef();
+
 
 	protected HttpEntity<E> getHttpEntity(E entity) {
 		final HttpHeaders headers = new HttpHeaders();
@@ -280,8 +288,6 @@ public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDt
 	protected abstract String getApiName();
 
 	protected abstract E createEntity();
-
-	protected abstract TypeReference<List<E>> getTypeRef();
 
 	protected abstract D convertToDto(E entity);
 	

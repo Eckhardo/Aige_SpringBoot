@@ -1,9 +1,12 @@
 package com.eki.config;
 
 
+import java.time.LocalDate;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.ResponseEntity;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -26,11 +29,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Profile("!test")
 public class SwaggerConfig {
 	@Bean
-	public Docket api() {
+	public Docket api() { //// @formatter:off
+	 
+	
+
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.eki.controller"))
+				.apis(RequestHandlerSelectors.basePackage("com.eki.shipment.controller"))
 				.paths(paths())
-				.build().apiInfo(apiEndPointsInfo());
+				.build()
+				.directModelSubstitute(LocalDate.class, String.class )
+				.genericModelSubstitutes(ResponseEntity.class)
+				.apiInfo(apiEndPointsInfo());
+
+		// @formatter:on
 	}
 	 // Only select apis that matches the given Predicates.
     private Predicate<String> paths() {

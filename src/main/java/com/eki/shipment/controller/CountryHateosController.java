@@ -15,7 +15,7 @@ import com.eki.shipment.service.CountryService;
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 @RestController
 @EnableJpaAuditing
-@RequestMapping(value = "/countries")
+@RequestMapping(value = "/countries_hateoas")
 public class CountryHateosController {
 
 	Logger logger = LoggerFactory.getLogger(getClass());

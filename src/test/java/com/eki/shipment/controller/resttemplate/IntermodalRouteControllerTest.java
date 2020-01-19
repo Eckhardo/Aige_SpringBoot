@@ -20,8 +20,6 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 	}
 
 
-
-
 	@Override
 	protected String getApiName() {
 		return ShipmentMappings.INTERMODAL_ROUTE;
@@ -32,12 +30,6 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 		return IntermodalRouteFigureData.getSingle();
 	}
 
-	@Override
-	protected ParameterizedTypeReference<List<IntermodalRouteDto>> getResponseTypeAsList() {
-
-		return new ParameterizedTypeReference<List<IntermodalRouteDto>>() {
-		};
-	}
 
 	@Override
 	protected TypeReference<List<KeyFigure>> getTypeRef() {
@@ -48,8 +40,6 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 	protected IntermodalRouteDto convertToDto(KeyFigure entity) {
 		return modelMapper.map(entity, IntermodalRouteDto.class);
 	}
-
-
 
 
 	@Override

@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.eki.config.ShipmentContextConfig;
 import com.eki.config.ShipmentPersistenceJpaConfig;
+import com.eki.config.SwaggerConfig;
 import com.eki.shipment.model.GeoScope;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,6 +40,7 @@ public class MysqlBootApplication implements CommandLineRunner {
 	private final static Class[] CONFIGS = { // @formatter:off
             ShipmentContextConfig.class,
             ShipmentPersistenceJpaConfig.class,
+            SwaggerConfig.class,
             MysqlBootApplication.class
     }; // @formatter:on
 
