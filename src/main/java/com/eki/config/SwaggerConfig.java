@@ -29,10 +29,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Profile("!test")
 public class SwaggerConfig {
 	@Bean
-	public Docket api() { //// @formatter:off
-	 
-	
-
+	public Docket api() { 
+		//// @formatter:off
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("com.eki.shipment.controller"))
 				.paths(paths())
@@ -40,7 +38,6 @@ public class SwaggerConfig {
 				.directModelSubstitute(LocalDate.class, String.class )
 				.genericModelSubstitutes(ResponseEntity.class)
 				.apiInfo(apiEndPointsInfo());
-
 		// @formatter:on
 	}
 	 // Only select apis that matches the given Predicates.
@@ -57,15 +54,10 @@ public class SwaggerConfig {
 		return new ApiInfoBuilder().title("Spring Boot REST API")
 
 				.description("Shipment Management REST API")
-
 				.contact(new Contact("Eckhard Kirschning", "www.github.com/Eckhardo", "eckhard.kirschning@freenet.de"))
-
 				.license("Apache 2.0")
-
 				.licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
-
 				.version("1.0.0")
-
 				.build();
 
 	}
