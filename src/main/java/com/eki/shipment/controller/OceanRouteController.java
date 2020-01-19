@@ -1,5 +1,4 @@
 package com.eki.shipment.controller;
-
 import static com.eki.common.util.QueryConstants.DESC;
 import static com.eki.common.util.QueryConstants.ID;
 import static com.eki.common.util.QueryConstants.PAGE_NO;
@@ -7,9 +6,11 @@ import static com.eki.common.util.QueryConstants.PAGE_SIZE;
 import static com.eki.common.util.QueryConstants.SORT_BY;
 import static com.eki.common.util.QueryConstants.SORT_ORDER;
 
+
 import java.net.URI;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -25,24 +26,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.eki.common.util.ShipmentMappings;
+import static com.eki.common.util.ShipmentMappings.OCEAN_ROUTE;
+import com.eki.shipment.dto.OceanRouteDto;
 import com.eki.shipment.model.OceanRoute;
 import com.eki.shipment.model.RESTDateParam;
 import com.eki.shipment.service.OceanRouteService;
 
+
+
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 @RestController
-@RequestMapping(value = ShipmentMappings.OCEAN_ROUTE)
-public class OceanRouteController  extends AbstractController<OceanRoute, OceanRoute> {
+@RequestMapping(value =OCEAN_ROUTE)
+public class OceanRouteController  extends AbstractController<OceanRouteDto, OceanRoute> {
 
 
 
 	@Autowired
 	private OceanRouteService oceanRouteService;
+	
+	@Autowired
+	ModelMapper modelMapper;
 
 	public OceanRouteController() {
-		super(OceanRoute.class);
+		super(OceanRouteDto.class);
 	}
 
 	/**
@@ -52,7 +58,7 @@ public class OceanRouteController  extends AbstractController<OceanRoute, OceanR
 	 * @return country detail
 	 */
 	@GetMapping(value = "{id}")
-	public OceanRoute findOne(@PathVariable Long id) {
+	public OceanRouteDto findOne(@PathVariable Long id) {
 		return findOneInternal(id);
 	}
 
@@ -62,8 +68,8 @@ public class OceanRouteController  extends AbstractController<OceanRoute, OceanR
 	 * @return list of counties
 	 */
 	@GetMapping
-	public List<OceanRoute> findAll() {
-		return getService().findAll();
+	public List<OceanRouteDto> findAll() {
+		return findAllInternal();
 	}
 
 	/**
@@ -74,7 +80,7 @@ public class OceanRouteController  extends AbstractController<OceanRoute, OceanR
 	 */
 	@PostMapping()
 	protected ResponseEntity<Object> createResource(@RequestBody OceanRoute newOceanRoute) {
-		final OceanRoute country = createInternal(newOceanRoute);
+		final OceanRouteDto country = createInternal(newOceanRoute);
 		// Create resource location
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(country.getId())
 				.toUri();
@@ -89,7 +95,7 @@ public class OceanRouteController  extends AbstractController<OceanRoute, OceanR
 	 */
 
 	@PutMapping(value = "{id}")
-	protected ResponseEntity updateResource(@RequestBody OceanRoute country, @PathVariable Long id) {
+	protected ResponseEntity<String> updateResource(@RequestBody OceanRoute country, @PathVariable Long id) {
 		updateInternal(id, country);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -102,34 +108,34 @@ public class OceanRouteController  extends AbstractController<OceanRoute, OceanR
 	 * @return
 	 */
 	@DeleteMapping(value = "{id}")
-	protected ResponseEntity deleteResource(@PathVariable("id") final Long id) {
+	protected ResponseEntity<String> deleteResource(@PathVariable("id") final Long id) {
 		deleteByIdInternal(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@Override
+
 	@GetMapping(params = { SORT_BY, SORT_ORDER })
-	public List<OceanRoute> findAllSorted(@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
+	public List<OceanRouteDto> findAllSorted(@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
 			@RequestParam(value = SORT_ORDER, defaultValue = DESC) final String sortOrder) {
-		 List<OceanRoute> countries=  findAllSortedInternal(sortBy, sortOrder);
-		 return countries;
+	return   findAllSortedInternal(sortBy, sortOrder);
+		
 	}
 
-	@Override
+
 	@GetMapping(params = { PAGE_NO, PAGE_SIZE })
-	protected List<OceanRoute> findAllPaginated(@RequestParam(value = PAGE_NO) final int pageNo,
+	protected List<OceanRouteDto> findAllPaginated(@RequestParam(value = PAGE_NO) final int pageNo,
 			@RequestParam(value = PAGE_SIZE) final int pageSize) {
-		 List<OceanRoute> countries=findPaginatedInternal(pageNo, pageSize);
-		 return countries;
+		return findPaginatedInternal(pageNo, pageSize);
+	
 	}
 
-	@Override
+
 	@GetMapping(params = { PAGE_NO, PAGE_SIZE, SORT_BY, SORT_ORDER })
-	protected List<OceanRoute> findAllPaginatedAndSorted(@RequestParam(value = PAGE_NO) final int pageNo,
+	protected List<OceanRouteDto> findAllPaginatedAndSorted(@RequestParam(value = PAGE_NO) final int pageNo,
 			@RequestParam(value = PAGE_SIZE) final int pageSize,
 			@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
 			@RequestParam(value = SORT_ORDER, defaultValue = DESC) final String sortOrder) {
-		return this.findAllPaginatedAndSorted(pageNo, pageSize, sortBy, sortOrder);
+		return this.findAllPaginatedAndSortedInternal(pageNo, pageSize, sortBy, sortOrder);
 
 	}
 
@@ -158,5 +164,19 @@ public class OceanRouteController  extends AbstractController<OceanRoute, OceanR
 	@Override
 	protected OceanRouteService getService() {
 		return oceanRouteService;
+	}
+
+	@Override
+	protected OceanRouteDto convertToDto(OceanRoute entity) {
+	
+	OceanRouteDto dto= modelMapper.map(entity, OceanRouteDto.class);
+	return dto;
+	}
+
+	@Override
+	protected OceanRoute convertToEntity(OceanRouteDto dto) {
+	
+	OceanRoute entity= modelMapper.map(dto, OceanRoute.class);
+	return entity;
 	}
 }

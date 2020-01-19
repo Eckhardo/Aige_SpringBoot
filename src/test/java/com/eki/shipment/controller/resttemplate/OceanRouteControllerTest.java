@@ -17,12 +17,15 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import com.eki.common.util.ShipmentMappings;
+import com.eki.shipment.dto.IntermodalRouteDto;
+import com.eki.shipment.dto.OceanRouteDto;
+import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.model.OceanRoute;
 import com.eki.shipment.util.EntityFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRoute> {
+public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRoute, OceanRouteDto> {
 	Logger logger = LoggerFactory.getLogger(OceanRouteControllerTest.class);
 
 	@Autowired
@@ -63,9 +66,8 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 		ResponseEntity<String> response = restTemplate.exchange(
 				createURL("/filter?includeInvalid=true&includeShunting=false&numberTs=1&pol=BRSSZ&pod=HKHKG&ts1=COCTG"),
 				HttpMethod.GET,  getHttpEntity(null), String.class);
-		TypeReference<List<OceanRoute>> typeRef = getTypeRef();
-
-		List<OceanRoute> routes = jsonObjectMapper.readValue(response.getBody(), typeRef);
+	
+		List<OceanRoute> routes = jsonObjectMapper.readValue(response.getBody(), getTypeRef());
 
 		assertNotNull(routes);
 
@@ -101,6 +103,17 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 		return new TypeReference<List<OceanRoute>>() {
 		};
 	}
+	@Override
+	protected OceanRouteDto convertToDto(OceanRoute entity) {
+		return modelMapper.map(entity, OceanRouteDto.class);
+	}
 
+
+
+
+	@Override
+	protected OceanRoute convertToEntity(OceanRouteDto dto) {
+		return modelMapper.map(dto, OceanRoute.class);
+	}
 
 }

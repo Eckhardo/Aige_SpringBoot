@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 
 import com.eki.common.util.ShipmentMappings;
+import com.eki.shipment.dto.GeoScopeDto;
+import com.eki.shipment.dto.IntermodalRouteDto;
+import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import data.IntermodalRouteFigureData;
 
-public class IntermodalRouteControllerTest extends AbstractWebControllerTest<KeyFigure> {
+public class IntermodalRouteControllerTest extends AbstractWebControllerTest<KeyFigure, IntermodalRouteDto> {
 
 	public IntermodalRouteControllerTest() {
 		super(KeyFigure.class);
@@ -30,9 +33,9 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 	}
 
 	@Override
-	protected ParameterizedTypeReference<List<KeyFigure>> getResponseTypeAsList() {
+	protected ParameterizedTypeReference<List<IntermodalRouteDto>> getResponseTypeAsList() {
 
-		return new ParameterizedTypeReference<List<KeyFigure>>() {
+		return new ParameterizedTypeReference<List<IntermodalRouteDto>>() {
 		};
 	}
 
@@ -41,5 +44,16 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 		return new TypeReference<List<KeyFigure>>() {
 		};
 	}
+	@Override
+	protected IntermodalRouteDto convertToDto(KeyFigure entity) {
+		return modelMapper.map(entity, IntermodalRouteDto.class);
+	}
 
+
+
+
+	@Override
+	protected KeyFigure convertToEntity(IntermodalRouteDto dto) {
+		return modelMapper.map(dto, KeyFigure.class);
+	}
 }

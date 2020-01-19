@@ -3,7 +3,11 @@ package com.eki.shipment.controller;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import static com.eki.common.util.QueryConstants.*;
 import com.eki.common.util.ShipmentMappings;
+import com.eki.shipment.dto.CountryDto;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.service.CountryService;
 
@@ -62,22 +67,39 @@ import com.eki.shipment.service.CountryService;
  * 
  *               Example – “/customer?customerId=1
  * 
+ * @ResponseEntity is meant to represent the entire HTTP response. You can
+ *                 control anything that goes into it: status code, headers, and
+ *                 body.
+ * 
+ * @ResponseBody is a marker for the HTTP response body and @ResponseStatus
+ *               declares the status code of the HTTP response.
+ * 
+ * @ResponseStatus isn't very flexible. It marks the entire method so you have
+ *                 to be sure that your handler method will always behave the
+ *                 same way. And you still can't set the headers. You'd need the
+ *                 HttpServletResponse or a HttpHeaders parameter.
+ * 
+ *                 Basically, ResponseEntity lets you do more.
+ * 
  * @author eckha
  *
  */
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 @RestController
 @RequestMapping(value = ShipmentMappings.COUNTRY)
-public class CountryController extends AbstractController<Country, Country> {
+public class CountryController extends AbstractController<CountryDto, Country> {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private CountryService countryService;
+	@Autowired
+	private ModelMapper modelMapper;
 
 	public CountryController() {
-		super(Country.class);
+		super(CountryDto.class);
 	}
+
 	/**
 	 * Get the country detail based on the id passed by the client API.
 	 * 
@@ -85,7 +107,7 @@ public class CountryController extends AbstractController<Country, Country> {
 	 * @return country detail
 	 */
 	@GetMapping(value = "{id}")
-	public Country findOne(@PathVariable Long id) {
+	public CountryDto findOne(@PathVariable Long id) {
 		return findOneInternal(id);
 	}
 
@@ -95,8 +117,9 @@ public class CountryController extends AbstractController<Country, Country> {
 	 * @return list of counties
 	 */
 	@GetMapping
-	public List<Country> findAll() {
-		return countryService.findAll();
+	public ResponseEntity<List<CountryDto>> findAll() {
+	List<CountryDto> countries = findAllInternal();
+	return new ResponseEntity<>(countries, HttpStatus.OK);
 	}
 
 	/**
@@ -106,8 +129,8 @@ public class CountryController extends AbstractController<Country, Country> {
 	 *         created resource)
 	 */
 	@PostMapping()
-	protected ResponseEntity<Object> createResource(@RequestBody Country newCountry) {
-		final Country country = createInternal(newCountry);
+	protected ResponseEntity<String> createResource(@RequestBody Country newCountry) {
+		final CountryDto country = createInternal(newCountry);
 		// Create resource location
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(country.getId())
 				.toUri();
@@ -122,7 +145,7 @@ public class CountryController extends AbstractController<Country, Country> {
 	 */
 
 	@PutMapping(value = "{id}")
-	protected ResponseEntity updateResource(@RequestBody Country country, @PathVariable Long id) {
+	protected ResponseEntity<String> updateResource(@RequestBody Country country, @PathVariable Long id) {
 		updateInternal(id, country);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -135,50 +158,63 @@ public class CountryController extends AbstractController<Country, Country> {
 	 * @return
 	 */
 	@DeleteMapping(value = "{id}")
-	protected ResponseEntity deleteResource(@PathVariable("id") final Long id) {
+	protected ResponseEntity<String> deleteResource(@PathVariable("id") final Long id) {
 		deleteByIdInternal(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@Override
+
 	@GetMapping(params = { SORT_BY, SORT_ORDER })
-	public List<Country> findAllSorted(@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
+	public List<CountryDto> findAllSorted(@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
 			@RequestParam(value = SORT_ORDER, defaultValue = DESC) final String sortOrder) {
-		 List<Country> countries=  findAllSortedInternal(sortBy, sortOrder);
-		 return countries;
+		return  findAllSortedInternal(sortBy, sortOrder);
+		
 	}
 
-	@Override
+	
 	@GetMapping(params = { PAGE_NO, PAGE_SIZE })
-	protected List<Country> findAllPaginated(@RequestParam(value = PAGE_NO) final int pageNo,
+	protected List<CountryDto> findAllPaginated(@RequestParam(value = PAGE_NO) final int pageNo,
 			@RequestParam(value = PAGE_SIZE) final int pageSize) {
-		 List<Country> countries=findPaginatedInternal(pageNo, pageSize);
-		 return countries;
+		return findPaginatedInternal(pageNo, pageSize);
+	
 	}
 
-	@Override
+	
 	@GetMapping(params = { PAGE_NO, PAGE_SIZE, SORT_BY, SORT_ORDER })
-	protected List<Country> findAllPaginatedAndSorted(@RequestParam(value = PAGE_NO) final int pageNo,
+	protected List<CountryDto> findAllPaginatedAndSorted(@RequestParam(value = PAGE_NO) final int pageNo,
 			@RequestParam(value = PAGE_SIZE) final int pageSize,
 			@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
 			@RequestParam(value = SORT_ORDER, defaultValue = DESC) final String sortOrder) {
-		return this.findAllPaginatedAndSorted(pageNo, pageSize, sortBy, sortOrder);
+		return this.findAllPaginatedAndSortedInternal(pageNo, pageSize, sortBy, sortOrder);
 
 	}
 
+
+
 	@GetMapping("filter")
-	public Collection<Country> searchByCode(@RequestParam(value = "country_code") String countryCode) {
-		return countryService.searchCountries(countryCode);
+	public Collection<CountryDto> searchByCode(@RequestParam(value = "country_code") String countryCode) {
+		return countryService.searchCountries(countryCode).stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 
 	@GetMapping("find")
-	public Country findByCode(@RequestParam(value = "country_code") String countryCode) {
-		return countryService.findCountry(countryCode);
+	public CountryDto findByCode(@RequestParam(value = "country_code") String countryCode) {
+		return convertToDto(countryService.findCountry(countryCode));
 	}
 
 	@Override
 	protected CountryService getService() {
 		return countryService;
+	}
+
+	@Override
+	protected CountryDto convertToDto(Country entity) {
+	
+		return modelMapper.map(entity, CountryDto.class);
+	}
+
+	@Override
+	protected Country convertToEntity(CountryDto dto) {
+		return modelMapper.map(dto, Country.class);
 	}
 
 }

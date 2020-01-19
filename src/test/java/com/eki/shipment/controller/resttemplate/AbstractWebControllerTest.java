@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -37,6 +38,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.eki.common.interfaces.IDto;
 import com.eki.common.interfaces.IEntity;
 import com.eki.shipment.run.MysqlBootApplication;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -56,19 +58,25 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @TestPropertySource(locations = "classpath:application-test.properties")
 
-public abstract class AbstractWebControllerTest<T extends IEntity> {
+public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDto> {
 
-	Class<T> clazz;
+	Class<E> clazz;
 
-	Class<List<T>> clazzList;
+	Class<List<E>> clazzList;
+	
+	
+	@Autowired
+	 ModelMapper modelMapper;
+	
+	
 
 	@SuppressWarnings("unchecked")
-	public AbstractWebControllerTest(Class<T> clazz) {
+	public AbstractWebControllerTest(Class<E> clazz) {
 		super();
 		this.clazz = clazz;
 
-		List<T> myList = new ArrayList<T>();
-		this.clazzList = (Class<List<T>>) myList.getClass();
+		List<E> myList = new ArrayList<E>();
+		this.clazzList = (Class<List<E>>) myList.getClass();
 	}
 
 	@Autowired
@@ -80,14 +88,14 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 	@Test
 	public void whenFindAll_thenResourcesAreRetrieved() throws Exception {
 
-		ResponseEntity<List<T>> responseEntity = getAll(createURL(SLASH));
+		ResponseEntity<List<D>> responseEntity = getAll(createURL(SLASH));
 		assertFalse(responseEntity.getBody().isEmpty());
 	}
 
 	@Test
 	public void whenFindOne_ThenResourceIsRetrieved() {
-		T entity = createAndRetrieveEntity();
-		ResponseEntity<T> responseEntity = getOne(createURL(SLASH + entity.getId()));
+		E entity = createAndRetrieveEntity();
+		ResponseEntity<D> responseEntity = getOne(createURL(SLASH + entity.getId()));
 
 		assertThat(responseEntity.getBody().getId(), is(entity.getId()));
 
@@ -96,14 +104,14 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 	@Test
 	public void whenFindAllPaged_thenResourcesArePaged() throws Exception {
 
-		ResponseEntity<List<T>> response = getAll(createURL(QUESTION_MARK + PAGE_NO + "=1"));
+		ResponseEntity<List<D>> response = getAll(createURL(QUESTION_MARK + PAGE_NO + "=1"));
 		assertFalse(response.getBody().isEmpty());
 
 	}
 
 	@Test
 	public void whenFindAllSorted_thenResourceIsSorted() throws Exception {
-		ResponseEntity<List<T>> responseEntity = getAll(createURL(COMPLETE_SORT_ORDER));
+		ResponseEntity<List<D>> responseEntity = getAll(createURL(COMPLETE_SORT_ORDER));
 		assertFalse(responseEntity.getBody().isEmpty());
 
 	}
@@ -111,19 +119,19 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 	@Test
 	public void whenCreateNew_thenTheNewResourceIsRetrievableByLocationHeader() {
 		String uri = createAsUri();
-		ResponseEntity<T> responseEntity = getOne(uri);
-		T retrievedEntity = (T) responseEntity.getBody();
+		ResponseEntity<D> responseEntity = getOne(uri);
+		D retrievedEntity = (D) responseEntity.getBody();
 		assertThat(retrievedEntity.getId(), notNullValue());
 
 	}
 
 	@Test
 	public void whenUpdateResource_thenStatusCodeIsOk() {
-		T entity = createAndRetrieveEntity();
-
+		E entity = createAndRetrieveEntity();
+		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(ID, entity.getId().toString());
-		ResponseEntity<T> result = put(entity, createURL(SLASH + entity.getId()), params);
+		ResponseEntity<D> result = put(entity, createURL(SLASH + entity.getId()), params);
 
 		assertThat(result.getStatusCode(), is(HttpStatus.OK));
 
@@ -132,12 +140,12 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 	@Test
 	public void whenResourceIsUpdatedWithNullId_then400IsReceived() {
 		// When
-		T entity = createAndRetrieveEntity();
-
+		E entity = createAndRetrieveEntity();
+		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(ID, entity.getId().toString());
 		entity.setId(null);
-		ResponseEntity<T> result = put(entity, createURL(SLASH + entity.getId()), params);
+		ResponseEntity<D> result = put(entity, createURL(SLASH + entity.getId()), params);
 
 		// Then
 		assertThat(result.getStatusCode(), is(HttpStatus.BAD_REQUEST));
@@ -145,9 +153,11 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 
 	@Test
 	public void whenDeleteResourse_thenStatusCodeIsNoContent() {
-		T entity = createAndRetrieveEntity();
+		E entity = createAndRetrieveEntity();
+		
+		
 
-		ResponseEntity<T> responseEntity = delete(entity, createURL(SLASH + entity.getId().toString()));
+		ResponseEntity<D> responseEntity = delete(entity, createURL(SLASH + entity.getId().toString()));
 
 		assertThat(responseEntity.getStatusCode(), is(HttpStatus.NO_CONTENT));
 
@@ -156,12 +166,13 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 	@Test
 	/* code */public void givenResourceExistedAndWasDeleted_whenRetrievingResource_then404IsReceived() {
 		// Given
-		T entity = createAndRetrieveEntity();
+		E entity = createAndRetrieveEntity();
+		
 
 		delete(entity, createURL(SLASH + entity.getId().toString()));
 
 		// When
-		ResponseEntity<T> responseEntity = getOne(createURL(SLASH + entity.getId()));
+		ResponseEntity<D> responseEntity = getOne(createURL(SLASH + entity.getId()));
 
 		// Then
 		assertThat(responseEntity.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -172,13 +183,13 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 
 	}
 
-	protected boolean isSorted(List<T> resources, Comparator<T> comparator) {
+	protected boolean isSorted(List<E> resources, Comparator<E> comparator) {
 		if (resources.isEmpty() || resources.size() == 1) {
 			return true;
 		}
 
-		Iterator<T> iter = resources.iterator();
-		T current, previous = iter.next();
+		Iterator<E> iter = resources.iterator();
+		E current, previous = iter.next();
 		while (iter.hasNext()) {
 			current = iter.next();
 			if (comparator.compare(previous, current) < 0) {
@@ -198,34 +209,34 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 		return uri.toString();
 	}
 
-	protected ResponseEntity<T> getOne(String url) {
+	protected ResponseEntity<D> getOne(String url) {
 		return restTemplate.exchange(url, HttpMethod.GET, getHttpEntity(null), getResponseType());
 
 	}
 
-	protected ResponseEntity<List<T>> getAll(String url) {
+	protected ResponseEntity<List<D>> getAll(String url) {
 		return restTemplate.exchange(url, HttpMethod.GET, null, getResponseTypeAsList());
 
 	}
 
-	protected ResponseEntity<T> post(T content, String url) {
+	protected ResponseEntity<D> post(E content, String url) {
 		return restTemplate.exchange(url, HttpMethod.POST, getHttpEntity(content), getResponseType());
 
 	}
 
-	protected ResponseEntity<T> put(T content, String url, Map<String, String> params) {
+	protected ResponseEntity<D> put(E content, String url, Map<String, String> params) {
 		return restTemplate.exchange(url, HttpMethod.PUT, getHttpEntity(content), getResponseType());
 
 	}
 
-	protected ResponseEntity<T> delete(T content, String url) {
+	protected ResponseEntity<D> delete(E content, String url) {
 		return restTemplate.exchange(url, HttpMethod.DELETE, getHttpEntity(content), getResponseType());
 
 	}
 
 	protected String createAsUri() {
 
-		final ResponseEntity<T> result = createAsResponse();
+		final ResponseEntity<D> result = createAsResponse();
 		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
 		final HttpHeaders headers = result.getHeaders();
 		final List<String> locations = headers.get(HttpHeaders.LOCATION);
@@ -234,41 +245,46 @@ public abstract class AbstractWebControllerTest<T extends IEntity> {
 
 	}
 
-	protected ResponseEntity<T> createAsResponse() {
+	protected ResponseEntity<D> createAsResponse() {
 
-		final T entity = createEntity();
-		ResponseEntity<T> result = post(entity, createURL(SLASH));
+		final E entity = createEntity();
+		ResponseEntity<D> result = post(entity, createURL(SLASH));
 		assertThat(result.getStatusCode(), is(HttpStatus.CREATED));
 		return result;
 	}
 
-	protected T createAndRetrieveEntity() {
+	protected E createAndRetrieveEntity() {
 
 		String uri = createAsUri();
-		ResponseEntity<T> responseEntity = getOne(uri);
-		return (T) responseEntity.getBody();
+		ResponseEntity<D> responseEntity = getOne(uri);
+		return (E) responseEntity.getBody();
 
 	}
 
-	protected ParameterizedTypeReference<List<T>> getResponseTypeAsList() {
+	protected ParameterizedTypeReference<List<D>> getResponseTypeAsList() {
 		return ParameterizedTypeReference.forType(clazzList);
 	}
 
-	protected ParameterizedTypeReference<T> getResponseType() {
+	protected ParameterizedTypeReference<D> getResponseType() {
 		return ParameterizedTypeReference.forType(clazz);
 	}
 
-	protected HttpEntity<T> getHttpEntity(T entity) {
+	protected HttpEntity<E> getHttpEntity(E entity) {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		return new HttpEntity<T>(entity, headers);
+		return new HttpEntity<E>(entity, headers);
 
 	}
 
 	protected abstract String getApiName();
 
-	protected abstract T createEntity();
+	protected abstract E createEntity();
 
-	protected abstract TypeReference<List<T>> getTypeRef();
+	protected abstract TypeReference<List<E>> getTypeRef();
+
+	protected abstract D convertToDto(E entity);
+	
+	protected abstract E convertToEntity(D dto);
+	
 }

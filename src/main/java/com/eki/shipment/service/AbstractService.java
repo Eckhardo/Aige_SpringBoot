@@ -16,11 +16,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 
-public abstract class AbstractService<T extends IEntity> implements IServiceOperations<T> {
+public abstract class AbstractService<E extends IEntity> implements IServiceOperations<E> {
 
-	private Class<T> clazz;
+	private Class<E> clazz;
 
-	public AbstractService(final Class<T> clazzToSet) {
+	public AbstractService(final Class<E> clazzToSet) {
 		super();
 		this.clazz = clazzToSet;
 	}
@@ -31,53 +31,53 @@ public abstract class AbstractService<T extends IEntity> implements IServiceOper
 
 	@Override
 	@Transactional(readOnly = true)
-	public T findOne(final long id) {
-		Optional<T> entity = getDao().findById(id);
+	public E findOne(final long id) {
+		Optional<E> entity = getDao().findById(id);
 		return entity.orElse(null);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<T> findAll() {
+	public List<E> findAll() {
 		return Lists.newArrayList(getDao().findAll());
 	}
 
 	@Override
-	public List<T> findAllSorted(String sortBy, String sortOrder) {
+	public List<E> findAllSorted(String sortBy, String sortOrder) {
 		final Sort sort = constructSort(sortBy, sortOrder);
 		return Lists.newArrayList(getDao().findAll(sort));
 	}
 
 	@Override
-	public Page<T> findAllPaginated(int pageNo, int pageSize) {
+	public Page<E> findAllPaginated(int pageNo, int pageSize) {
 		PageRequest page=	PageRequest.of(pageNo,pageSize);
-		Page<T> findAllPaginated= getDao().findAll(	page);
+		Page<E> findAllPaginated= getDao().findAll(	page);
 		return findAllPaginated;
 	}
 
 	@Override
-	public Page<T> findAllPaginatedAndSorted(int page, int size, String sortBy, String sortOrder) {
+	public Page<E> findAllPaginatedAndSorted(int page, int size, String sortBy, String sortOrder) {
 		final Sort sortInfo= constructSort(sortBy, sortOrder);
-		Page<T> findAllSortedAnPaginated=getDao().findAll(PageRequest.of(page, size, sortInfo));
+		Page<E> findAllSortedAnPaginated=getDao().findAll(PageRequest.of(page, size, sortInfo));
 		return findAllSortedAnPaginated;
 	}
 
 	@Override
-	public T create(T entity) {
+	public E create(E entity) {
 		Preconditions.checkNotNull(entity);
-		final T persistedEntity = getDao().save(entity);
+		final E persistedEntity = getDao().save(entity);
 		return persistedEntity;
 	}
 
 	@Override
-	public void update(T entity) {
+	public void update(E entity) {
 		Preconditions.checkNotNull(entity);
 		getDao().save(entity);
 	}
 
 	@Override
 	public void delete(long id) {
-		final Optional<T> entity = getDao().findById(id);
+		final Optional<E> entity = getDao().findById(id);
 		if (entity.isPresent()) {
 			getDao().delete(entity.get());
 		} else {
@@ -98,7 +98,7 @@ public abstract class AbstractService<T extends IEntity> implements IServiceOper
 
 	// template method
 
-	protected abstract PagingAndSortingRepository<T, Long> getDao();
+	protected abstract PagingAndSortingRepository<E, Long> getDao();
 
 	protected final Sort constructSort(final String sortBy, final String sortOrder) {
 		Sort sortInfo = null;

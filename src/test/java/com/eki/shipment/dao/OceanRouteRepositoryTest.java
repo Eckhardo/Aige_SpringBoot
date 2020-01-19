@@ -3,8 +3,7 @@
  */
 package com.eki.shipment.dao;
 
-import static com.eki.shipment.util.TestData.LOCATION_BRSSZ;
-import static com.eki.shipment.util.TestData.LOCATION_HKHKG;
+import static com.eki.shipment.util.TestData.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -19,9 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.eki.common.interfaces.IEntity;
 import com.eki.shipment.model.OceanRoute;
 import com.eki.shipment.util.EntityFactory;
 

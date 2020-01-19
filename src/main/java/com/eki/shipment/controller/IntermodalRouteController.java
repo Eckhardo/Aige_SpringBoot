@@ -10,6 +10,7 @@ import static com.eki.common.util.QueryConstants.SORT_ORDER;
 import java.net.URI;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.eki.common.util.ShipmentMappings;
+import com.eki.shipment.dto.IntermodalRouteDto;
+import com.eki.shipment.dto.OceanRouteDto;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.model.RESTDateParam;
@@ -39,7 +42,7 @@ import com.google.common.collect.Lists;
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 @RestController
 @RequestMapping(value = ShipmentMappings.INTERMODAL_ROUTE)
-public class IntermodalRouteController extends AbstractController<KeyFigure, KeyFigure> {
+public class IntermodalRouteController extends AbstractController<IntermodalRouteDto, KeyFigure> {
 
 
 	Logger logger = LoggerFactory.getLogger(getClass());
@@ -49,8 +52,11 @@ public class IntermodalRouteController extends AbstractController<KeyFigure, Key
 	@Autowired
 	private GeoScopeService geoScopeService;
 	
+	@Autowired
+	private  ModelMapper modelMapper;
+	
 	public IntermodalRouteController() {
-		super(KeyFigure.class);
+		super(IntermodalRouteDto.class);
 	}
 
 	/**
@@ -60,7 +66,7 @@ public class IntermodalRouteController extends AbstractController<KeyFigure, Key
 	 * @return KeyFigure detail
 	 */
 	@GetMapping(value = "{id}")
-	public KeyFigure findOne(@PathVariable Long id) {
+	public IntermodalRouteDto findOne(@PathVariable Long id) {
 		return findOneInternal(id);
 	}
 
@@ -81,7 +87,7 @@ public class IntermodalRouteController extends AbstractController<KeyFigure, Key
 	 */
 	@PostMapping()
 	protected ResponseEntity<Object> newResource(@RequestBody KeyFigure kf) {
-	final KeyFigure kfNew=	 createInternal(kf);
+	final IntermodalRouteDto kfNew=	 createInternal(kf);
 	 //Create resource location
 	URI location = ServletUriComponentsBuilder
             .fromCurrentRequest()
@@ -104,7 +110,7 @@ public class IntermodalRouteController extends AbstractController<KeyFigure, Key
      * @return
      */
 	@DeleteMapping(value = "{id}")
-	protected ResponseEntity delete(@PathVariable("id") final Long id) {
+	protected ResponseEntity<String> delete(@PathVariable("id") final Long id) {
 		deleteByIdInternal(id);
 		return new ResponseEntity < >(HttpStatus.NO_CONTENT);
 	}
@@ -190,29 +196,37 @@ public class IntermodalRouteController extends AbstractController<KeyFigure, Key
 	}
 
 
-	@Override
 	@GetMapping(params = { SORT_BY, SORT_ORDER })
-	public List<KeyFigure> findAllSorted(@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
+	public List<IntermodalRouteDto> findAllSorted(@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
 			@RequestParam(value = SORT_ORDER, defaultValue = DESC) final String sortOrder) {
-		 List<KeyFigure> countries=  findAllSortedInternal(sortBy, sortOrder);
-		 return countries;
+		return findAllSortedInternal(sortBy, sortOrder);
+		
 	}
 
-	@Override
 	@GetMapping(params = { PAGE_NO, PAGE_SIZE })
-	protected List<KeyFigure> findAllPaginated(@RequestParam(value = PAGE_NO) final int pageNo,
+	protected List<IntermodalRouteDto> findAllPaginated(@RequestParam(value = PAGE_NO) final int pageNo,
 			@RequestParam(value = PAGE_SIZE) final int pageSize) {
 		return findPaginatedInternal(pageNo, pageSize);
 	}
 
-	@Override
 	@GetMapping(params = { PAGE_NO, PAGE_SIZE, SORT_BY, SORT_ORDER })
-	protected List<KeyFigure> findAllPaginatedAndSorted(@RequestParam(value = PAGE_NO) final int pageNo,
+	protected List<IntermodalRouteDto> findAllPaginatedAndSorted(@RequestParam(value = PAGE_NO) final int pageNo,
 			@RequestParam(value = PAGE_SIZE) final int pageSize,
 			@RequestParam(value = SORT_BY, defaultValue = ID) final String sortBy,
 			@RequestParam(value = SORT_ORDER, defaultValue = DESC) final String sortOrder) {
 		return this.findAllPaginatedAndSorted(pageNo, pageSize, sortBy, sortOrder);
 
+	}
+
+	@Override
+	protected IntermodalRouteDto convertToDto(KeyFigure entity) {
+		return modelMapper.map(entity, IntermodalRouteDto.class);
+	}
+
+	@Override
+	protected KeyFigure convertToEntity(IntermodalRouteDto dto) {
+		
+		return modelMapper.map(dto, KeyFigure.class);
 	}
 
 }
