@@ -110,7 +110,7 @@ public class IntermodalRouteController extends AbstractController<IntermodalRout
      * @return
      */
 	@DeleteMapping(value = "{id}")
-	protected ResponseEntity<String> delete(@PathVariable("id") final Long id) {
+	protected ResponseEntity<String> deleteResource(@PathVariable("id") final Long id) {
 		deleteByIdInternal(id);
 		return new ResponseEntity < >(HttpStatus.NO_CONTENT);
 	}

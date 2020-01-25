@@ -76,7 +76,7 @@ public class GeoScopeController extends AbstractController<GeoScopeDto, GeoScope
 	 * @return list of counties
 	 */
 	@GetMapping
-	public List<GeoScopeDto> getGeoScopes() {
+	public List<GeoScopeDto> findAll() {
 		return findAllInternal();
 	}
 
@@ -86,7 +86,7 @@ public class GeoScopeController extends AbstractController<GeoScopeDto, GeoScope
 	 * @return HttpStausCode=CREATED
 	 */
 	@PostMapping()
-	protected ResponseEntity<String> newGeoScope(@RequestBody GeoScope newGeoScope) {
+	protected ResponseEntity<String> createResource(@RequestBody GeoScope newGeoScope) {
 		final GeoScopeDto dto = createInternal(newGeoScope);
 		// Create resource location
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId())
@@ -96,7 +96,7 @@ public class GeoScopeController extends AbstractController<GeoScopeDto, GeoScope
 	}
 
 	@PutMapping(value = "{id}")
-	protected ResponseEntity<String> update(@RequestBody GeoScope GeoScope, @PathVariable Long id) {
+	protected ResponseEntity<String> updateResource(@RequestBody GeoScope GeoScope, @PathVariable Long id) {
 		updateInternal(id, GeoScope);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -109,7 +109,7 @@ public class GeoScopeController extends AbstractController<GeoScopeDto, GeoScope
 	 * @return
 	 */
 	@DeleteMapping(value = "{id}")
-	protected ResponseEntity<String> delete(@PathVariable("id") final Long id) {
+	protected ResponseEntity<String> deleteResource(@PathVariable("id") final Long id) {
 		deleteByIdInternal(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

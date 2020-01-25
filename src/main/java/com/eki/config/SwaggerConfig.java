@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -27,7 +29,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @Profile("!test")
-public class SwaggerConfig {
+public class SwaggerConfig implements WebMvcConfigurer {
 	@Bean
 	public Docket api() { 
 		//// @formatter:off
@@ -61,4 +63,9 @@ public class SwaggerConfig {
 				.build();
 
 	}
+	  @Override
+	    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+	        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+	        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+	    }
 }
