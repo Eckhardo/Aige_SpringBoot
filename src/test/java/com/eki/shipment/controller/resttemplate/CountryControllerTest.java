@@ -13,7 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 public class CountryControllerTest extends AbstractWebControllerTest<Country, CountryDto> {
 
 	public CountryControllerTest() {
-		super(Country.class);
+		super(CountryDto.class);
 	}
 
 
@@ -32,8 +32,8 @@ public class CountryControllerTest extends AbstractWebControllerTest<Country, Co
 
 
 	@Override
-	protected TypeReference<List<Country>> getTypeRef() {
-		return new TypeReference<List<Country>>() {
+	protected TypeReference<List<CountryDto>> getTypeRef() {
+		return new TypeReference<List<CountryDto>>() {
 		};
 	}
 

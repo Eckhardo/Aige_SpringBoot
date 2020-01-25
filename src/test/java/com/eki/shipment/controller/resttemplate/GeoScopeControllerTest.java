@@ -20,7 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope, GeoScopeDto> {
 
 	public GeoScopeControllerTest() {
-		super(GeoScope.class);
+		super(GeoScopeDto.class);
 	}
 
 
@@ -79,9 +79,9 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope, 
 	}
 
 	@Override
-	protected TypeReference<List<GeoScope>> getTypeRef() {
+	protected TypeReference<List<GeoScopeDto>> getTypeRef() {
 
-		return new TypeReference<List<GeoScope>>() {
+		return new TypeReference<List<GeoScopeDto>>() {
 		};
 	}
 

@@ -16,7 +16,7 @@ import data.IntermodalRouteFigureData;
 public class IntermodalRouteControllerTest extends AbstractWebControllerTest<KeyFigure, IntermodalRouteDto> {
 
 	public IntermodalRouteControllerTest() {
-		super(KeyFigure.class);
+		super(IntermodalRouteDto.class);
 	}
 
 
@@ -32,8 +32,8 @@ public class IntermodalRouteControllerTest extends AbstractWebControllerTest<Key
 
 
 	@Override
-	protected TypeReference<List<KeyFigure>> getTypeRef() {
-		return new TypeReference<List<KeyFigure>>() {
+	protected TypeReference<List<IntermodalRouteDto>> getTypeRef() {
+		return new TypeReference<List<IntermodalRouteDto>>() {
 		};
 	}
 	@Override

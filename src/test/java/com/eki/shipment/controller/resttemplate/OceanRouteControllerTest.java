@@ -32,7 +32,7 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 	private ObjectMapper jsonObjectMapper;
 
 	public OceanRouteControllerTest() {
-		super(OceanRoute.class);
+		super(OceanRouteDto.class);
 	}
 
 
@@ -80,7 +80,7 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 				createURL("/filter?includeInvalid=true&includeShunting=false&numberTs=1&pol=BRSSZ&pod=HKHKG&ts1=COCTG"),
 				HttpMethod.GET,  getHttpEntity(null), String.class);
 
-		List<OceanRoute> route = jsonObjectMapper.readValue(response.getBody(), getTypeRef());
+		List<OceanRouteDto> route = jsonObjectMapper.readValue(response.getBody(), getTypeRef());
 
 		assertEquals(route.get(0).getPol(), "BRSSZ");
 
@@ -98,9 +98,9 @@ public class OceanRouteControllerTest extends AbstractWebControllerTest<OceanRou
 		return ShipmentMappings.OCEAN_ROUTE;
 	}
 	@Override
-	protected TypeReference<List<OceanRoute>> getTypeRef() {
+	protected TypeReference<List<OceanRouteDto>> getTypeRef() {
 
-		return new TypeReference<List<OceanRoute>>() {
+		return new TypeReference<List<OceanRouteDto>>() {
 		};
 	}
 	@Override
