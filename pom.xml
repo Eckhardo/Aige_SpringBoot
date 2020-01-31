@@ -109,8 +109,20 @@
 			<artifactId>modelmapper</artifactId>
 			<version>2.3.2</version>
 		</dependency>
+		<dependency>
+		<groupId>com.googlecode.json-simple</groupId>
+		<artifactId>json-simple</artifactId>
+		<version>1.1.1</version>
+	</dependency>
 	</dependencies>
-
+	<developers>
+		<developer>
+			<email>eckhard.kirschning@freenet.de</email>
+			<name>Eckhard Kirschning</name>
+			<url>https://github.com/eckhardo</url>
+			<id>eugenp</id>
+		</developer>
+	</developers>
 	<build>
 		<plugins>
 			<plugin>

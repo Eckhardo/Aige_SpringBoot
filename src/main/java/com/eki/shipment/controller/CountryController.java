@@ -95,7 +95,7 @@ public class CountryController extends AbstractController<CountryDto, Country> {
 	private CountryService countryService;
 	@Autowired
 	private ModelMapper modelMapper;
-
+	
 	public CountryController() {
 		super(CountryDto.class);
 	}
