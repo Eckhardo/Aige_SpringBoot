@@ -11,7 +11,6 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
 @Component
-
 @Endpoint(id = "service.count")
 public class ApplicationMetricsEndpoint {
 
@@ -19,13 +18,10 @@ public class ApplicationMetricsEndpoint {
 
     private Counter counter;
 
-     
 
     /**
 
      * Instantiates a new application metrics endpoint.
-
-     *
 
      * @param registry the registry
 
@@ -37,7 +33,6 @@ public class ApplicationMetricsEndpoint {
 
     }
 
-     
 
     /**
 
