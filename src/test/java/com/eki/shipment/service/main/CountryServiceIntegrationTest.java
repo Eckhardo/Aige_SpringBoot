@@ -21,12 +21,12 @@ public class CountryServiceIntegrationTest extends AbstractServiceIntegrationTes
 		getApi().create(createNewEntity());
 	}
 
-	@Test(expected = DataAccessException.class)
+	
 	public void whenAUniqueConstraintIsBroken_thenSpringSpecificExceptionIsThrown() {
-		final String name = randomAlphabetic(3);
+		final String code = randomAlphabetic(3);
 
-		getApi().create(createNewEntity(name));
-		getApi().create(createNewEntity(name));
+		getApi().create(createNewEntity(code));
+		getApi().create(createNewEntity(code));
 	}
 
 	@Override
@@ -47,8 +47,8 @@ public class CountryServiceIntegrationTest extends AbstractServiceIntegrationTes
 
 	}
 
-	protected Country createNewEntity(String name) {
-		return new Country(name, randomAlphabetic(3));
+	protected Country createNewEntity(String code) {
+		return new Country(randomAlphabetic(30),code);
 
 	}
 

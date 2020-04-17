@@ -21,7 +21,7 @@ public class Country implements INameableEntity, INameableDto {
 	private static final long serialVersionUID = -3009157732242241606L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotNull

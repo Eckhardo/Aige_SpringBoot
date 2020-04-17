@@ -121,8 +121,8 @@ public class IntermodalRouteController extends AbstractController<IntermodalRout
 			@RequestParam(value = "includeImSchedule", defaultValue = "false") boolean includeIs,
 			@RequestParam(value = "isPreCarriage", defaultValue = "true") boolean isPreCarriage,
 			@RequestParam(value = "inlandLocation") String inlandLocation,
-			@RequestParam(value = "inlandKeyFigureType") String inlandKeyFigureType,
-			@RequestParam(value = "countryCode") String countryCode,
+			@RequestParam(value = "inlandGeoScopeType") String inlandGeoScopeType,
+			@RequestParam(value = "countryCode",required = false) String countryCode,
 			@RequestParam(value = "portLocation") String portLocation,
 			@RequestParam(value = "includeAllPrefPorts", defaultValue = "true") boolean includeAllPrefPorts,
 			@RequestParam(value = "transportMode") String transportMode,
@@ -130,11 +130,11 @@ public class IntermodalRouteController extends AbstractController<IntermodalRout
 			@RequestParam(value = "eq40") boolean eq40, @RequestParam(value = "eqHC") boolean eqHC,
 			@RequestParam(value = "weight20") String weight20, @RequestParam(value = "weight40") String weight40,
 			@RequestParam(value = "weightBasedOnly", defaultValue = "false") boolean weightBasedOnly,
-			@RequestParam(value = "startDate") RESTDateParam startDate,
-			@RequestParam(value = "endDate") RESTDateParam endDate,
+			@RequestParam(value = "startDate",required = false) RESTDateParam startDate,
+			@RequestParam(value = "endDate",required = false) RESTDateParam endDate,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page) {
 
-		logger.debug("com.eki.globe.KeyFigureResource.filterKeyFigures()");
+		logger.error("com.eki.globe.KeyFigureResource.filterKeyFigures()");
 
 	
 		String country = countryCode;
@@ -157,7 +157,7 @@ public class IntermodalRouteController extends AbstractController<IntermodalRout
 			List<GeoScope> preferredGeoScope = geoScopeService.findPreferredGeoScopes(inlandLocation, countryCode);
 			preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScope);
 		}
-		List<KeyFigure> kfs = kfService.searchKeyFigures(inlandLocation, inlandKeyFigureType, countryCode, preferredPorts,
+		List<KeyFigure> kfs = kfService.searchKeyFigures(inlandLocation, inlandGeoScopeType, countryCode, preferredPorts,
 				transportMode, eq20, eq40, eqGroup, PageRequest.of(page, 5));
 	
 		return kfs;
@@ -165,7 +165,7 @@ public class IntermodalRouteController extends AbstractController<IntermodalRout
 
 	@GetMapping({ "/keyfigure/find" })
 	public List<KeyFigure> searchSimple(@RequestParam(value = "inlandLocation") String inlandLocation,
-			@RequestParam(value = "inlandKeyFigureType") String inlandKeyFigureType,
+			@RequestParam(value = "inlandGeoScopeType") String inlandGeoScopeType,
 			@RequestParam(value = "countryCode") String countryCode,
 			@RequestParam(value = "portLocation") String portLocation,
 			@RequestParam(value = "includeAllPrefPorts", defaultValue = "true") boolean includeAllPrefPorts) {
@@ -182,7 +182,7 @@ public class IntermodalRouteController extends AbstractController<IntermodalRout
 			preferredPorts = geoScopeService.mapGeoScopesToPorts(preferredGeoScope);
 	}
 
-		List<KeyFigure> kfs = kfService.searchKeyFiguresSimple(inlandLocation, inlandKeyFigureType, countryCode,
+		List<KeyFigure> kfs = kfService.searchKeyFiguresSimple(inlandLocation, inlandGeoScopeType, countryCode,
 				preferredPorts);
 	
 		return kfs;

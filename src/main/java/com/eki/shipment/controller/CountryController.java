@@ -108,6 +108,8 @@ public class CountryController extends AbstractController<CountryDto, Country> {
 	 */
 	@GetMapping(value = "{id}")
 	public CountryDto findOne(@PathVariable Long id) {
+		logger.error("com.eki.globe.CountryController.findOne()");
+
 		return findOneInternal(id);
 		
 	}

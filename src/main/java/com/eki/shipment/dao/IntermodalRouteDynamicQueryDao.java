@@ -227,7 +227,7 @@ public class IntermodalRouteDynamicQueryDao {
 
 		List<KeyFigure> kfs = typedQuery.getResultList();
 
-		logger.warn("# of kfs in page: {}", kfs.size());
+		logger.trace("# of kfs in page: {}", kfs.size());
 
 		return kfs;
 	}

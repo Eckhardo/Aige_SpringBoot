@@ -243,7 +243,7 @@ public class IntermodalRouteDynamicQueryDaoTest {
 		int size = page.getSize();
 		long totalElements = page.getTotalElements();
 		int totalPages = page.getTotalPages();
-		logger.debug(
+		logger.trace(
 				"page info - page number %s, numberOfElements: %s, size: %s, " + "totalElements: %s, totalPages: %s%n",
 				number, numberOfElements, size, totalElements, totalPages);
 	}

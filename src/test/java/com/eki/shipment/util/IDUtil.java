@@ -28,6 +28,11 @@ public class IDUtil {
 	        id = (id < 0) ? (-1 * id) : id;
 	        return id;
 	    }
+	    public final static long randomPositiveInteger() {
+	        int id = new Random().nextInt() * 1000;
+	        id = (id < 0) ? (-1 * id) : id;
+	        return id;
+	    }
 
 	    public final static long randomNegativeLong() {
 	        long id = new Random().nextLong() * 10000;

@@ -64,7 +64,7 @@ public class EntityFactory {
 	}
 
 	public static KeyFigure createIntermodalRoute(GeoScope from, GeoScope pod) {
-		KeyFigure kf = new KeyFigure(from, null, pod, IDUtil.randomPositiveLong(), randomAlphabetic(2), true,
+		KeyFigure kf = new KeyFigure(from, null, pod, IDUtil.randomPositiveInteger(), randomAlphabetic(2), true,
 				randomAlphabetic(2), randomAlphabetic(2), null, randomAlphabetic(3), 1, randomAlphabetic(1), null);
 
 		return kf;
