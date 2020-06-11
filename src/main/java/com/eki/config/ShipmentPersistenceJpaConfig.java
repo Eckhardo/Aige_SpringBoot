@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({ "com.eki.shipment" })
-@PropertySource({ "classpath:persistence-${persistenceTarget:h2}.properties" })
+@PropertySource({ "classpath:persistence-${persistenceTarget:mysql}.properties" })
 @EnableJpaRepositories(basePackages = "com.eki.shipment.dao")
 public class ShipmentPersistenceJpaConfig {
 

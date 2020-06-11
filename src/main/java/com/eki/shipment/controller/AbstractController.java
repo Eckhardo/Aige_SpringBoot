@@ -84,6 +84,7 @@ public abstract class AbstractController<D extends IDto, E extends IEntity> {
 		RestPreconditions.checkRequestElementNotNull(resource);
 		RestPreconditions.checkRequestState(resource.getId() == null);
 		final E existingResource = getService().create(resource);
+		logger.warn(" Resource: " + existingResource.toString());
 		return convertToDto(existingResource);
 	}
 

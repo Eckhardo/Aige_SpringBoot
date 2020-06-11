@@ -91,6 +91,8 @@ public class GeoScopeController extends AbstractController<GeoScopeDto, GeoScope
 		// Create resource location
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId())
 				.toUri();
+		logger.warn(" URI: " + location.toString());
+
 		// Send location in response
 		return ResponseEntity.created(location).build();
 	}

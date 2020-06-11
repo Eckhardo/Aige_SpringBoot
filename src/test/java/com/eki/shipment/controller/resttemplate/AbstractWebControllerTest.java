@@ -57,7 +57,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@TestPropertySource(locations = "classpath:application-test.properties")
+@TestPropertySource(locations = "classpath:application.properties")
 
 public abstract class AbstractWebControllerTest<E extends IEntity, D extends IDto> {
 
