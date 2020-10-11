@@ -2,8 +2,6 @@ package com.eki.shipment.controller.resttemplate;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
-
 import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.dto.CountryDto;
 import com.eki.shipment.model.Country;

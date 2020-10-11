@@ -14,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.eki.shipment.dao.AbstractRepositoryTest;
 import com.eki.shipment.dao.CountryRepository;
 import com.eki.shipment.run.MysqlBootApplication;
 

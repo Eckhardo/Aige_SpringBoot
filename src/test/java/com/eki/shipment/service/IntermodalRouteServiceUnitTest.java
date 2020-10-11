@@ -1,5 +1,6 @@
 package com.eki.shipment.service;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
@@ -26,8 +27,6 @@ import com.eki.shipment.util.IDUtil;
 
 import data.GeoScopeData;
 import data.IntermodalRouteFigureData;
-
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public class IntermodalRouteServiceUnitTest extends AbstractServiceUnitTest<KeyFigure>{
 

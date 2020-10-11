@@ -4,14 +4,12 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.service.GeoScopeService;
 import com.eki.shipment.service.IntermodalRouteService;
 import com.eki.shipment.util.EntityFactory;
-import com.eki.shipment.util.IDUtil;
 
 
 public class IntermodalRouteServiceIntegrationTest extends AbstractServiceIntegrationTest<KeyFigure> {

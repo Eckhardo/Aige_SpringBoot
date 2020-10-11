@@ -12,14 +12,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import com.eki.common.util.ShipmentMappings;
-import com.eki.shipment.dto.IntermodalRouteDto;
 import com.eki.shipment.dto.OceanRouteDto;
-import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.model.OceanRoute;
 import com.eki.shipment.util.EntityFactory;
 import com.fasterxml.jackson.core.type.TypeReference;

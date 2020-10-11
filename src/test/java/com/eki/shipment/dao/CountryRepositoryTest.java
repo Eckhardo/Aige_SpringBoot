@@ -2,14 +2,12 @@ package com.eki.shipment.dao;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertThat;
+
 import java.util.Collection;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.eki.common.interfaces.IEntity;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.util.EntityFactory;
 

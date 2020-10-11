@@ -2,7 +2,6 @@ package com.eki.shipment.service;
 
 import static com.eki.shipment.util.EntityFactory.createGeoScope;
 import static com.eki.shipment.util.EntityFactory.createGeoScopes;
-import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.times;
@@ -11,7 +10,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;

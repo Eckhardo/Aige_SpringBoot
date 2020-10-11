@@ -1,5 +1,6 @@
 package com.eki.shipment.service;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -12,7 +13,6 @@ import com.eki.shipment.dao.CountryRepository;
 import com.eki.shipment.model.Country;
 import com.eki.shipment.util.EntityFactory;
 import com.google.common.collect.Lists;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 public class CountryServiceUnitTest extends AbstractServiceUnitTest<Country> {
 
 	private CountryService serviceUnderTest;

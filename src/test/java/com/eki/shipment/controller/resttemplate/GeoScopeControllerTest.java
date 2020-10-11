@@ -10,9 +10,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.eki.common.util.ShipmentMappings;
-import com.eki.shipment.dto.CountryDto;
 import com.eki.shipment.dto.GeoScopeDto;
-import com.eki.shipment.model.Country;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.util.EntityFactory;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -3,7 +3,8 @@
  */
 package com.eki.shipment.dao;
 
-import static com.eki.shipment.util.TestData.*;
+import static com.eki.shipment.util.TestData.LOCATION_BRSSZ;
+import static com.eki.shipment.util.TestData.LOCATION_HKHKG;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;

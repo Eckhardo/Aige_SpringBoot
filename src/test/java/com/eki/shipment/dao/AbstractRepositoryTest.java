@@ -1,8 +1,5 @@
 package com.eki.shipment.dao;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import javax.transaction.Transactional;
 
 import org.junit.Assert;
@@ -18,8 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eki.common.interfaces.IEntity;
 import com.eki.shipment.run.MysqlBootApplication;
-import com.eki.shipment.service.IServiceOperations;
-import com.google.common.base.Optional;
 
 @SpringBootTest(classes = MysqlBootApplication.class)
 @RunWith(SpringRunner.class)

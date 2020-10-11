@@ -1,11 +1,15 @@
 package com.eki.shipment.controller.resttemplate;
 
-import static com.eki.common.util.QueryConstants.*;
+import static com.eki.common.util.QueryConstants.APP_ROOT;
+import static com.eki.common.util.QueryConstants.COMPLETE_SORT_ORDER;
+import static com.eki.common.util.QueryConstants.HOST;
+import static com.eki.common.util.QueryConstants.ID;
+import static com.eki.common.util.QueryConstants.PAGE_NO;
+import static com.eki.common.util.QueryConstants.QUESTION_MARK;
+import static com.eki.common.util.QueryConstants.SLASH;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.hamcrest.CoreMatchers.is;
-
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;

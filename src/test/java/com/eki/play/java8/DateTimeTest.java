@@ -1,8 +1,5 @@
 package com.eki.play.java8;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,25 +7,11 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import com.eki.shipment.dao.AbstractRepositoryTest;
-import com.eki.shipment.dao.GeoScopeRepository;
-import com.eki.shipment.dao.IntermodalRouteDynamicQueryDao;
-import com.eki.shipment.model.GeoScope;
-import com.eki.shipment.model.KeyFigure;
-import com.eki.shipment.service.GeoScopeService;
-import com.eki.shipment.service.main.AbstractServiceIntegrationTest;
 
 /**
  * Some tests for the new Java 6 {@link java.time} API including:

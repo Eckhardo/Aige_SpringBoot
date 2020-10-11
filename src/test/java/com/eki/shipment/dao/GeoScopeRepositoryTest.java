@@ -3,7 +3,6 @@ package com.eki.shipment.dao;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
-
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
 
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.util.EntityFactory;
