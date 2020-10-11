@@ -86,7 +86,7 @@ public class IntermodalRouteController extends AbstractController<IntermodalRout
 	 * @return HttpStausCode=CREATED
 	 */
 	@PostMapping()
-	protected ResponseEntity<Object> newResource(@RequestBody KeyFigure kf) {
+	protected ResponseEntity<String> createResource(@RequestBody KeyFigure kf) {
 	final IntermodalRouteDto kfNew=	 createInternal(kf);
 	 //Create resource location
 	URI location = ServletUriComponentsBuilder

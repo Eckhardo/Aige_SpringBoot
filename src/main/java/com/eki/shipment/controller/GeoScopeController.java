@@ -98,9 +98,9 @@ public class GeoScopeController extends AbstractController<GeoScopeDto, GeoScope
 	}
 
 	@PutMapping(value = "{id}")
-	protected ResponseEntity<String> updateResource(@RequestBody GeoScope GeoScope, @PathVariable Long id) {
+	protected GeoScopeDto updateResource(@RequestBody GeoScope GeoScope, @PathVariable Long id) {
 		updateInternal(id, GeoScope);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return findOneInternal(id);
 	}
 
 	/**

@@ -30,7 +30,7 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope, 
 	public void whenSearchGeoScopesLikeDED_thenReturnLocations() {
 		GeoScope[] body = this.restTemplate
 				.getForObject("/geoscope/filter?location_code=DED&geo_scope_type=L&country_code=DE", GeoScope[].class);
-		assertThat(body.length, is(3));
+		assertThat(body.length, is(2));
 
 		for (int i = 0; i < body.length; i++) {
 			assertThat(body[i].getLocationCode(), startsWith("DED"));
@@ -61,7 +61,7 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope, 
 	@Test
 	public void whenSearchPorts_thenReturnPorts() {
 		GeoScope[] body = this.restTemplate.getForObject("/geoscope/ports?location_code=ARB", GeoScope[].class);
-		assertThat(body.length, is(equalTo(1)));
+		assertThat(body.length, is(equalTo(2)));
 
 		for (int i = 0; i < body.length; i++) {
 			assertThat(body[i].isPort(), is(true));
