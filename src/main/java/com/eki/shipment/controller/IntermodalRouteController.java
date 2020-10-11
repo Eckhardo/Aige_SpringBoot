@@ -31,7 +31,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.dto.IntermodalRouteDto;
-import com.eki.shipment.dto.OceanRouteDto;
 import com.eki.shipment.model.GeoScope;
 import com.eki.shipment.model.KeyFigure;
 import com.eki.shipment.model.RESTDateParam;

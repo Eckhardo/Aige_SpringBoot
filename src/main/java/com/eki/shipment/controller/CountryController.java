@@ -1,17 +1,21 @@
 package com.eki.shipment.controller;
 
+import static com.eki.common.util.QueryConstants.DESC;
+import static com.eki.common.util.QueryConstants.ID;
+import static com.eki.common.util.QueryConstants.PAGE_NO;
+import static com.eki.common.util.QueryConstants.PAGE_SIZE;
+import static com.eki.common.util.QueryConstants.SORT_BY;
+import static com.eki.common.util.QueryConstants.SORT_ORDER;
+
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import static com.eki.common.util.QueryConstants.*;
 import com.eki.common.util.ShipmentMappings;
 import com.eki.shipment.dto.CountryDto;
 import com.eki.shipment.model.Country;

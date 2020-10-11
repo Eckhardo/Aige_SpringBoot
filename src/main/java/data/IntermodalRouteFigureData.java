@@ -3,7 +3,6 @@ package data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import com.eki.shipment.model.GeoScope;

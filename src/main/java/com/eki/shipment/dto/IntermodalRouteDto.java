@@ -3,20 +3,8 @@ package com.eki.shipment.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
 import com.eki.common.interfaces.IDto;
 import com.eki.shipment.model.GeoScope;
-import com.eki.shipment.model.KeyFigure;
 
 public class IntermodalRouteDto implements IDto {
 	/**

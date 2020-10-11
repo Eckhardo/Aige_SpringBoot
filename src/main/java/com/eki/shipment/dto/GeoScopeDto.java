@@ -1,14 +1,8 @@
 package com.eki.shipment.dto;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 import com.eki.common.interfaces.INameableDto;
-import com.eki.common.interfaces.INameableEntity;
-import com.eki.shipment.model.GeoScope;
 
 public class GeoScopeDto implements INameableDto {
 

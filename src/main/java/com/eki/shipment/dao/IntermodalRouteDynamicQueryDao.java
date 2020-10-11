@@ -1,7 +1,6 @@
 package com.eki.shipment.dao;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +15,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
-import org.hibernate.annotations.NamedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

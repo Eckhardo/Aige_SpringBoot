@@ -3,12 +3,6 @@ package com.eki.shipment.dto;
 import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-
 import com.eki.common.interfaces.IDto;
 
 

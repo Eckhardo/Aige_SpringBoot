@@ -5,8 +5,6 @@ import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 

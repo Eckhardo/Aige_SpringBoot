@@ -5,7 +5,7 @@ import static com.eki.common.util.QueryConstants.PAGE_NO;
 import static com.eki.common.util.QueryConstants.PAGE_SIZE;
 import static com.eki.common.util.QueryConstants.SORT_BY;
 import static com.eki.common.util.QueryConstants.SORT_ORDER;
-
+import static com.eki.common.util.ShipmentMappings.OCEAN_ROUTE;
 
 import java.net.URI;
 import java.util.List;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import static com.eki.common.util.ShipmentMappings.OCEAN_ROUTE;
+
 import com.eki.shipment.dto.OceanRouteDto;
 import com.eki.shipment.model.OceanRoute;
 import com.eki.shipment.model.RESTDateParam;
