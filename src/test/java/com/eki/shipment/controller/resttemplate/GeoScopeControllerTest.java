@@ -62,7 +62,6 @@ public class GeoScopeControllerTest extends AbstractWebControllerTest<GeoScope, 
 	public void whenSearchPorts_thenReturnPorts() {
 		GeoScope[] body = this.restTemplate.getForObject("/geoscope/ports?location_code=ARB", GeoScope[].class);
 		assertThat(body.length, is(equalTo(2)));
-
 		for (int i = 0; i < body.length; i++) {
 			assertThat(body[i].isPort(), is(true));
 		}
