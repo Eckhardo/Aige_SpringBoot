@@ -1,3 +1,0 @@
-
-SET SQL_SAFE_UPDATES = 0;
-UPDATE nre.hibernate_sequence SET  next_val = 10000;
